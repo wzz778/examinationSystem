@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 列表 -->
     <myList :tableData="tableData" :allType="allType" :objFn="objFn"> </myList>
     <!-- 分页 -->
     <myPaging
@@ -13,19 +14,17 @@
 </template>
 
 <script>
-import { Table, TableColumn } from "element-ui";
-import myPaging from "./utilComponents/myPaging.vue";
-import myList from "./utilComponents/myList.vue";
+import myPaging from "../utilComponents/myPaging.vue";
+import myList from "../utilComponents/myList.vue";
 export default {
-  name: "studentList",
-  components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
+  name: "classList",
+  comments: {
     myPaging,
     myList,
   },
   data() {
     return {
+      // 数据
       tableData: [
         {
           id: "1",
@@ -50,6 +49,7 @@ export default {
           address: "上海市普陀区金沙江路 1516 弄",
         },
       ],
+      //   分页所需数据
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
@@ -62,34 +62,28 @@ export default {
         },
         {
           dateType: "name",
-          showName: "用户名",
+          showName: "班级名称",
         },
         {
           dateType: "name",
-          showName: "真实姓名",
+          showName: "班级口令",
         },
         {
           dateType: "name",
-          showName: "学级",
+          showName: "班级人数",
         },
         {
           dateType: "name",
-          showName: "性别",
-        },
-        {
-          dateType: "name",
-          showName: "手机号",
-        },
-        {
-          dateType: "name",
-          showName: "加入时间",
-        },
-        {
-          dateType: "name",
-          showName: "班级",
+          showName: "创建时间",
         },
       ],
+      //   函数
       objFn: [
+        {
+          type: "danger",
+          callFn: this.editorFn,
+          showInfo: "删除",
+        },
         {
           type: "danger",
           callFn: this.deleteFn,
@@ -107,22 +101,15 @@ export default {
       this.pageSize = val;
       console.log("组件里边的条数", val);
     },
-    deleteFn(a) {
-      console.log("aaaaaaaaaa", a);
-      this.$confirm("确定要删除吗?")
-        .then(() => {
-          console.log("确定");
-        })
-        .catch(() => {
-          this.$message("已取消");
-        });
+    deleteFn(id) {
+      console.log(id);
+    },
+    editorFn(id) {
+      console.log(id);
     },
   },
 };
 </script>
 
-<style scoped>
-.el-button {
-  padding: 10px;
-}
+<style>
 </style>

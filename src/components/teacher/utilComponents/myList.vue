@@ -1,10 +1,10 @@
 <template>
   <el-table :data="tableData" border style="width: 100%">
-    <template v-for="typeName in allType">
+    <template v-for="typeObj in allType">
       <el-table-column
-        :prop="typeName.type"
-        :label="typeName.name"
-        :key="typeName.name"
+        :prop="typeObj.dateType"
+        :label="typeObj.showName"
+        :key="typeObj.name"
       >
       </el-table-column>
     </template>
@@ -13,10 +13,10 @@
         <template v-for="tempObj in objFn">
           <el-button
             :type="tempObj.type"
-            @click="tempObj.fn(scope.row.id)"
-            :key="tempObj.name"
+            @click="tempObj.callFn(scope.row.id)"
+            :key="tempObj.showInfo"
             plain
-            >{{ tempObj.name }}</el-button
+            >{{ tempObj.showInfo }}</el-button
           >
         </template>
       </template>
@@ -37,5 +37,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.el-button {
+  padding: 10px;
+}
 </style>
