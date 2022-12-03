@@ -1,0 +1,1 @@
+// import {firstajax} from '@/myAxios/admin/wzzAxios'

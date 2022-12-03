@@ -5,12 +5,15 @@
   </div>
 </template>
 <script>
+import {firstajax} from '@/myAxios/admin/wzzAxios'
 // firstajax()
 export default {
     name:'AdminIndex',
     methods:{
-      storejia1(){
-        alert('dasdasd')
+      async storejia1(){
+
+        console.log(await firstajax());
+        // await firstajax()
       }
     }
 }
