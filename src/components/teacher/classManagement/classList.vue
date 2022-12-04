@@ -18,7 +18,7 @@ import myPaging from "../utilComponents/myPaging.vue";
 import myList from "../utilComponents/myList.vue";
 export default {
   name: "classList",
-  comments: {
+  components: {
     myPaging,
     myList,
   },
@@ -80,9 +80,9 @@ export default {
       //   函数
       objFn: [
         {
-          type: "danger",
+          type: "",
           callFn: this.editorFn,
-          showInfo: "删除",
+          showInfo: "编辑",
         },
         {
           type: "danger",

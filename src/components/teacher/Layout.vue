@@ -29,7 +29,7 @@
             <i class="el-icon-location"></i>
             <span slot="title">班级管理</span>
           </template>
-          <el-menu-item index="">班级列表</el-menu-item>
+          <el-menu-item index="/teacher/classList">班级列表</el-menu-item>
           <el-menu-item index="">班级创建</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
@@ -47,7 +47,7 @@
           </template>
           <el-menu-item index="">单选题创编</el-menu-item>
           <el-menu-item index="">多选题创编</el-menu-item>
-          <el-menu-item index="">判断题题创编</el-menu-item>
+          <el-menu-item index="">判断题创编</el-menu-item>
           <el-menu-item index="">填空题创编</el-menu-item>
           <el-menu-item index="">简答题创编</el-menu-item>
         </el-submenu>

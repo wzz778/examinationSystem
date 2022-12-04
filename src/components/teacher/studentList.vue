@@ -1,5 +1,6 @@
 <template>
   <div>
+    <myTop :inputInfoObj="inputInfoObj"></myTop>
     <myList :tableData="tableData" :allType="allType" :objFn="objFn"> </myList>
     <!-- 分页 -->
     <myPaging
@@ -16,6 +17,7 @@
 import { Table, TableColumn } from "element-ui";
 import myPaging from "./utilComponents/myPaging.vue";
 import myList from "./utilComponents/myList.vue";
+import myTop from "./utilComponents/myTop.vue";
 export default {
   name: "studentList",
   components: {
@@ -23,6 +25,7 @@ export default {
     [TableColumn.name]: TableColumn,
     myPaging,
     myList,
+    myTop,
   },
   data() {
     return {
@@ -96,6 +99,9 @@ export default {
           showInfo: "删除",
         },
       ],
+      inputInfoObj: {
+        showName: "用户名:",
+      }, 
     };
   },
   methods: {
