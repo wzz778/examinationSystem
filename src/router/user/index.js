@@ -12,5 +12,8 @@ export default [
         path:'/',
         name:'TestLogin',
         component:TestLogin,
+        meta:{
+        title:"登录考试系统"
+        },
     },
 ]
