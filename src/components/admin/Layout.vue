@@ -9,6 +9,7 @@
         :collapse="isCollapse"
         router
       >
+      <span>{{$route.meta}}</span>
         <el-menu-item index="/admin/index">
           <i class="el-icon-menu"></i>
           <span slot="title">管理端</span>
@@ -106,6 +107,11 @@
         >
           <i :class="refold"></i>
         </button>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+          <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -137,6 +143,8 @@ import {
   RadioButton,
   MenuItem,
   MenuItemGroup,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -147,6 +155,8 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
+    [Breadcrumb.name]: Breadcrumb,
+    [BreadcrumbItem.name]: BreadcrumbItem
   },
   data() {
     const item = {
@@ -163,6 +173,9 @@ export default {
       refold: "el-icon-s-fold",
     };
   },
+  mounted(){
+    // console.log("-------------:"+this.route.meta);
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -176,7 +189,7 @@ export default {
   },
   watch: {
     isCollapse(newValue) {
-      console.log(newValue);
+      // console.log(newValue);
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
@@ -252,6 +265,12 @@ export default {
       cursor: pointer;
       float: left;
       color: white;
+    }
+    .el-breadcrumb{
+      float: left;
+      margin: 15px 0 0 20px;
+      font-size: 16px;
+      width: 300px;
     }
   }
   .headbottom {

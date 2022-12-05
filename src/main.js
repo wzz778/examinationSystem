@@ -24,6 +24,9 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
 
+//
+Vue.config.productionTip = false
+
 //配置(可全局通过this调用)
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$message = Message
