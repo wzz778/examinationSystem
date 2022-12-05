@@ -8,6 +8,7 @@ import questionList from "@/components/teacher/questionManagement/questionList"
 import correctingList from "@/components/teacher/answersheetManagement/correctingList"
 import examinationFinish from "@/components/teacher/answersheetManagement/examinationFinish"
 import analysisList from "@/components/teacher/analysisList"
+import singleChoice from "@/components/teacher/questionManagement/singleChoice"
 export default [
     {
         path: '/teacher',
@@ -42,8 +43,12 @@ export default [
                 component: examinationFinish
             },
             {
-                path:'analysisList',
-                component:analysisList
+                path: 'analysisList',
+                component: analysisList
+            },
+            {
+                path: "singleChoice",
+                component: singleChoice
             }
         ]
     },

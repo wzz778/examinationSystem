@@ -46,7 +46,7 @@
             <span slot="title">题库管理</span>
           </template>
           <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
-          <el-menu-item index="">单选题创编</el-menu-item>
+          <el-menu-item index="/teacher/singleChoice">单选题创编</el-menu-item>
           <el-menu-item index="">多选题创编</el-menu-item>
           <el-menu-item index="">判断题创编</el-menu-item>
           <el-menu-item index="">填空题创编</el-menu-item>
@@ -58,7 +58,9 @@
             <span slot="title">答卷管理</span>
           </template>
           <el-menu-item index="/teacher/correctingList">批改列表</el-menu-item>
-          <el-menu-item index="/teacher/examinationFinish">试卷完成</el-menu-item>
+          <el-menu-item index="/teacher/examinationFinish"
+            >试卷完成</el-menu-item
+          >
         </el-submenu>
         <el-submenu index="8">
           <template slot="title">
@@ -94,7 +96,8 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="headbottom"></div>
+      <div class="headbottom">
+      </div>
     </div>
     <div id="body" :class="rebody">
       <router-view></router-view>
@@ -110,6 +113,8 @@ import {
   RadioButton,
   MenuItem,
   MenuItemGroup,
+  Breadcrumb,
+  BreadcrumbItem
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -120,6 +125,8 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
+    [Breadcrumb.name]:Breadcrumb,
+    [BreadcrumbItem.name]:BreadcrumbItem
   },
   data() {
     const item = {
@@ -194,7 +201,7 @@ export default {
 }
 #head {
   height: 80px;
-  z-index: 0;
+  z-index: 1;
   background-color: white;
   border-bottom: solid 1px #e6e6e6;
   position: fixed;
