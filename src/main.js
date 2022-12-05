@@ -5,8 +5,7 @@ import VueRouter from 'vue-router'
 // 引入less
 import less from 'less'
 //引入element
-import { MessageBox, Message, Icon, Button } from 'element-ui'
-
+import { MessageBox, Message, Icon, Button ,Table, TableColumn,Pagination,Form, FormItem,Input } from 'element-ui'
 // 引入路由器
 import router from './router/index'
 //引入vuex配置文件
@@ -18,6 +17,12 @@ Vue.use(less)
 Vue.use(VueRouter)
 Vue.use(Icon)
 Vue.use(Button)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Pagination)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
 
 //配置(可全局通过this调用)
 Vue.prototype.$confirm = MessageBox.confirm

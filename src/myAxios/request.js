@@ -6,7 +6,7 @@ import nprogress from "nprogress";
 import 'nprogress/nprogress.css'
 
 let requests = axios.create({
-  //基础路径w4ewe
+  //基础路径
 //   baseURL: "/api",
   //请求不能超过5S
   timeout: 5000,
