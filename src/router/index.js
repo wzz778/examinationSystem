@@ -26,6 +26,8 @@ router.beforeEach((to,from,next) => {
           window.document.body.style.backgroundSize="cover"
             next()
     }else{
+        window.document.title = to.meta.title 
+        window.document.body.style.background="url('')"
         next()
     }
   })

@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     jump() {
-      this.$router.push("/admin");
+      this.$router.push("/user/userCenter");
     },
     reJump(){
     this.judge='注册'
