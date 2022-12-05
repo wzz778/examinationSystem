@@ -30,14 +30,14 @@
             <span slot="title">班级管理</span>
           </template>
           <el-menu-item index="/teacher/classList">班级列表</el-menu-item>
-          <el-menu-item index="">班级创建</el-menu-item>
+          <el-menu-item index="/teacher/classCreat">班级创建</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">卷库管理</span>
           </template>
-          <el-menu-item index="">试卷列表</el-menu-item>
+          <el-menu-item index="/teacher/examinationList">试卷列表</el-menu-item>
           <el-menu-item index="">试卷创编</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
@@ -45,6 +45,7 @@
             <i class="el-icon-location"></i>
             <span slot="title">题库管理</span>
           </template>
+          <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
           <el-menu-item index="">单选题创编</el-menu-item>
           <el-menu-item index="">多选题创编</el-menu-item>
           <el-menu-item index="">判断题创编</el-menu-item>
@@ -56,15 +57,15 @@
             <i class="el-icon-location"></i>
             <span slot="title">答卷管理</span>
           </template>
-          <el-menu-item index="">批改列表</el-menu-item>
-          <el-menu-item index="">试卷完成</el-menu-item>
+          <el-menu-item index="/teacher/correctingList">批改列表</el-menu-item>
+          <el-menu-item index="/teacher/examinationFinish">试卷完成</el-menu-item>
         </el-submenu>
         <el-submenu index="8">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">成绩分析</span>
           </template>
-          <el-menu-item index="">试卷列表</el-menu-item>
+          <el-menu-item index="/teacher/analysisList">试卷列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>

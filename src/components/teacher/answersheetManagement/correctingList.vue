@@ -7,14 +7,11 @@
       :seletcInfoObjTwo="myTopConfiguration.seletcInfoObjTwo"
       :buttonInfo="myTopConfiguration.buttonInfo"
     ></myTop>
-    <!-- 列表 -->
     <myList
       :tableData="myListConfiguration.tableData"
       :allType="myListConfiguration.allType"
       :objFn="myListConfiguration.objFn"
-    >
-    </myList>
-    <!-- 分页 -->
+    ></myList>
     <myPaging
       :nowPage="nowPage"
       :allNums="allNums"
@@ -26,27 +23,31 @@
 </template>
 
 <script>
-import myPaging from "../utilComponents/myPaging.vue";
-import myList from "../utilComponents/myList.vue";
 import myTop from "../utilComponents/myTop.vue";
+import myList from "../utilComponents/myList.vue";
+import myPaging from "../utilComponents/myPaging.vue";
 export default {
-  name: "classList",
+  name: "correctingList",
   components: {
-    myPaging,
-    myList,
     myTop,
+    myList,
+    myPaging,
   },
   data() {
     return {
+      // 顶部配置
       myTopConfiguration: {
-        inputInfoObj: {
-          showName: "用户名:",
-          transferName: "userName",
-        },
         seletcInfoObjOne: {
-          showName: "班级",
+          showName: "学科",
           // 请求的接口类型
           fnType: "getClass",
+          // 后端对应的变量名
+          transferName: "class",
+        },
+        seletcInfoObjTwo: {
+          showName: "班级",
+          // 请求的接口类型
+          fnType: "getTopic",
           // 后端对应的变量名
           transferName: "class",
         },
@@ -57,31 +58,39 @@ export default {
             // dateType表示的是数据
             dateType: "date",
             // 数据显示的名字
-            showName: "ID",
+            showName: "Id",
           },
           {
             dateType: "name",
-            showName: "班级名称",
+            showName: "试卷名称",
           },
           {
             dateType: "name",
-            showName: "班级口令",
+            showName: "用户名称",
           },
           {
             dateType: "name",
-            showName: "班级人数",
+            showName: "得分",
           },
           {
             dateType: "name",
-            showName: "创建时间",
+            showName: "题目对错",
+          },
+          {
+            dateType: "name",
+            showName: "耗时",
+          },
+          {
+            dateType: "name",
+            showName: "提交时间",
           },
         ],
         //   函数
         objFn: [
           {
             type: "",
-            callFn: this.editorFn,
-            showInfo: "编辑",
+            callFn: this.seeFn,
+            showInfo: "查看",
           },
           {
             type: "danger",
@@ -122,6 +131,12 @@ export default {
     };
   },
   methods: {
+    searchFn(obj) {
+      console.log(obj);
+    },
+    seeFn(obj) {
+      console.log("查看", obj);
+    },
     pageChangeFn(val) {
       this.nowPage = val;
       console.log("组件里边的页数", val);
@@ -135,9 +150,6 @@ export default {
     },
     editorFn(id) {
       console.log(id);
-    },
-    searchFn(obj) {
-      console.log("查询", obj);
     },
   },
 };
