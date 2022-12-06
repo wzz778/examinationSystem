@@ -5,7 +5,7 @@ import admin from './admin'
 import teacher from './teacher'
 // import Layout from '@/components/admin/Layout'
 // 创建一个路由器
-console.log(...admin);
+// console.log(...admin);
 const router = new VueRouter({
     routes: [
         ...user,

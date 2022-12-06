@@ -3,6 +3,7 @@ import TestLogin from '@/components/user/TestLogin'
 import Top from '@/components/user/Top'
 import examine from './examine'
 import UserCenter from '@/pages/users/UserCenter'
+import NewsCenter from '@/pages/users/NewsCenter'
 // 写路由
 export default [
     ...examine,
@@ -17,6 +18,14 @@ export default [
                 component:UserCenter,
                 meta:{
                 title:"个人中心"
+                },
+            },
+            {
+                path:'newsCenter',
+                name:'NewsCenter',
+                component:NewsCenter,
+                meta:{
+                title:"消息中心"
                 },
             },
         ]
