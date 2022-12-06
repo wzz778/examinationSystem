@@ -23,6 +23,9 @@
             <span slot="title">用户管理</span>
           </template>
           <el-menu-item index="/teacher/studentList">学生列表</el-menu-item>
+          <el-menu-item index="/teacher/adminStudentList">管理员学生列表</el-menu-item>
+          <el-menu-item index="/teacher/teacherList">教师列表</el-menu-item>
+          <el-menu-item index="/teacher/adminList">管理员列表</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">
@@ -38,7 +41,7 @@
             <span slot="title">卷库管理</span>
           </template>
           <el-menu-item index="/teacher/examinationList">试卷列表</el-menu-item>
-          <el-menu-item index="">试卷创编</el-menu-item>
+          <el-menu-item index="/teacher/testCreat">试卷创编</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
           <template slot="title">
@@ -47,10 +50,12 @@
           </template>
           <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
           <el-menu-item index="/teacher/singleChoice">单选题创编</el-menu-item>
-          <el-menu-item index="">多选题创编</el-menu-item>
-          <el-menu-item index="">判断题创编</el-menu-item>
-          <el-menu-item index="">填空题创编</el-menu-item>
-          <el-menu-item index="">简答题创编</el-menu-item>
+          <el-menu-item index="/teacher/multiSelect">多选题创编</el-menu-item>
+          <el-menu-item index="/teacher/judgmentQuestion"
+            >判断题创编</el-menu-item
+          >
+          <el-menu-item index="/teacher/gapFilling">填空题创编</el-menu-item>
+          <el-menu-item index="/teacher/shortAnswer">简答题创编</el-menu-item>
         </el-submenu>
         <el-submenu index="7">
           <template slot="title">
@@ -96,8 +101,7 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="headbottom">
-      </div>
+      <div class="headbottom"></div>
     </div>
     <div id="body" :class="rebody">
       <router-view></router-view>
@@ -114,7 +118,7 @@ import {
   MenuItem,
   MenuItemGroup,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -125,8 +129,8 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
-    [Breadcrumb.name]:Breadcrumb,
-    [BreadcrumbItem.name]:BreadcrumbItem
+    [Breadcrumb.name]: Breadcrumb,
+    [BreadcrumbItem.name]: BreadcrumbItem,
   },
   data() {
     const item = {

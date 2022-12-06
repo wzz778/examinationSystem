@@ -9,6 +9,14 @@ import correctingList from "@/components/teacher/answersheetManagement/correctin
 import examinationFinish from "@/components/teacher/answersheetManagement/examinationFinish"
 import analysisList from "@/components/teacher/analysisList"
 import singleChoice from "@/components/teacher/questionManagement/singleChoice"
+import multiSelect from "@/components/teacher/questionManagement/multiSelect"
+import judgmentQuestion from "@/components/teacher/questionManagement/judgmentQuestion"
+import gapFilling from "@/components/teacher/questionManagement/gapFilling"
+import shortAnswer from "@/components/teacher/questionManagement/shortAnswer"
+import testCreat from "@/components/teacher/volumeManagement/testCreat"
+import adminStudentList from "@/components/teacher/teacherAdmin/adminStudentList"
+import teacherList from "@/components/teacher/teacherAdmin/teacherList"
+import adminList from "@/components/teacher/teacherAdmin/adminList"
 export default [
     {
         path: '/teacher',
@@ -49,6 +57,38 @@ export default [
             {
                 path: "singleChoice",
                 component: singleChoice
+            },
+            {
+                path: "multiSelect",
+                component: multiSelect
+            },
+            {
+                path: "judgmentQuestion",
+                component: judgmentQuestion
+            },
+            {
+                path: "gapFilling",
+                component: gapFilling
+            },
+            {
+                path: "shortAnswer",
+                component: shortAnswer
+            },
+            {
+                path: "testCreat",
+                component: testCreat
+            },
+            {
+                path: "adminStudentList",
+                component: adminStudentList
+            },
+            {
+                path: "teacherList",
+                component: teacherList
+            },
+            {
+                path: "adminList",
+                component: adminList
             }
         ]
     },
