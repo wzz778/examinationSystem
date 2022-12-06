@@ -7,7 +7,13 @@
       :seletcInfoObjTwo="myTopConfiguration.seletcInfoObjTwo"
       :buttonInfo="myTopConfiguration.buttonInfo"
     ></myTop>
-    <myList :tableData="myListConfiguration.tableData" :allType="myListConfiguration.allType" :objFn="myListConfiguration.objFn"> </myList>
+    <!-- 列表 -->
+    <myList
+      :tableData="myListConfiguration.tableData"
+      :allType="myListConfiguration.allType"
+      :objFn="myListConfiguration.objFn"
+    >
+    </myList>
     <!-- 分页 -->
     <myPaging
       :nowPage="nowPage"
@@ -20,15 +26,12 @@
 </template>
 
 <script>
-import { Table, TableColumn } from "element-ui";
 import myPaging from "./utilComponents/myPaging.vue";
 import myList from "./utilComponents/myList.vue";
 import myTop from "./utilComponents/myTop.vue";
 export default {
-  name: "studentList",
+  name: "analysisList",
   components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
     myPaging,
     myList,
     myTop,
@@ -37,21 +40,50 @@ export default {
     return {
       myTopConfiguration: {
         inputInfoObj: {
-          showName: "用户名:",
+          showName: "试卷ID:",
           transferName: "userName",
         },
         seletcInfoObjOne: {
-          showName: "班级",
+          showName: "学科",
           // 请求的接口类型
           fnType: "getClass",
           // 后端对应的变量名
           transferName: "class",
         },
         buttonInfo: {
-          type: false,
+          type: true,
         },
       },
       myListConfiguration: {
+        allType: [
+          {
+            // dateType表示的是数据
+            dateType: "date",
+            // 数据显示的名字
+            showName: "Id",
+          },
+          {
+            dateType: "name",
+            showName: "学科",
+          },
+          {
+            dateType: "name",
+            showName: "名称",
+          },
+          {
+            dateType: "name",
+            showName: "创建时间",
+          },
+        ],
+        //   函数
+        objFn: [
+          {
+            type: "",
+            callFn: this.editorFn,
+            showInfo: "成绩分析",
+          },
+        ],
+        // 数据
         tableData: [
           {
             id: "1",
@@ -76,50 +108,8 @@ export default {
             address: "上海市普陀区金沙江路 1516 弄",
           },
         ],
-        allType: [
-          {
-            // dateType表示的是数据
-            dateType: "date",
-            // 数据显示的名字
-            showName: "ID",
-          },
-          {
-            dateType: "name",
-            showName: "用户名",
-          },
-          {
-            dateType: "name",
-            showName: "真实姓名",
-          },
-          {
-            dateType: "name",
-            showName: "学级",
-          },
-          {
-            dateType: "name",
-            showName: "性别",
-          },
-          {
-            dateType: "name",
-            showName: "手机号",
-          },
-          {
-            dateType: "name",
-            showName: "加入时间",
-          },
-          {
-            dateType: "name",
-            showName: "班级",
-          },
-        ],
-        objFn: [
-          {
-            type: "danger",
-            callFn: this.deleteFn,
-            showInfo: "删除",
-          },
-        ],
       },
+      //   分页所需数据
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
@@ -134,15 +124,11 @@ export default {
       this.pageSize = val;
       console.log("组件里边的条数", val);
     },
-    deleteFn(a) {
-      console.log("aaaaaaaaaa", a);
-      this.$confirm("确定要删除吗?")
-        .then(() => {
-          console.log("确定");
-        })
-        .catch(() => {
-          this.$message("已取消");
-        });
+    deleteFn(id) {
+      console.log(id);
+    },
+    editorFn(id) {
+      console.log(id);
     },
     searchFn(obj) {
       console.log("查询", obj);
@@ -151,8 +137,5 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-button {
-  padding: 10px;
-}
+<style>
 </style>
