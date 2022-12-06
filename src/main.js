@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 // 引入less
 import less from 'less'
 //引入element
-import { MessageBox, Message, Icon, Button ,Table, TableColumn,Pagination,Form, FormItem,Input ,Card,Timeline,Select,DatePicker,Option} from 'element-ui'
+import { MessageBox, Message, Icon, Button ,Table, TableColumn,Pagination,Form, FormItem,Input ,Card,Timeline,Select,DatePicker,Option,Slider} from 'element-ui'
 // 引入路由器
 import router from './router/index'
 //引入vuex配置文件
@@ -28,6 +28,7 @@ Vue.use(Timeline)
 Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Slider)
 //配置(可全局通过this调用)
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$message = Message

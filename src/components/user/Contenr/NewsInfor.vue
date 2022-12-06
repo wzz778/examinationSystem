@@ -5,7 +5,7 @@
         <span>个人信息</span>
       </div>
       <div class="text item">
-        <img src="http://localhost:8080/img/myHead.669d7963.jpg" />
+        <img src="http://localhost:8081/img/myHead.669d7963.jpg" />
         <p style="text-align:center">Student</p>
         <p>姓名:学生</p>
         <p>年级：一年级</p>
@@ -27,7 +27,6 @@ export default {
 
 <style lang="less" scoped>
 .infork{
-margin-top: -40px;
 background: #fafafa;
 }
 .text {
