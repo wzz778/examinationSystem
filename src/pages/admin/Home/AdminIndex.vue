@@ -1,5 +1,5 @@
 <template>
-  <div id="adminindex">
+  <div  id="adminindex" >
     <h1>这是主页内容</h1>
     <button @click="storejia1">点我加他</button>
   </div>

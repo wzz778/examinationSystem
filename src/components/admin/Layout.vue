@@ -106,14 +106,11 @@
         >
           <i :class="refold"></i>
         </button>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item v-for="p of alltitle" :key="p.index">{{
-            p
-          }}</el-breadcrumb-item>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="animate__animated">
+          <el-breadcrumb-item v-for="p of alltitle" class="animate__animated animate__fadeInRight" :key="p.index">
+            {{p}}
+          </el-breadcrumb-item>
         </el-breadcrumb>
-                <el-button size="small" @click="addTab(editableTabsValue)">
-          add tab
-        </el-button>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -133,7 +130,6 @@
         <el-tabs
           v-model="editableTabsValue"
           type="card"
-          closable
           @tab-remove="removeTab"
           @tab-click="tabClick"
 
@@ -143,19 +139,24 @@
             :key="item.name"
             :label="item.title"
             :name="item.name"
+            closable
           >
-          {{item.content}}
           </el-tab-pane>
         </el-tabs>
       </div>
     </div>
-    <div id="body" :class="rebody">
-      <router-view></router-view>
+    <div id="body" 
+      :class="rebody"
+    >
+      <router-view 
+        class="animate__animated animate__fadeInLeft"         
+      ></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import 'animate.css'
 import {
   Submenu,
   Menu,
@@ -196,19 +197,14 @@ export default {
       rehead: "head1",
       refold: "el-icon-s-fold",
       alltitle: ["首页"],
-      editableTabsValue: "2",
-      editableTabs: [
-        {
-          title: "首页",
-          name: "1",
-          content: "Tab 1 content",
-        },
-        {
-          title: "列表",
-          name: "2",
-          content: "Tab 2 content",
-        },
-      ],
+      // editableTabsValue: "1",
+      // editableTabs: [
+      //   {
+      //     title: "首页",
+      //     name: "1",
+      //     content: false,
+      //   },
+      // ],
       tabIndex: 2,
     };
   },
@@ -223,25 +219,29 @@ export default {
       console.log(key, keyPath);
     },
     tabClick(tab){
-      console.log(tab.name);
-      // let path = tab.name;
-      // this.$store.commit('setTabName', path);
-      // this.$router.push({path: path});
+      // console.log(tab.name);
+      let path = tab.name;
+      this.$store.commit('admin/setTabName', path);
+      this.$router.push({path: path});
     },
-    addTab(targetName) {
+    addTab() {
       let newTabName = ++this.tabIndex + "";
       this.editableTabs.push({
         title: "New Tab",
         name: newTabName,
-        content: "New Tab content",
       });
       this.editableTabsValue = newTabName;
-      console.log(targetName);
+      // console.log(targetName);
     },
     removeTab(targetName) {
-      console.log(targetName);
+      if(targetName === "/admin/index"){
+        return;
+      }
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
+      let tab1;
+      tab1 = tabs.filter(tab => tab.name !== targetName);
+      this.$store.commit('admin/addTab', tab1);
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -251,15 +251,13 @@ export default {
             }
           }
         });
+        this.$store.commit('admin/setTabName', activeName);
+        this.$router.push({path: activeName});
       }
-
-      this.editableTabsValue = activeName;
-      this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
     },
   },
   watch: {
     isCollapse(newValue) {
-      // console.log(newValue);
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
@@ -277,10 +275,50 @@ export default {
         }
       }
       this.alltitle = arr;
+      let flag = false;
+      let tabs = this.editableTabs;
+      let route = this.editableTabsValue;
+      for (let i of tabs) {
+        if (i.name === to.path) {
+          flag = true;
+          //设置当前tab为当前路由
+          this.$store.commit('admin/setTabName', to.path);
+          break;
+        }
+      }
+      if (!flag) {
+        let data = {
+          title: to.meta.title,
+          name: to.path,
+        };
+        tabs.push(data);
+        route = to.path;
+        //设置tab数组
+        this.$store.commit('admin/addTab', tabs);
+        this.$store.commit('admin/setTabName', route);
+      }
     },
   },
 
-  computed: {},
+  computed: {
+    //存放所有tab的数组 
+      editableTabs() {
+        let tabs;
+        let data = this.$store.state.admin.editableTabs;
+        tabs = typeof data === 'string'? JSON.parse(data):data;
+        return tabs;
+      },
+      //当前tab 初始默认为首页(/home)
+      editableTabsValue:{
+        get(){
+          return this.$store.state.admin.editableTabsValue;
+        },
+        set(){}
+      }
+  },
+  mounted(){
+    // console.log(this.$store.state.admin.editableTabs);
+  }
 };
 </script>
 <style  lang="less" scoped>
