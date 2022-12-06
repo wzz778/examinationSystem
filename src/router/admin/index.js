@@ -73,6 +73,9 @@ export default [
         path:'/admin',
         name:'Layout',
         component: Layout,
+        // meta:{
+        //     title:"首页"
+        // },
         children:[ //通过children配置子级路由
             {
                 path:'index', 
