@@ -14,60 +14,218 @@ import MessageEdit from '@/pages/admin/Message/edit'
 import JournalList from '@/pages/admin/Journal/list'
 // 写路由
 export default [
+    // {
+    //     path:'/admin',
+    //     name:'Layout',
+    //     component: Layout,
+    //     children:[ //通过children配置子级路由
+    //     {
+    //         path:'index', 
+    //         component:AdminIndex
+    //     },
+    //     {
+    //         path:'subject/list', 
+    //         component:SubjectList,
+    //     },
+    //     {
+    //         path:'subject/edit', 
+    //         component:SubjectEdit,
+    //     },
+    //     {
+    //         path:'knowledge/list', 
+    //         component:KnowledgeList,
+    //     },
+    //     {
+    //         path:'knowledge/edit', 
+    //         component:KnowledgeEdit,
+    //     },
+    //     {
+    //         path:'task/list', 
+    //         component:TaskList,
+    //     },
+    //     {
+    //         path:'task/edit', 
+    //         component:TaskEdit,
+    //     },
+    //     {
+    //         path:'video/list', 
+    //         component:VideoList,
+    //     },
+    //     {
+    //         path:'video/edit', 
+    //         component:VideoEdit,
+    //     },
+    //     {
+    //         path:'message/list', 
+    //         component:MessageList,
+    //     },
+    //     {
+    //         path:'message/edit', 
+    //         component:MessageEdit,
+    //     },
+    //     {
+    //         path:'journal/list', 
+    //         component:JournalList,
+    //     },
+    // ]
+    // },
     {
         path:'/admin',
         name:'Layout',
-        component:Layout,
+        component: Layout,
+        // meta:{
+        //     title:"首页"
+        // },
         children:[ //通过children配置子级路由
-        {
-            path:'index', 
-            component:AdminIndex
-        },
-        {
-            path:'subject/list', 
-            component:SubjectList,
-        },
-        {
-            path:'subject/edit', 
-            component:SubjectEdit,
-        },
-        {
-            path:'knowledge/list', 
-            component:KnowledgeList,
-        },
-        {
-            path:'knowledge/edit', 
-            component:KnowledgeEdit,
-        },
-        {
-            path:'task/list', 
-            component:TaskList,
-        },
-        {
-            path:'task/edit', 
-            component:TaskEdit,
-        },
-        {
-            path:'video/list', 
-            component:VideoList,
-        },
-        {
-            path:'video/edit', 
-            component:VideoEdit,
-        },
-        {
-            path:'message/list', 
-            component:MessageList,
-        },
-        {
-            path:'message/edit', 
-            component:MessageEdit,
-        },
-        {
-            path:'journal/list', 
-            component:JournalList,
-        },
-    ]
+            {
+                path:'index', 
+                component:AdminIndex,
+                meta:{
+                    title:"首页"
+                }
+            },
+        ]
     },
+    {
+        path:'/admin/subject',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"学科管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:SubjectList,
+                meta:{
+                    title:"学科列表"
+                }
+            },
+            {
+                path:'edit', 
+                component:SubjectEdit,
+                meta:{
+                    title:"学科创建",
+                }
 
+            },
+        ]
+    },
+    {
+        path:'/admin/knowledge',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"知识点管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:KnowledgeList,
+                meta:{
+                    title:"知识点列表"
+                }
+            },
+            {
+                path:'edit', 
+                component:KnowledgeEdit,
+                meta:{
+                    title:"知识点创建",
+                }
+
+            },
+        ]
+    },
+    {
+        path:'/admin/task',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"任务管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:TaskList,
+                meta:{
+                    title:"任务列表"
+                }
+            },
+            {
+                path:'edit', 
+                component:TaskEdit,
+                meta:{
+                    title:"任务创建",
+                }
+
+            },
+        ]
+    },
+    {
+        path:'/admin/video',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"视频管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:VideoList,
+                meta:{
+                    title:"视频列表"
+                }
+            },
+            {
+                path:'edit', 
+                component:VideoEdit,
+                meta:{
+                    title:"视频创建",
+                }
+
+            },
+        ]
+    },
+    {
+        path:'/admin/message',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"信息管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:MessageList,
+                meta:{
+                    title:"信息列表"
+                }
+            },
+            {
+                path:'edit', 
+                component:MessageEdit,
+                meta:{
+                    title:"信息创建",
+                }
+
+            },
+        ]
+    },
+    {
+        path:'/admin/journal',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"日志管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component:JournalList,
+                meta:{
+                    title:"日志列表"
+                }
+            },
+        ]
+    },
 ]

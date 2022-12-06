@@ -7,7 +7,6 @@ Vue.use(Vuex)
 
 import user from './user'
 import admin from './admin'
-
 // 导出
 export default new Vuex.Store({
     modules: {

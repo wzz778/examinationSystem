@@ -29,15 +29,15 @@
             <i class="el-icon-location"></i>
             <span slot="title">班级管理</span>
           </template>
-          <el-menu-item index="">班级列表</el-menu-item>
-          <el-menu-item index="">班级创建</el-menu-item>
+          <el-menu-item index="/teacher/classList">班级列表</el-menu-item>
+          <el-menu-item index="/teacher/classCreat">班级创建</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">卷库管理</span>
           </template>
-          <el-menu-item index="">试卷列表</el-menu-item>
+          <el-menu-item index="/teacher/examinationList">试卷列表</el-menu-item>
           <el-menu-item index="">试卷创编</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
@@ -45,9 +45,10 @@
             <i class="el-icon-location"></i>
             <span slot="title">题库管理</span>
           </template>
-          <el-menu-item index="">单选题创编</el-menu-item>
+          <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
+          <el-menu-item index="/teacher/singleChoice">单选题创编</el-menu-item>
           <el-menu-item index="">多选题创编</el-menu-item>
-          <el-menu-item index="">判断题题创编</el-menu-item>
+          <el-menu-item index="">判断题创编</el-menu-item>
           <el-menu-item index="">填空题创编</el-menu-item>
           <el-menu-item index="">简答题创编</el-menu-item>
         </el-submenu>
@@ -56,15 +57,17 @@
             <i class="el-icon-location"></i>
             <span slot="title">答卷管理</span>
           </template>
-          <el-menu-item index="">批改列表</el-menu-item>
-          <el-menu-item index="">试卷完成</el-menu-item>
+          <el-menu-item index="/teacher/correctingList">批改列表</el-menu-item>
+          <el-menu-item index="/teacher/examinationFinish"
+            >试卷完成</el-menu-item
+          >
         </el-submenu>
         <el-submenu index="8">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">成绩分析</span>
           </template>
-          <el-menu-item index="">试卷列表</el-menu-item>
+          <el-menu-item index="/teacher/analysisList">试卷列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -93,7 +96,8 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="headbottom"></div>
+      <div class="headbottom">
+      </div>
     </div>
     <div id="body" :class="rebody">
       <router-view></router-view>
@@ -109,6 +113,8 @@ import {
   RadioButton,
   MenuItem,
   MenuItemGroup,
+  Breadcrumb,
+  BreadcrumbItem
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -119,6 +125,8 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
+    [Breadcrumb.name]:Breadcrumb,
+    [BreadcrumbItem.name]:BreadcrumbItem
   },
   data() {
     const item = {
@@ -193,7 +201,7 @@ export default {
 }
 #head {
   height: 80px;
-  z-index: 0;
+  z-index: 1;
   background-color: white;
   border-bottom: solid 1px #e6e6e6;
   position: fixed;

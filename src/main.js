@@ -29,6 +29,8 @@ Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Slider)
+
+Vue.config.productionTip = false
 //配置(可全局通过this调用)
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$message = Message

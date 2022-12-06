@@ -13,7 +13,7 @@
         <template v-for="tempObj in objFn">
           <el-button
             :type="tempObj.type"
-            @click="tempObj.callFn(scope.row.id)"
+            @click="tempObj.callFn(scope.row)"
             :key="tempObj.showInfo"
             plain
             >{{ tempObj.showInfo }}</el-button

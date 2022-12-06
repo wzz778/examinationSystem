@@ -2,12 +2,12 @@
   <div id="layout">
     <div id="nav" class="nav1">
       <el-menu
-        :default-active="nowhttp"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse"
-        router
+        :router="true"
       >
         <el-menu-item index="/admin/index">
           <i class="el-icon-menu"></i>
@@ -106,6 +106,11 @@
         >
           <i :class="refold"></i>
         </button>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="animate__animated">
+          <el-breadcrumb-item v-for="p of alltitle" class="animate__animated animate__fadeInRight" :key="p.index">
+            {{p}}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -121,15 +126,37 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="headbottom"></div>
+      <div class="headbottom">
+        <el-tabs
+          v-model="editableTabsValue"
+          type="card"
+          @tab-remove="removeTab"
+          @tab-click="tabClick"
+
+        >
+          <el-tab-pane
+            v-for="item in editableTabs"
+            :key="item.name"
+            :label="item.title"
+            :name="item.name"
+            closable
+          >
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
-    <div id="body" :class="rebody">
-      <router-view></router-view>
+    <div id="body" 
+      :class="rebody"
+    >
+      <router-view 
+        class="animate__animated animate__fadeInLeft"         
+      ></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import 'animate.css'
 import {
   Submenu,
   Menu,
@@ -137,6 +164,10 @@ import {
   RadioButton,
   MenuItem,
   MenuItemGroup,
+  Breadcrumb,
+  BreadcrumbItem,
+  Tabs,
+  TabPane,
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -147,6 +178,10 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
+    [Breadcrumb.name]: Breadcrumb,
+    [BreadcrumbItem.name]: BreadcrumbItem,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
   },
   data() {
     const item = {
@@ -161,6 +196,16 @@ export default {
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
+      alltitle: ["首页"],
+      // editableTabsValue: "1",
+      // editableTabs: [
+      //   {
+      //     title: "首页",
+      //     name: "1",
+      //     content: false,
+      //   },
+      // ],
+      tabIndex: 2,
     };
   },
   methods: {
@@ -173,10 +218,46 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    tabClick(tab){
+      // console.log(tab.name);
+      let path = tab.name;
+      this.$store.commit('admin/setTabName', path);
+      this.$router.push({path: path});
+    },
+    addTab() {
+      let newTabName = ++this.tabIndex + "";
+      this.editableTabs.push({
+        title: "New Tab",
+        name: newTabName,
+      });
+      this.editableTabsValue = newTabName;
+      // console.log(targetName);
+    },
+    removeTab(targetName) {
+      if(targetName === "/admin/index"){
+        return;
+      }
+      let tabs = this.editableTabs;
+      let activeName = this.editableTabsValue;
+      let tab1;
+      tab1 = tabs.filter(tab => tab.name !== targetName);
+      this.$store.commit('admin/addTab', tab1);
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeName = nextTab.name;
+            }
+          }
+        });
+        this.$store.commit('admin/setTabName', activeName);
+        this.$router.push({path: activeName});
+      }
+    },
   },
   watch: {
     isCollapse(newValue) {
-      console.log(newValue);
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
@@ -186,13 +267,58 @@ export default {
         this.refold = "el-icon-s-fold";
       }
     },
-  },
-  computed: {
-    nowhttp() {
-      var url = window.location.href;
-      return url.split("#")[1];
+    $route(to) {
+      let arr = new Array();
+      for (let i of to.matched) {
+        if (i.meta.title != undefined) {
+          arr.push(i.meta.title);
+        }
+      }
+      this.alltitle = arr;
+      let flag = false;
+      let tabs = this.editableTabs;
+      let route = this.editableTabsValue;
+      for (let i of tabs) {
+        if (i.name === to.path) {
+          flag = true;
+          //设置当前tab为当前路由
+          this.$store.commit('admin/setTabName', to.path);
+          break;
+        }
+      }
+      if (!flag) {
+        let data = {
+          title: to.meta.title,
+          name: to.path,
+        };
+        tabs.push(data);
+        route = to.path;
+        //设置tab数组
+        this.$store.commit('admin/addTab', tabs);
+        this.$store.commit('admin/setTabName', route);
+      }
     },
   },
+
+  computed: {
+    //存放所有tab的数组 
+      editableTabs() {
+        let tabs;
+        let data = this.$store.state.admin.editableTabs;
+        tabs = typeof data === 'string'? JSON.parse(data):data;
+        return tabs;
+      },
+      //当前tab 初始默认为首页(/home)
+      editableTabsValue:{
+        get(){
+          return this.$store.state.admin.editableTabsValue;
+        },
+        set(){}
+      }
+  },
+  mounted(){
+    // console.log(this.$store.state.admin.editableTabs);
+  }
 };
 </script>
 <style  lang="less" scoped>
@@ -217,22 +343,23 @@ export default {
   color: #fff;
   transition: all 0.3s;
   position: fixed;
-  z-index: 3;
+  z-index: 101;
 }
 #head {
   height: 80px;
-  z-index: 0;
   background-color: white;
-  border-bottom: solid 1px #e6e6e6;
+    // border-bottom: solid 1px #e6e6e6;
   position: fixed;
   top: 0;
   width: 100%;
   color: white;
+  z-index: 100;
   transition: all 0.3s;
   .headtop {
     width: 100%;
     height: 45px;
     border-bottom: solid 1px #e6e6e6;
+    z-index: 2;
     .el-menu-demo {
       position: absolute;
       right: 0;
@@ -253,10 +380,23 @@ export default {
       float: left;
       color: white;
     }
+    .el-breadcrumb {
+      float: left;
+      margin: 15px 0 0 20px;
+      font-size: 16px;
+      width: 300px;
+    }
   }
   .headbottom {
     width: 100%;
-    height: 33px;
+    height: 60px;
+    overflow: hidden;
+    .el-tabs__nav {
+      float: left;
+    }
+    .el-button {
+      float: left;
+    }
   }
 }
 .head1 {
@@ -270,8 +410,9 @@ export default {
 #body {
   width: 100%;
   min-height: 100vh;
-  background-color: #f8f8f8;
   transition: all 0.3s;
+  position: relative;
+  z-index: 1;
   #begin-main {
     width: 100%;
     height: 600px;
