@@ -22,6 +22,6 @@ export default {
     #adminindex{
         width: 100%;
         height: 300px;
-        background-color:#3BCA55;
+        background-color: #f8f8f8;
     }
 </style>

@@ -106,6 +106,6 @@ export default {
     #adminindex{
         width: 100%;
         min-height: 500px;
-        background-color:#abdbb4;
+        background-color: #f8f8f8;
     }
 </style>

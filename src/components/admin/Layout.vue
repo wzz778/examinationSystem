@@ -2,12 +2,12 @@
   <div id="layout">
     <div id="nav" class="nav1">
       <el-menu
-        :default-active="nowhttp"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse"
-        router
+        :router="true"
       >
         <el-menu-item index="/admin/index">
           <i class="el-icon-menu"></i>
@@ -106,6 +106,14 @@
         >
           <i :class="refold"></i>
         </button>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="p of alltitle" :key="p.index">{{
+            p
+          }}</el-breadcrumb-item>
+        </el-breadcrumb>
+                <el-button size="small" @click="addTab(editableTabsValue)">
+          add tab
+        </el-button>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -121,7 +129,25 @@
           </el-submenu>
         </el-menu>
       </div>
-      <div class="headbottom"></div>
+      <div class="headbottom">
+        <el-tabs
+          v-model="editableTabsValue"
+          type="card"
+          closable
+          @tab-remove="removeTab"
+          @tab-click="tabClick"
+
+        >
+          <el-tab-pane
+            v-for="item in editableTabs"
+            :key="item.name"
+            :label="item.title"
+            :name="item.name"
+          >
+          {{item.content}}
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
     <div id="body" :class="rebody">
       <router-view></router-view>
@@ -137,6 +163,10 @@ import {
   RadioButton,
   MenuItem,
   MenuItemGroup,
+  Breadcrumb,
+  BreadcrumbItem,
+  Tabs,
+  TabPane,
 } from "element-ui";
 export default {
   name: "AdminLayout",
@@ -147,6 +177,10 @@ export default {
     [MenuItemGroup.name]: MenuItemGroup,
     [RadioGroup.name]: RadioGroup,
     [RadioButton.name]: RadioButton,
+    [Breadcrumb.name]: Breadcrumb,
+    [BreadcrumbItem.name]: BreadcrumbItem,
+    [Tabs.name]: Tabs,
+    [TabPane.name]: TabPane,
   },
   data() {
     const item = {
@@ -161,6 +195,21 @@ export default {
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
+      alltitle: ["首页"],
+      editableTabsValue: "2",
+      editableTabs: [
+        {
+          title: "首页",
+          name: "1",
+          content: "Tab 1 content",
+        },
+        {
+          title: "列表",
+          name: "2",
+          content: "Tab 2 content",
+        },
+      ],
+      tabIndex: 2,
     };
   },
   methods: {
@@ -173,10 +222,44 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    tabClick(tab){
+      console.log(tab.name);
+      // let path = tab.name;
+      // this.$store.commit('setTabName', path);
+      // this.$router.push({path: path});
+    },
+    addTab(targetName) {
+      let newTabName = ++this.tabIndex + "";
+      this.editableTabs.push({
+        title: "New Tab",
+        name: newTabName,
+        content: "New Tab content",
+      });
+      this.editableTabsValue = newTabName;
+      console.log(targetName);
+    },
+    removeTab(targetName) {
+      console.log(targetName);
+      let tabs = this.editableTabs;
+      let activeName = this.editableTabsValue;
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeName = nextTab.name;
+            }
+          }
+        });
+      }
+
+      this.editableTabsValue = activeName;
+      this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+    },
   },
   watch: {
     isCollapse(newValue) {
-      console.log(newValue);
+      // console.log(newValue);
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
@@ -186,13 +269,18 @@ export default {
         this.refold = "el-icon-s-fold";
       }
     },
-  },
-  computed: {
-    nowhttp() {
-      var url = window.location.href;
-      return url.split("#")[1];
+    $route(to) {
+      let arr = new Array();
+      for (let i of to.matched) {
+        if (i.meta.title != undefined) {
+          arr.push(i.meta.title);
+        }
+      }
+      this.alltitle = arr;
     },
   },
+
+  computed: {},
 };
 </script>
 <style  lang="less" scoped>
@@ -217,22 +305,23 @@ export default {
   color: #fff;
   transition: all 0.3s;
   position: fixed;
-  z-index: 3;
+  z-index: 101;
 }
 #head {
   height: 80px;
-  z-index: 0;
   background-color: white;
-  border-bottom: solid 1px #e6e6e6;
+    // border-bottom: solid 1px #e6e6e6;
   position: fixed;
   top: 0;
   width: 100%;
   color: white;
+  z-index: 100;
   transition: all 0.3s;
   .headtop {
     width: 100%;
     height: 45px;
     border-bottom: solid 1px #e6e6e6;
+    z-index: 2;
     .el-menu-demo {
       position: absolute;
       right: 0;
@@ -253,10 +342,23 @@ export default {
       float: left;
       color: white;
     }
+    .el-breadcrumb {
+      float: left;
+      margin: 15px 0 0 20px;
+      font-size: 16px;
+      width: 300px;
+    }
   }
   .headbottom {
     width: 100%;
-    height: 33px;
+    height: 60px;
+    overflow: hidden;
+    .el-tabs__nav {
+      float: left;
+    }
+    .el-button {
+      float: left;
+    }
   }
 }
 .head1 {
@@ -270,8 +372,9 @@ export default {
 #body {
   width: 100%;
   min-height: 100vh;
-  background-color: #f8f8f8;
   transition: all 0.3s;
+  position: relative;
+  z-index: 1;
   #begin-main {
     width: 100%;
     height: 600px;
