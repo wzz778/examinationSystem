@@ -200,7 +200,7 @@ export default {
 
 <style scoped>
 .el-col-5 {
-  margin-left: 40px;
+  margin-left: 30px;
 }
 
 .cardItem {
@@ -230,7 +230,7 @@ export default {
 .charSty {
   margin-top: 20px;
   margin-right: 20px;
-  padding: 20px;
+  padding: 15px;
   background-color: white;
 }
 </style>
