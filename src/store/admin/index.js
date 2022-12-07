@@ -15,7 +15,9 @@ const mutations = {
 // 准备state(存放数据)
 const state = {
     editableTabs:Storage.getEditableTabs()|| [{title:'首页',name:'/admin/index'}],
-    editableTabsValue:Storage.getEditableTabsValue() || '/admin/index'
+    editableTabsValue:Storage.getEditableTabsValue() || '/admin/index',
+    token:'',
+    power:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzAzMzM4ODcsInVzZXJuYW1lIjoiMTAwMjgwMDk4MiIsInBvd2VyIjoiMCIsImlkIjoyfQ.48Ta8CtQqL-xY0RxXnzCn59D5ZRLzfpS3MmOakcv6FM"
 }
 // 准备getters
 const getters = {}

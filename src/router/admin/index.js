@@ -14,61 +14,6 @@ import MessageEdit from '@/pages/admin/Message/edit'
 import JournalList from '@/pages/admin/Journal/list'
 // 写路由
 export default [
-    // {
-    //     path:'/admin',
-    //     name:'Layout',
-    //     component: Layout,
-    //     children:[ //通过children配置子级路由
-    //     {
-    //         path:'index', 
-    //         component:AdminIndex
-    //     },
-    //     {
-    //         path:'subject/list', 
-    //         component:SubjectList,
-    //     },
-    //     {
-    //         path:'subject/edit', 
-    //         component:SubjectEdit,
-    //     },
-    //     {
-    //         path:'knowledge/list', 
-    //         component:KnowledgeList,
-    //     },
-    //     {
-    //         path:'knowledge/edit', 
-    //         component:KnowledgeEdit,
-    //     },
-    //     {
-    //         path:'task/list', 
-    //         component:TaskList,
-    //     },
-    //     {
-    //         path:'task/edit', 
-    //         component:TaskEdit,
-    //     },
-    //     {
-    //         path:'video/list', 
-    //         component:VideoList,
-    //     },
-    //     {
-    //         path:'video/edit', 
-    //         component:VideoEdit,
-    //     },
-    //     {
-    //         path:'message/list', 
-    //         component:MessageList,
-    //     },
-    //     {
-    //         path:'message/edit', 
-    //         component:MessageEdit,
-    //     },
-    //     {
-    //         path:'journal/list', 
-    //         component:JournalList,
-    //     },
-    // ]
-    // },
     {
         path:'/admin',
         name:'Layout',
