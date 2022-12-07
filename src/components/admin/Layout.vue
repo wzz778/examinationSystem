@@ -132,7 +132,6 @@
           type="card"
           @tab-remove="removeTab"
           @tab-click="tabClick"
-
         >
           <el-tab-pane
             v-for="item in editableTabs"
@@ -151,12 +150,12 @@
       <router-view 
         class="animate__animated animate__fadeInLeft"         
       ></router-view>
-    </div>
+    </div>  
   </div>
 </template>
 
 <script>
-import 'animate.css'
+// import 'animate.css'
 import {
   Submenu,
   Menu,
@@ -184,15 +183,9 @@ export default {
     [TabPane.name]: TabPane,
   },
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄",
-    };
     return {
       isCollapse: false,
       activeIndex: "1",
-      tableData: Array(20).fill(item),
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
@@ -251,7 +244,6 @@ export default {
       }
     },
     $route(to) {
-      console.log(to);
       let arr = new Array();
       for (let i of to.matched) {
         if (i.meta.title != undefined) {

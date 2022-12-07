@@ -2,7 +2,14 @@
 // import axios from "axios"
 import requests from "../request.js";
 //书写接口
-export const firstajax = async () =>requests({
-    url:'api/picture/showAllType',
-    method:'get'
+export const getAllSubject = async (data) =>requests({
+    url:'admin/getAllSubject',
+    method:'get',
+    params:data,
+});
+//书写接口
+export const firstajaxs = async (data) =>requests({
+    url:'quesition/getAllQuestion',
+    method:'get',
+    data:data
 });
