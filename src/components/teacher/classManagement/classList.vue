@@ -41,7 +41,7 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "用户名:",
-          transferName: "userName",
+          transferName: "name",
         },
         seletcInfoObjOne: {
           showName: "班级",

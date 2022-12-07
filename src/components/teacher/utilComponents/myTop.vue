@@ -86,6 +86,8 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "element-ui";
+// 引入访问的接口
+import { getAllGrade } from "@/myAxios/teacher/index";
 export default {
   name: "myTop",
   /* 
@@ -205,6 +207,9 @@ export default {
     },
     getClass() {
       console.log("class");
+      getAllGrade().then((result) => {
+        console.log("获取所有班级", result);
+      });
     },
     getTopic() {
       this.options2 = this.topicArr;
