@@ -5,11 +5,7 @@ import VueRouter from 'vue-router'
 // 引入less
 import less from 'less'
 //引入element
-<<<<<<< HEAD
 import { MessageBox, Message, Icon, Button ,Table, TableColumn,Pagination,Form, FormItem,Input ,Card,Timeline,Select,DatePicker,Option,Slider} from 'element-ui'
-=======
-import { MessageBox, Message, Icon, Button, Table, TableColumn, Pagination, Form, FormItem, Input, Card, Timeline, Select, DatePicker, Option } from 'element-ui'
->>>>>>> a582bf782c9f99d15ea4933c3446f1032bf0f52f
 // 引入路由器
 import router from './router/index'
 //引入vuex配置文件
