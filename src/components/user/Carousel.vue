@@ -28,10 +28,16 @@ export default {
   }
   
   .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+    background-image: url(../../assets/carousel1.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
   }
   
   .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+    background-image: url(../../assets/carousel2.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
   }
 </style>

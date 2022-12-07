@@ -13,10 +13,10 @@
             mode="horizontal"
           >
             <el-menu-item index="1"
-              ><router-link to="#">首页</router-link></el-menu-item
+              ><router-link to="/user/IndexCenter">首页</router-link></el-menu-item
             >
             <el-menu-item index="2"
-              ><router-link to="/user/IndexPeper">试卷中心</router-link></el-menu-item
+              ><router-link to="/user/IndexPaper">试卷中心</router-link></el-menu-item
             >
             <el-menu-item index="3"
               ><router-link  to="/user/IndexVideoClass">视频课堂</router-link></el-menu-item
@@ -81,11 +81,12 @@ export default {
   padding: 0;
   margin: 0;
 }
+
 #top {
   width: 100%;
   height: 80px;
   background-color: #fff;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgb(243, 243, 243);
   overflow: hidden;
 }
 .el-menu-demo {
@@ -108,7 +109,6 @@ export default {
 }
 .el-dropdown-menu{
   width: 100px;
-  margin-top: -10px;
 }
 .el-dropdown-item{
   width: 100%;
@@ -131,7 +131,7 @@ export default {
   justify-content: center;
 }
 .side {
-  margin-top: 20px;
+  margin-top: 10px;
   line-height: 60px;
 }
 .logout{
@@ -141,6 +141,7 @@ export default {
 .footer{
   display: flex;
   margin-left: 200px;
+  padding-top: 50px;
   .logo{
     display: inline-block;
     width: 100px;
