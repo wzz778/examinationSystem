@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="rlogin">
-        <div class="from" v-show="judge=='登录'">
+        <div class="from" v-show="judge == '登录'">
           <div>
             <h4>用户登录：</h4>
             <p>考试网伴你一路前行</p>
@@ -50,43 +50,64 @@
             >登录</el-button
           >
           <div class="skip">
-            <span id="reset" @click='retJump'>忘记密码</span><span id="re" @click='reJump'>去注册</span>
+            <span id="reset" @click="retJump">忘记密码</span
+            ><span id="re" @click="reJump">去注册</span>
           </div>
         </div>
-        <Register @loJump='loJump' v-show="judge=='注册'" />
-        <Reset @loJump='loJump' v-show="judge=='重置'" />
+        <Register @loJump="loJump" v-show="judge == '注册'" />
+        <Reset @loJump="loJump" v-show="judge == '重置'" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Register from '@/components/user/TestRegister'
-import Reset from '@/components/user/TestReset'
+import jwt_decode from "jwt-decode";
+import Register from "@/components/user/TestRegister";
+import Reset from "@/components/user/TestReset";
+import { Ulogin } from "@/myAxios/user/zffAxios";
 export default {
   name: "TestLogin",
-  components: {Register,Reset},
+  components: { Register, Reset },
   data() {
     return {
       passard: "",
       count: "",
-      judge:'登录',
+      judge: "登录",
       classArr: ["yang"],
     };
   },
   methods: {
     jump() {
-      this.$router.push("/user/userCenter");
+      let data = {
+        password: this.passard,
+        username: this.count,
+      };
+      Ulogin(data).then((data) => {
+        console.log("登录", data.data);
+        console.log("解析", jwt_decode(data.data));
+        let inf = jwt_decode(data.data);
+        if (inf.power == 0) {
+          this.$router.push("/user/userCenter");
+        } else {
+          this.$router.push("/admin");
+        }
+        let res = {
+          token: data.data,
+          pow: jwt_decode(data.data),
+        };
+        this.$store.commit("LOGIN", res);
+      });
     },
-    reJump(){
-    this.judge='注册'
+    reJump() {
+      this.judge = "注册";
     },
-    retJump(){
-    this.judge='重置'
+    retJump() {
+      this.judge = "重置";
     },
-    loJump(){
-    this.judge='登录'
-    }
+    loJump() {
+      this.judge = "登录";
+    },
   },
 };
 </script>
@@ -171,12 +192,12 @@ p {
     float: right;
   }
 }
-#reset:hover{
-cursor: pointer;
-color: cornflowerblue;
+#reset:hover {
+  cursor: pointer;
+  color: cornflowerblue;
 }
-#re:hover{
-cursor: pointer;
-color: cornflowerblue;
+#re:hover {
+  cursor: pointer;
+  color: cornflowerblue;
 }
 </style>

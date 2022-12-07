@@ -14,7 +14,7 @@
       </el-input>
       <el-input
         placeholder="请输入验证码"
-        v-model="code"
+        v-model="rcode"
         style="width: 260px; margin: 10px 0px 0px 0px"
       >
         <template slot="append"
@@ -41,7 +41,10 @@
       >
       </el-input>
     </div>
-    <el-button type="primary" style="width: 260px; margin-top: 100px"
+    <el-button
+      type="primary"
+      style="width: 260px; margin-top: 100px"
+      @click="regist"
       >注册</el-button
     >
     <div class="skip" @click="$emit('loJump')">返回登录页面</div>
@@ -49,13 +52,14 @@
 </template>
 
 <script>
+import { UserSend, Uregister } from "@/myAxios/user/zffAxios";
 export default {
   name: "TestRegister",
   data() {
     return {
       repass: "",
       emil: "",
-      code: "",
+      rcode: "",
       account: "",
       n: "60",
       sendModel: {
@@ -71,8 +75,7 @@ export default {
     };
   },
   methods: {
-    // 获取短信验证码，并且实现60秒后 countDown()和getCode()
-    // 倒计时
+    // 倒计时,验证码
     countDown() {
       // 设置btn倒计时时显示的信息
       this.sendModel.btnMsg = null;
@@ -94,13 +97,32 @@ export default {
         this.sendModel.countNum--;
       }, 1000);
     },
-    sendCode() {
+    async sendCode() {
+      let data = {
+        email: this.emil,
+      };
       var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/; // eslint-disable-line no-unused-vars
       if (reg.test(this.emil)) {
         alert("验证码发送成功");
         this.countDown();
+        console.log(await UserSend(data));
       } else {
         alert("邮箱格式错误");
+      }
+    },
+    //注册
+    async regist() {
+      if (this.emil && this.rcode && this.account && this.repass) {
+        alert("无空格");
+        let rdata = {
+          code: this.rcode,
+          email: this.emil,
+          password: this.repass,
+          username: this.account,
+        };
+        console.log(await Uregister(rdata));
+      } else {
+        alert("有空格");
       }
     },
   },
