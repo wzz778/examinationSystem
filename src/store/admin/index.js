@@ -16,8 +16,7 @@ const mutations = {
 const state = {
     editableTabs:Storage.getEditableTabs()|| [{title:'首页',name:'/admin/index'}],
     editableTabsValue:Storage.getEditableTabsValue() || '/admin/index',
-    token:'',
-    power:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzAzMzM4ODcsInVzZXJuYW1lIjoiMTAwMjgwMDk4MiIsInBvd2VyIjoiMCIsImlkIjoyfQ.48Ta8CtQqL-xY0RxXnzCn59D5ZRLzfpS3MmOakcv6FM"
+    allgrade:["一年级","二年级","三年级","四年级","五年级","六年级","初一","初二","初三","高一","高二","高三"]
 }
 // 准备getters
 const getters = {}

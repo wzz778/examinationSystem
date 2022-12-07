@@ -11,8 +11,11 @@ export default {
     name:'AdminIndex',
     methods:{
       async storejia1(){
-
-        console.log(await firstajax());
+        let data={
+          beginIndex:1,
+          size:10
+        }
+        console.log(await firstajax(data));
         // await firstajax()
       }
     }

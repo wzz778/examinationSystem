@@ -5,7 +5,7 @@
         <span>个人信息</span>
       </div>
       <div class="text item">
-        <img src="http://localhost:8081/img/myHead.669d7963.jpg" />
+        <img src="../../../assets/myHead.jpg" />
         <p style="text-align:center">Student</p>
         <p>姓名:学生</p>
         <p>年级：一年级</p>
