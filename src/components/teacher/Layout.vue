@@ -2,18 +2,18 @@
   <div id="layout">
     <div id="nav" class="nav1">
       <el-menu
-        :default-active="$route.path"
+        :default-active="$router.path"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
         :collapse="isCollapse"
-        :router="true"
+        router
       >
-        <el-menu-item index="/admin/index">
+        <el-menu-item index="/teacher/graphicPresentation">
           <i class="el-icon-menu"></i>
-          <span slot="title">管理端</span>
+          <span slot="title">教师端</span>
         </el-menu-item>
-        <el-menu-item index="/admin/index">
+        <el-menu-item index="/teacher/graphicPresentation">
           <i class="el-icon-s-home"></i>
           <span slot="title">主页</span>
         </el-menu-item>
@@ -22,78 +22,60 @@
             <i class="el-icon-location"></i>
             <span slot="title">用户管理</span>
           </template>
-          <el-menu-item index="3-1">学生列表</el-menu-item>
-          <el-menu-item index="3-2">教师列表</el-menu-item>
-          <el-menu-item index="3-3">管理员列表</el-menu-item>
+          <el-menu-item index="/teacher/studentList">学生列表</el-menu-item>
+          <el-menu-item index="/teacher/adminStudentList"
+            >管理员学生列表</el-menu-item
+          >
+          <el-menu-item index="/teacher/teacherList">教师列表</el-menu-item>
+          <el-menu-item index="/teacher/adminList">管理员列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="/admin/subject">
+        <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span slot="title">学科管理</span>
+            <span slot="title">班级管理</span>
           </template>
-          <el-menu-item index="/admin/subject/list">学科列表</el-menu-item>
-          <el-menu-item index="/admin/subject/edit">学科创编</el-menu-item>
+          <el-menu-item index="/teacher/classList">班级列表</el-menu-item>
+          <el-menu-item index="/teacher/classCreat">班级创建</el-menu-item>
         </el-submenu>
-        <el-submenu index="/admin/knowledge">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">知识点管理</span>
-          </template>
-          <el-menu-item index="/admin/knowledge/list">知识点列表</el-menu-item>
-          <el-menu-item index="/admin/knowledge/edit">知识点创编</el-menu-item>
-        </el-submenu>
-        <el-submenu index="6">
+        <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">卷库管理</span>
           </template>
-          <el-menu-item index="/admin/">卷库列表</el-menu-item>
-          <el-menu-item index="4-2">卷库创编</el-menu-item>
+          <el-menu-item index="/teacher/examinationList">试卷列表</el-menu-item>
+          <el-menu-item index="/teacher/testCreat">试卷创编</el-menu-item>
         </el-submenu>
-        <el-submenu index="7">
+        <el-submenu index="6">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">题库管理</span>
           </template>
-          <el-menu-item index="/admin/">题库列表</el-menu-item>
-          <el-menu-item index="4-2">选题创编</el-menu-item>
+          <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
+          <el-menu-item index="/teacher/singleChoice">单选题创编</el-menu-item>
+          <el-menu-item index="/teacher/multiSelect">多选题创编</el-menu-item>
+          <el-menu-item index="/teacher/judgmentQuestion"
+            >判断题创编</el-menu-item
+          >
+          <el-menu-item index="/teacher/gapFilling">填空题创编</el-menu-item>
+          <el-menu-item index="/teacher/shortAnswer">简答题创编</el-menu-item>
         </el-submenu>
-        <el-submenu index="/admin/task">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">任务管理</span>
-          </template>
-          <el-menu-item index="/admin/task/list">任务列表</el-menu-item>
-          <el-menu-item index="/admin/task/edit">任务创编</el-menu-item>
-        </el-submenu>
-        <el-submenu index="/admin/video">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">视频管理</span>
-          </template>
-          <el-menu-item index="/admin/video/list">视频列表</el-menu-item>
-          <el-menu-item index="/admin/video/edit">视频创编</el-menu-item>
-        </el-submenu>
-        <el-submenu index="10">
+        <el-submenu index="7">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">答卷管理</span>
           </template>
-          <el-menu-item index="/admin/">批改列表</el-menu-item>
-          <el-menu-item index="4-2">试卷完成</el-menu-item>
+          <el-menu-item index="/teacher/correctingList">批改列表</el-menu-item>
+          <el-menu-item index="/teacher/examinationFinish"
+            >试卷完成</el-menu-item
+          >
         </el-submenu>
-        <el-submenu index="/admin/message">
+        <el-submenu index="8">
           <template slot="title">
             <i class="el-icon-location"></i>
-            <span slot="title">消息中心</span>
+            <span slot="title">成绩分析</span>
           </template>
-          <el-menu-item index="/admin/message/list">消息列表</el-menu-item>
-          <el-menu-item index="/admin/message/edit">消息发送</el-menu-item>
+          <el-menu-item index="/teacher/analysisList">试卷列表</el-menu-item>
         </el-submenu>
-        <el-menu-item index="/admin/journal/list">
-          <i class="el-icon-document"></i>
-          <span slot="title">日志中心</span>
-        </el-menu-item>
       </el-menu>
     </div>
     <div id="head" :class="rehead">
@@ -106,11 +88,6 @@
         >
           <i :class="refold"></i>
         </button>
-        <el-breadcrumb separator-class="el-icon-arrow-right" class="animate__animated">
-          <el-breadcrumb-item v-for="p of alltitle" class="animate__animated animate__fadeInRight" :key="p.index">
-            {{p}}
-          </el-breadcrumb-item>
-        </el-breadcrumb>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -119,7 +96,7 @@
           router
         >
           <el-submenu index="1">
-            <template slot="title">admin</template>
+            <template slot="title">teacher</template>
             <el-menu-item index="2-1">个人信息</el-menu-item>
             <el-menu-item index="2-2">主页</el-menu-item>
             <el-menu-item index="2-3">退出</el-menu-item>
@@ -144,18 +121,13 @@
         </el-tabs>
       </div>
     </div>
-    <div id="body" 
-      :class="rebody"
-    >
-      <router-view 
-        class="animate__animated animate__fadeInLeft"         
-      ></router-view>
-    </div>  
+    <div id="body" :class="rebody">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-// import 'animate.css'
 import {
   Submenu,
   Menu,
@@ -183,13 +155,18 @@ export default {
     [TabPane.name]: TabPane,
   },
   data() {
+    const item = {
+      date: "2016-05-02",
+      name: "王小虎",
+      address: "上海市普陀区金沙江路 1518 弄",
+    };
     return {
       isCollapse: false,
       activeIndex: "1",
+      tableData: Array(20).fill(item),
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
-      alltitle: ["首页"],
       tabIndex: 2,
     };
   },
@@ -203,21 +180,20 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    tabClick(tab){
-      // console.log(tab.name);
+    tabClick(tab) {
       let path = tab.name;
-      this.$store.commit('admin/setTabName', path);
-      this.$router.push({path: path});
+      this.$store.commit("admin/setTabName", path);
+      this.$router.push({ path: path });
     },
     removeTab(targetName) {
-      if(targetName === "/admin/index"){
+      if (targetName === "/teacher/graphicPresentation") {
         return;
       }
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
       let tab1;
-      tab1 = tabs.filter(tab => tab.name !== targetName);
-      this.$store.commit('admin/addTab', tab1);
+      tab1 = tabs.filter((tab) => tab.name !== targetName);
+      this.$store.commit("admin/addTab", tab1);
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -227,8 +203,8 @@ export default {
             }
           }
         });
-        this.$store.commit('admin/setTabName', activeName);
-        this.$router.push({path: activeName});
+        this.$store.commit("admin/setTabName", activeName);
+        this.$router.push({ path: activeName });
       }
     },
   },
@@ -258,7 +234,7 @@ export default {
         if (i.name === to.path) {
           flag = true;
           //设置当前tab为当前路由
-          this.$store.commit('admin/setTabName', to.path);
+          this.$store.commit("admin/setTabName", to.path);
           break;
         }
       }
@@ -270,34 +246,30 @@ export default {
         tabs.push(data);
         route = to.path;
         //设置tab数组
-        this.$store.commit('admin/addTab', tabs);
-        this.$store.commit('admin/setTabName', route);
+        this.$store.commit("admin/addTab", tabs);
+        this.$store.commit("admin/setTabName", route);
       }
     },
   },
-
   computed: {
-    //存放所有tab的数组 
-      editableTabs() {
-        let tabs;
-        let data = this.$store.state.admin.editableTabs;
-        tabs = typeof data === 'string'? JSON.parse(data):data;
-        return tabs;
+    // /存放所有tab的数组
+    editableTabs() {
+      let tabs;
+      let data = this.$store.state.admin.editableTabs;
+      tabs = typeof data === "string" ? JSON.parse(data) : data;
+      return tabs;
+    },
+    //当前tab 初始默认为首页(/home)
+    editableTabsValue: {
+      get() {
+        return this.$store.state.admin.editableTabsValue;
       },
-      //当前tab 初始默认为首页(/home)
-      editableTabsValue:{
-        get(){
-          return this.$store.state.admin.editableTabsValue;
-        },
-        set(){}
-      }
+      set() {},
+    },
   },
-  mounted(){
-    // console.log(this.$store.state.admin.editableTabs);
-  }
 };
 </script>
-<style  lang="less" scoped>
+<style  lang="less">
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 100vh;
@@ -319,23 +291,22 @@ export default {
   color: #fff;
   transition: all 0.3s;
   position: fixed;
-  z-index: 101;
+  z-index: 3;
 }
 #head {
   height: 80px;
+  z-index: 1;
   background-color: white;
-    // border-bottom: solid 1px #e6e6e6;
+  border-bottom: solid 1px #e6e6e6;
   position: fixed;
   top: 0;
   width: 100%;
   color: white;
-  z-index: 100;
   transition: all 0.3s;
   .headtop {
     width: 100%;
     height: 45px;
     border-bottom: solid 1px #e6e6e6;
-    z-index: 2;
     .el-menu-demo {
       position: absolute;
       right: 0;
@@ -356,23 +327,10 @@ export default {
       float: left;
       color: white;
     }
-    .el-breadcrumb {
-      float: left;
-      margin: 15px 0 0 20px;
-      font-size: 16px;
-      width: 300px;
-    }
   }
   .headbottom {
     width: 100%;
-    height: 60px;
-    overflow: hidden;
-    .el-tabs__nav {
-      float: left;
-    }
-    .el-button {
-      float: left;
-    }
+    height: 33px;
   }
 }
 .head1 {
@@ -386,9 +344,8 @@ export default {
 #body {
   width: 100%;
   min-height: 100vh;
+  background-color: #f8f8f8;
   transition: all 0.3s;
-  position: relative;
-  z-index: 1;
   #begin-main {
     width: 100%;
     height: 600px;
@@ -400,5 +357,14 @@ export default {
 }
 .body2 {
   padding: 90px 10px 10px 70px;
+}
+
+.el-tabs__item {
+  height: 34px;
+  line-height: 34px;
+}
+
+.el-tabs__new-tab {
+  display: none;
 }
 </style>

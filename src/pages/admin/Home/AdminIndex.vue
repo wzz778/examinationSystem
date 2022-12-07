@@ -1,16 +1,22 @@
 <template>
-  <div id="adminindex">
+  <div  id="adminindex" >
     <h1>这是主页内容</h1>
     <button @click="storejia1">点我加他</button>
   </div>
 </template>
 <script>
+import {firstajax} from '@/myAxios/admin/wzzAxios'
 // firstajax()
 export default {
     name:'AdminIndex',
     methods:{
-      storejia1(){
-        alert('dasdasd')
+      async storejia1(){
+        let data={
+          beginIndex:1,
+          size:10
+        }
+        console.log(await firstajax(data));
+        // await firstajax()
       }
     }
 }
@@ -19,6 +25,6 @@ export default {
     #adminindex{
         width: 100%;
         height: 300px;
-        background-color:#3BCA55;
+        background-color: #f8f8f8;
     }
 </style>

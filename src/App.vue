@@ -5,22 +5,22 @@
 </template>
 
 <script>
-import a from "./myAxios/index";
+// import a from "./myAxios/index";
 export default {
   name: "App",
   // components: {
   //   HelloWorld,
   // },
-  mounted() {
-    console.log(a);
-    a.getUserInfo()
-      .then((result) => {
-        console.log("结果", result);
-      })
-      .catch((err) => {
-        console.log("失败", err);
-      });
-  },
+  // mounted() {
+  //   console.log(a);
+  //   a.getUserInfo()
+  //     .then((result) => {
+  //       console.log("结果", result);
+  //     })
+  //     .catch((err) => {
+  //       console.log("失败", err);
+  //     });
+  // },
 };
 </script>
 
