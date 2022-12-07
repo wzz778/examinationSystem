@@ -17,6 +17,7 @@ import testCreat from "@/components/teacher/volumeManagement/testCreat"
 import adminStudentList from "@/components/teacher/teacherAdmin/adminStudentList"
 import teacherList from "@/components/teacher/teacherAdmin/teacherList"
 import adminList from "@/components/teacher/teacherAdmin/adminList"
+import graphicPresentation from "@/components/teacher/graphicPresentation"
 export default [
     {
         path: '/teacher',
@@ -24,71 +25,129 @@ export default [
         children: [
             {
                 path: 'studentList',
-                component: studentList
+                component: studentList,
+                meta: {
+                    title: "学生列表"
+                }
             },
             {
                 path: 'classList',
-                component: classList
+                component: classList,
+                meta: {
+                    title: "班级列表"
+                }
             },
             {
                 path: "classCreat",
-                component: classCreat
+                component: classCreat,
+                meta: {
+                    title: "创建班级"
+                }
             },
             {
                 path: "examinationList",
-                component: examinationList
+                component: examinationList,
+                meta: {
+                    title: "试卷列表"
+                }
             },
             {
                 path: "questionList",
-                component: questionList
+                component: questionList,
+                meta: {
+                    title: "题目列表"
+                }
             },
             {
                 path: "correctingList",
-                component: correctingList
+                component: correctingList,
+                meta: {
+                    title: "批改列表"
+                }
             },
             {
                 path: "examinationFinish",
-                component: examinationFinish
+                component: examinationFinish,
+                meta: {
+                    title: "试卷完成"
+                }
             },
             {
                 path: 'analysisList',
-                component: analysisList
+                component: analysisList,
+                meta: {
+                    title: "试卷列表"
+                }
             },
             {
                 path: "singleChoice",
-                component: singleChoice
+                component: singleChoice,
+                meta: {
+                    title: "单选题创建"
+                }
             },
             {
                 path: "multiSelect",
-                component: multiSelect
+                component: multiSelect,
+                meta: {
+                    title: "多选题创建"
+                }
             },
             {
                 path: "judgmentQuestion",
-                component: judgmentQuestion
+                component: judgmentQuestion,
+                meta: {
+                    title: "判断题创建"
+                }
             },
             {
                 path: "gapFilling",
-                component: gapFilling
+                component: gapFilling,
+                meta: {
+                    title: "填空题创建"
+                }
             },
             {
                 path: "shortAnswer",
-                component: shortAnswer
+                component: shortAnswer,
+                meta: {
+                    title: "简答题创建"
+                }
             },
             {
                 path: "testCreat",
-                component: testCreat
+                component: testCreat,
+                meta: {
+                    title: "试卷创建"
+                }
             },
             {
                 path: "adminStudentList",
-                component: adminStudentList
+                component: adminStudentList,
+                meta: {
+                    title: "用户列表"
+                }
             },
             {
                 path: "teacherList",
-                component: teacherList
+                component: teacherList,
+                meta: {
+                    title: "教师列表"
+                }
             },
             {
                 path: "adminList",
-                component: adminList
+                component: adminList,
+                meta: {
+                    title: "管理员列表"
+                }
+            },
+            {
+                path: "graphicPresentation",
+                component: graphicPresentation,
+                meta: {
+                    title: "主页"
+                }
             }
         ]
     },
