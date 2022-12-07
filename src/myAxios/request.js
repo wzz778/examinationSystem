@@ -5,6 +5,9 @@ import nprogress from "nprogress";
 
 import 'nprogress/nprogress.css'
 
+//在当前模块中引入store
+// import store from '@/store';
+
 let requests = axios.create({
   //基础路径
 //   baseURL: "/api",
@@ -14,7 +17,11 @@ let requests = axios.create({
 
 //请求拦截器----在项目中发请求（请求没有发出去）可以做一些事情
 requests.interceptors.request.use((config) => {
-  nprogress.start()
+  //需要携带token带给服务器
+  // if(store.state.ad.token){
+  //   config.headers.token = store.state.user.token;
+  // }
+  nprogress.start() 
   return config;
 });
 

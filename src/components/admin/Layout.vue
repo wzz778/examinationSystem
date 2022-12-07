@@ -197,14 +197,6 @@ export default {
       rehead: "head1",
       refold: "el-icon-s-fold",
       alltitle: ["首页"],
-      // editableTabsValue: "1",
-      // editableTabs: [
-      //   {
-      //     title: "首页",
-      //     name: "1",
-      //     content: false,
-      //   },
-      // ],
       tabIndex: 2,
     };
   },
@@ -223,15 +215,6 @@ export default {
       let path = tab.name;
       this.$store.commit('admin/setTabName', path);
       this.$router.push({path: path});
-    },
-    addTab() {
-      let newTabName = ++this.tabIndex + "";
-      this.editableTabs.push({
-        title: "New Tab",
-        name: newTabName,
-      });
-      this.editableTabsValue = newTabName;
-      // console.log(targetName);
     },
     removeTab(targetName) {
       if(targetName === "/admin/index"){
@@ -268,6 +251,7 @@ export default {
       }
     },
     $route(to) {
+      console.log(to);
       let arr = new Array();
       for (let i of to.matched) {
         if (i.meta.title != undefined) {
