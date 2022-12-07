@@ -18,6 +18,7 @@ import adminStudentList from "@/components/teacher/teacherAdmin/adminStudentList
 import teacherList from "@/components/teacher/teacherAdmin/teacherList"
 import adminList from "@/components/teacher/teacherAdmin/adminList"
 import graphicPresentation from "@/components/teacher/graphicPresentation"
+import richText from "@/components/teacher/richText"
 export default [
     {
         path: '/teacher',
@@ -149,6 +150,10 @@ export default [
                     title: "主页"
                 }
             }
-        ]
+        ],
     },
+    {
+        path: "/richText",
+        component: richText
+    }
 ]

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="test">测试</button>
     <!-- 顶部 -->
     <el-row>
       <el-col :span="5">
@@ -103,16 +104,14 @@ echarts.use([
   PieChart,
 ]);
 
+// 引入接口
+import { Text } from "@/myAxios/teacher/index.js";
 export default {
   name: "graphicPresentation",
   components: {
     [Card.name]: Card,
     [Row.name]: Row,
     [Col.name]: Col,
-  },
-  mounted() {
-    this.drawClassPeople();
-    this.drawExamination();
   },
   methods: {
     drawClassPeople() {
@@ -175,6 +174,26 @@ export default {
         ],
       });
     },
+    test() {
+      this.$myRichText({})
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  mounted() {
+    this.drawClassPeople();
+    this.drawExamination();
+    Text()
+      .then((result) => {
+        console.log("接口测试", result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
