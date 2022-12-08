@@ -8,9 +8,13 @@ const richText = Vue.extend(myRichText)
 Vue.component('myRichText', richText)
 // 创建函数(传入配置对象)
 const richFn = function (options) {
-    console.log('配置信息', options);
+    let tempObj = {}
+    if (options) {
+        tempObj = options
+    }
     // 实例化对象
     const Instance = new richText({
+        data: tempObj
     })
     // 挂载
     let vm = Instance.$mount()

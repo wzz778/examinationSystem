@@ -7,7 +7,12 @@
       :seletcInfoObjTwo="myTopConfiguration.seletcInfoObjTwo"
       :buttonInfo="myTopConfiguration.buttonInfo"
     ></myTop>
-    <myList :tableData="myListConfiguration.tableData" :allType="myListConfiguration.allType" :objFn="myListConfiguration.objFn"> </myList>
+    <myList
+      :tableData="myListConfiguration.tableData"
+      :allType="myListConfiguration.allType"
+      :objFn="myListConfiguration.objFn"
+    >
+    </myList>
     <!-- 分页 -->
     <myPaging
       :nowPage="nowPage"
@@ -20,15 +25,12 @@
 </template>
 
 <script>
-import { Table, TableColumn } from "element-ui";
 import myPaging from "./utilComponents/myPaging.vue";
 import myList from "./utilComponents/myList.vue";
 import myTop from "./utilComponents/myTop.vue";
 export default {
   name: "studentList",
   components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
     myPaging,
     myList,
     myTop,

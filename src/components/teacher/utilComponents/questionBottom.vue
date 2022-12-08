@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form-item label="解析">
-      <el-input placeholder="请输入内容" v-model="value1"></el-input>
+      <el-input placeholder="请输入内容" v-model="value1" @click.native="parsingFn"></el-input>
     </el-form-item>
     <el-form-item label="分数">
       <el-input-number
@@ -36,15 +36,7 @@
 </template>
 
 <script>
-import {
-  Col,
-  Form,
-  FormItem,
-  Rate,
-  Option,
-  InputNumber,
-  Select,
-} from "element-ui";
+import { Col, Rate, InputNumber } from "element-ui";
 export default {
   name: "questionBottom",
   //  解析先不搞,分数改变的函数，难度改变的函数，知识点改变的函数
@@ -56,12 +48,9 @@ export default {
   ],
   components: {
     [Rate.name]: Rate,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
     [Option.name]: Option,
     [InputNumber.name]: InputNumber,
-    [Select.name]: Select,
   },
   data() {
     return {
@@ -99,6 +88,13 @@ export default {
     },
     clearAll() {
       console.log("底部组件的变化");
+    },
+    parsingFn() {
+      this.$myRichText({ oriHtml: this.value1 })
+        .then((result) => {
+          this.value1 = result;
+        })
+        .catch(() => {});
     },
   },
   mounted() {

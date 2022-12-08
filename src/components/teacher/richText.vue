@@ -95,6 +95,7 @@ export default {
         },
       };
       this.editor.create();
+      this.editor.cmd.do("insertHTML", this.orlHtml);
     },
     // 初始化
     init() {
@@ -103,9 +104,12 @@ export default {
         this.promiseResult = { resolve, resject };
       });
     },
-    // 关闭
     handleClose() {
-      this.$confirm("确认关闭？")
+      this.$confirm("确认要关闭吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
         .then(() => {
           this.destruction();
         })
@@ -113,10 +117,12 @@ export default {
     },
     // 销毁
     destruction() {
-      this.promiseResult.resolve("销毁");
-      this.dialogVisible = false;
       //   console.log("是否销毁呢");
+      this.editor.destroy(true);
+      this.editor = null;
       //   销毁实例
+      this.dialogVisible = false;
+      this.promiseResult.resject(this.orlHtml);
       this.$destroy(true);
       this.$el.parentNode.removeChild(this.$el);
     },

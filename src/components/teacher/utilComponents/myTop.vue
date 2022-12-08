@@ -74,18 +74,9 @@
 </template>
 
 <script>
-import {
-  Input,
-  FormItem,
-  Form,
-  Col,
-  Row,
-  Select,
-  Option,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-} from "element-ui";
+import { Col, Row, Dropdown, DropdownMenu, DropdownItem } from "element-ui";
+// 引入访问的接口
+import { getAllGrade } from "@/myAxios/teacher/index";
 export default {
   name: "myTop",
   /* 
@@ -103,12 +94,8 @@ export default {
     "buttonInfo",
   ],
   components: {
-    [Input.name]: Input,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
     [Row.name]: Row,
-    [Select.name]: Select,
     [Option.name]: Option,
     [Dropdown.name]: Dropdown,
     [DropdownMenu.name]: DropdownMenu,
@@ -205,6 +192,9 @@ export default {
     },
     getClass() {
       console.log("class");
+      getAllGrade().then((result) => {
+        console.log("获取所有班级", result);
+      });
     },
     getTopic() {
       this.options2 = this.topicArr;

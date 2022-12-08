@@ -11,13 +11,18 @@
       >
       </el-table-column>
     </template>
-    <el-table-column v-if="statueObj" label="状态" width="100px" >
+    <el-table-column v-if="statueObj" label="状态" width="100px">
       <el-tag :type="statueObj.type">{{ statueObj.showName }}</el-tag>
     </el-table-column>
-    <el-table-column prop="date" label="操作" v-if="objFn" :width="objFn.length==4 ? 300 :200">
+    <el-table-column
+      prop="date"
+      label="操作"
+      v-if="objFn"
+      :width="objFn.length == 4 ? 300 : 200"
+    >
       <template slot-scope="scope">
         <template v-for="tempObj in objFn">
-          <el-button 
+          <el-button
             class="btnSty"
             :type="tempObj.type"
             @click="tempObj.callFn(scope.row)"
@@ -32,13 +37,11 @@
 </template>
 
 <script>
-import { Table, TableColumn,Tag } from "element-ui";
+import { Tag } from "element-ui";
 export default {
   name: "myList",
   components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
-    [Tag.name]:Tag
+    [Tag.name]: Tag,
   },
   // 接收数据，数据类型,函数对象
   props: ["tableData", "allType", "objFn", "hasSelection", "statueObj"],
@@ -49,5 +52,4 @@ export default {
 .el-button {
   padding: 10px;
 }
-
 </style>

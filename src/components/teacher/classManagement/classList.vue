@@ -29,6 +29,7 @@
 import myPaging from "../utilComponents/myPaging.vue";
 import myList from "../utilComponents/myList.vue";
 import myTop from "../utilComponents/myTop.vue";
+import { getAllGradeHas } from "@/myAxios/teacher/index";
 export default {
   name: "classList",
   components: {
@@ -41,7 +42,7 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "用户名:",
-          transferName: "userName",
+          transferName: "name",
         },
         seletcInfoObjOne: {
           showName: "班级",
@@ -139,6 +140,13 @@ export default {
     searchFn(obj) {
       console.log("查询", obj);
     },
+  },
+  mounted() {
+    getAllGradeHas({ nodePage: this.nowPage, pageSize: this.pageSize }).then(
+      (result) => {
+        console.log("获取所有班级", result);
+      }
+    );
   },
 };
 </script>

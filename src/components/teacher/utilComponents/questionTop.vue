@@ -18,8 +18,7 @@
     <el-form-item label="题干">
       <el-input
         v-model="value2"
-        @change="questionStemChangeFn(value2)"
-        clearable
+        @click.native="topicFn"
         placeholder="请选择"
       ></el-input>
     </el-form-item>
@@ -27,14 +26,12 @@
 </template>
 
 <script>
-import { Col, Select, Option } from "element-ui";
+import { Col } from "element-ui";
 export default {
   name: "questionTop",
   props: ["disciplineChangeFn", "questionStemChangeFn"],
   components: {
     [Col.name]: Col,
-    [Select.name]: Select,
-    [Option.name]: Option,
   },
   data() {
     return {
@@ -46,6 +43,13 @@ export default {
   methods: {
     clearAll() {
       console.log("顶部组件");
+    },
+    topicFn() {
+      this.$myRichText({ oriHtml: this.value2 })
+        .then((result) => {
+          this.value2 = result;
+        })
+        .catch(() => {});
     },
   },
   mounted() {

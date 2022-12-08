@@ -8,7 +8,11 @@
       <!-- 中间内容 -->
       <el-form label-width="80px">
         <el-form-item label="标答">
-          <el-input v-model="trueOptions" placeholder="请输入"></el-input>
+          <el-input
+            v-model="trueOptions"
+            placeholder="请输入"
+            @click.native="standardFn"
+          ></el-input>
         </el-form-item>
       </el-form>
       <!-- 选择框 -->
@@ -68,8 +72,16 @@ export default {
     disciplineChangeFn(val) {
       this.discipline = val;
     },
+    standardFn() {
+      this.$myRichText({ oriHtml: this.trueOptions })
+        .then((result) => {
+          this.trueOptions = result;
+        })
+        .catch(() => {});
+    },
     // 题干
     questionStemChangeFn(val) {
+      console.log("题干", val);
       this.questionStem = val;
     },
     clearAllFn() {
