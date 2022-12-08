@@ -298,12 +298,34 @@ export default {
 };
 </script>
 <style  lang="less" scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 100vh;
-  position: fixed;
-  z-index: 10;
-}
+  #nav {
+    height: 100vh;
+    background-color: white;
+    color: #fff;
+    transition: all 0.3s;
+    position: fixed;
+    z-index: 101;
+    // overflow:scroll;
+    overflow: hidden;
+    .el-menu-vertical-demo{
+      max-height: 100vh;
+      overflow-y: scroll;
+      width: 200px;
+        &::-webkit-scrollbar {
+            width: 4px;    
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.01);
+        }
+        &::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            border-radius: 0;
+            background: rgba(0,0,0,0.01);
+        }
+    }
+  }
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -312,14 +334,6 @@ export default {
 
 .el-aside {
   color: #333;
-}
-#nav {
-  min-height: 100vh;
-  background-color: white;
-  color: #fff;
-  transition: all 0.3s;
-  position: fixed;
-  z-index: 101;
 }
 #head {
   height: 80px;

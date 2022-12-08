@@ -8,6 +8,7 @@ Vue.use(Vuex)
 import user from './user'
 import admin from './admin'
 // import message from './message'
+import teacher from './teacher'
 
 // 准备actions(操作数据之前的操作)
 const actions = {}
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     modules: {
         user,
         admin,
+        teacher
         // message
     }
 })  
