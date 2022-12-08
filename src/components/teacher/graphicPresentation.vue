@@ -88,7 +88,7 @@ import {
 import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
-import { Card, Row, Col } from "element-ui";
+import { Row, Col } from "element-ui";
 
 // 注册必须的组件
 echarts.use([
@@ -109,7 +109,6 @@ import { Text } from "@/myAxios/teacher/index.js";
 export default {
   name: "graphicPresentation",
   components: {
-    [Card.name]: Card,
     [Row.name]: Row,
     [Col.name]: Col,
   },

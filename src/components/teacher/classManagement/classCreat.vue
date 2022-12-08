@@ -15,14 +15,11 @@
 </template>
 
 <script>
-import { Col, Form, FormItem, Input } from "element-ui";
+import { Col } from "element-ui";
 import { addGrade } from "@/myAxios/teacher/index";
 export default {
   name: "classCreat",
   components: {
-    [Input.name]: Input,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
   },
   data() {

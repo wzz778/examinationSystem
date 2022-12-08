@@ -27,14 +27,12 @@
 </template>
 
 <script>
-import { Col, Select, Option } from "element-ui";
+import { Col } from "element-ui";
 export default {
   name: "questionTop",
   props: ["disciplineChangeFn", "questionStemChangeFn"],
   components: {
     [Col.name]: Col,
-    [Select.name]: Select,
-    [Option.name]: Option,
   },
   data() {
     return {

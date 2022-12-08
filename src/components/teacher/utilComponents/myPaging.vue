@@ -14,12 +14,8 @@
 </template>
 
 <script>
-import { Pagination } from "element-ui";
 export default {
   name: "myPaging",
-  components: {
-    [Pagination.name]: Pagination,
-  },
   //   定义接收参数：当前页数,总条数，每页条数，页数改变的函数，条数改变的函数
   props: ["nowPage", "allNums", "pageSize", "pageChangeFn", "sizeChangeFn"],
   methods: {

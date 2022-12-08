@@ -128,27 +128,16 @@
 </template>
 
 <script>
-import {
-  Select,
-  Option,
-  InputNumber,
-  Col,
-  Dialog,
-  Card,
-  Row,
-} from "element-ui";
+import { InputNumber, Col, Dialog, Row } from "element-ui";
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
 export default {
   name: "testCreat",
   components: {
-    [Select.name]: Select,
-    [Option.name]: Option,
     [InputNumber.name]: InputNumber,
     [Col.name]: Col,
     [Dialog.name]: Dialog,
-    [Card.name]: Card,
     [Row.name]: Row,
     myList,
     myTop,

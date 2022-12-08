@@ -36,15 +36,7 @@
 </template>
 
 <script>
-import {
-  Col,
-  Form,
-  FormItem,
-  Rate,
-  Option,
-  InputNumber,
-  Select,
-} from "element-ui";
+import { Col, Rate, InputNumber } from "element-ui";
 export default {
   name: "questionBottom",
   //  解析先不搞,分数改变的函数，难度改变的函数，知识点改变的函数
@@ -56,12 +48,9 @@ export default {
   ],
   components: {
     [Rate.name]: Rate,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
     [Option.name]: Option,
     [InputNumber.name]: InputNumber,
-    [Select.name]: Select,
   },
   data() {
     return {
