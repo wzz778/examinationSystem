@@ -84,19 +84,25 @@ export default {
         username: this.count,
       };
       Ulogin(data).then((data) => {
+      if(data.data){
         console.log("登录", data.data);
         console.log("解析", jwt_decode(data.data));
         let inf = jwt_decode(data.data);
         if (inf.power == 0) {
           this.$router.push("/user/userCenter");
-        } else {
-          this.$router.push("/admin");
+        } else if(inf.power == 1) {
+          this.$router.push("/teacher");
+        }else{
+        this.$router.push("/admin");
         }
         let res = {
           token: data.data,
           pow: jwt_decode(data.data),
         };
         this.$store.commit("LOGIN", res);
+      }else{
+      this.$message.error('密码或账户错误');
+      }
       });
     },
     reJump() {
