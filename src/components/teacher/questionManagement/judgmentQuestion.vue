@@ -12,6 +12,7 @@
             <el-form-item :label="item.options" :key="index" label-width="50px">
               <el-input
                 v-model="item.value"
+                @click.native="judgeFn(index)"
                 clearable
                 placeholder="请选择"
                 class="optionsSty"
@@ -91,6 +92,13 @@ export default {
     },
     knowledgeChangeFn(val) {
       this.knowledge = val;
+    },
+    judgeFn(index) {
+      this.$myRichText({ oriHtml: this.showOptions[index].value })
+        .then((result) => {
+          this.showOptions[index].value = result;
+        })
+        .catch(() => {});
     },
     // 学科
     disciplineChangeFn(val) {
