@@ -146,7 +146,25 @@ export default {
       this.questionStem = val;
     },
     clearAllFn() {
-      this.$bus.$emit("clearAll");
+      (this.showOptions = [
+        {
+          options: "A",
+          value: "",
+        },
+        {
+          options: "B",
+          value: "",
+        },
+        {
+          options: "C",
+          value: "",
+        },
+        {
+          options: "D",
+          value: "",
+        },
+      ]),
+        this.$bus.$emit("clearAll");
     },
     addOptionsFn() {
       // 添加选项

@@ -85,6 +85,7 @@ export default {
       this.questionStem = val;
     },
     clearAllFn() {
+      this.trueOptions = "";
       this.$bus.$emit("clearAll");
     },
     addOptionsFn() {

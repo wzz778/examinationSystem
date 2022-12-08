@@ -109,6 +109,16 @@ export default {
       this.questionStem = val;
     },
     clearAllFn() {
+      this.showOptions = [
+        {
+          options: "A",
+          value: "对",
+        },
+        {
+          options: "B",
+          value: "错",
+        },
+      ];
       this.$bus.$emit("clearAll");
     },
     addOptionsFn() {

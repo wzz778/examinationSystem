@@ -43,6 +43,9 @@ export default {
   methods: {
     clearAll() {
       console.log("顶部组件");
+      this.value1 = "";
+      this.value2 = "";
+      this.options = [];
     },
     topicFn() {
       this.$myRichText({ oriHtml: this.value2 })

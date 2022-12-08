@@ -1,7 +1,11 @@
 <template>
   <div>
     <el-form-item label="解析">
-      <el-input placeholder="请输入内容" v-model="value1" @click.native="parsingFn"></el-input>
+      <el-input
+        placeholder="请输入内容"
+        v-model="value1"
+        @click.native="parsingFn"
+      ></el-input>
     </el-form-item>
     <el-form-item label="分数">
       <el-input-number
@@ -88,6 +92,10 @@ export default {
     },
     clearAll() {
       console.log("底部组件的变化");
+      this.value1 = "";
+      this.value2 = 0;
+      this.value3 = [];
+      this.num = 1;
     },
     parsingFn() {
       this.$myRichText({ oriHtml: this.value1 })
