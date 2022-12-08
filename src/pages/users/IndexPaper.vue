@@ -1,10 +1,25 @@
 <template>
   <div class="content">
     <div class="chooseType">
+      <div class="choosePaperType">
+        <div style="margin-top: 20px">
+          试卷类型：
+          <el-radio-group v-model="radio1" size="small">
+            <el-radio
+              :label="index"
+              border
+              v-for="(paperType, index) in paperTypes"
+              :key="index"
+              :value="pagerType"
+              >{{ paperType }}</el-radio
+            >
+          </el-radio-group>
+        </div>
+      </div>
       <div class="chooseCourse">
         <div style="margin-top: 20px">
           科目：
-          <el-radio-group v-model="radio" size="small">
+          <el-radio-group v-model="radio2" size="mini">
             <el-radio
               v-for="(courseType, index) in courseTypes"
               :key="index"
@@ -19,23 +34,23 @@
     </div>
     <div class="paperItems">
       <el-card
-        v-for="(arr, index) in 5"
-        :key="index"
         :body-style="{ padding: '0px' }"
         shadow="hover"
-        class="videoClassBox"
+        class="paperBox"
+        v-for="(arr, index) in 5"
+        :key="index"
       >
-        <span class="image"></span>
         <div style="padding: 14px">
-          <div class="videoClassInfo">
+          <div class="paperInfo">
+            <span class="paperTitle">试卷一</span>
             <span>学科：语文</span>
-            <span>视频时长：1分钟</span>
-            <span>答题时长：120分钟</span>
             <span>题数：3</span>
             <span>总分：100</span>
+            <span>时长：120分钟</span>
+            <span>开始时间：2022-12-5 00:00:00</span>
+            <span>截止时间：2022-12-6 00:00:00</span>
           </div>
           <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
             <el-button type="text" class="button">去答题</el-button>
           </div>
         </div>
@@ -57,52 +72,64 @@
 </template>
 
 <script>
-import {
-  Card,
-  Collapse,
-  CollapseItem,
-  Row,
-  Col,
-  Button,
-  Radio,
-  RadioGroup,
-  Pagination,
-} from "element-ui";
+import { RadioGroup, Radio, Card, Button,Pagination } from "element-ui";
 export default {
-  name: "IndexVideoClass",
-  components: {
-    [Collapse.name]: Collapse,
-    [CollapseItem.name]: CollapseItem,
-    [Card.name]: Card,
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Button.name]: Button,
-    [Radio.name]: Radio,
-    [RadioGroup.name]: RadioGroup,
-    [Pagination.name]: Pagination,
-  },
+  name: "IndexPaper",
   data() {
     return {
-      arr: [1, 2, 3, 4, 5],
-      radio: 0,
+      radio1: 0,
+      radio2: "",
+      paperTypes: ["固定试卷", "时段试卷", "班级试卷"],
       courseTypes: ["语文", "数学", "英语"],
+      
     };
   },
-  methods: {
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
+  components: {
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio,
+    [Card.name]: Card,
+    [Button.name]: Button,
+    [Pagination.name]:Pagination
   },
+  methods:{
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      }
+  }
 };
 </script>
 
 <style lang="less" scoped>
 .content {
+  display: inline-block;
   width: 90%;
   margin-left: 5%;
+}
+.chooseType {
+  border-bottom: 1px solid rgb(191, 190, 190);
+  padding-bottom: 20px;
+}
+.time {
+  font-size: 13px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.image {
+  width: 100%;
+  display: block;
 }
 
 .clearfix:before,
@@ -117,6 +144,7 @@ export default {
 .taskCard {
   display: flex;
   justify-content: center;
+  margin: 30px 0;
 }
 .box-card {
   width: 90%;
@@ -142,44 +170,14 @@ export default {
     color: #666;
   }
 }
-.time {
-  font-size: 13px;
-  color: #999;
-}
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-.button {
-  padding: 0;
-  float: right;
-}
-.image {
-  width: 90%;
-  margin-left: 5%;
-  margin-top: 10px;
-  height: 160px;
-  display: block;
-  background-image: url("https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-.videoClassBox {
-  width: 320px;
-  margin-top: 20px;
-}
 .paperItems {
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
   gap: 15px;
 }
-
-.videoClassInfo {
-  display: flex;
-  flex-direction: column;
-  font-size: 15px;
-  color: #999;
+.paperBox {
+  width: 320px;
+  margin-top: 20px;
 }
 
 //分页

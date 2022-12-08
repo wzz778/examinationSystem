@@ -1,11 +1,14 @@
 // 引入模板文件
-import Top from '@/components/user/Top';
-import Carousel from '@/components/user/Carousel'
+import Top from '@/components/user/Top'
+import IndexCenter from '@/pages/users/IndexCenter'
 import IndexVideoClass from '@/pages/users/IndexVideoClass'
-import IndexPeper from '@/pages/users/IndexPeper'
+import IndexPaper from '@/pages/users/IndexPaper'
 import IndexRecord from '@/pages/users/IndexRecord'
 import IndexTraining from '@/pages/users/IndexTraining'
 import IndexErrorBook from '@/pages/users/IndexErrorBook'
+import DoPaper from '@/pages/users/DoPaper'
+import ReadPaper from '@/pages/users/ReadPaper'
+import CorrectPaper from '@/pages/users/CorrectPaper'
 // 写路由
 export default [
     {
@@ -14,16 +17,16 @@ export default [
         component:Top,
         children:[
             {
-                path:'Carousel',
-                component:Carousel
+                path:'IndexCenter',
+                component:IndexCenter
             },
             {
                 path:'IndexVideoClass',
                 component:IndexVideoClass
             },
             {
-                path:'IndexPeper',
-                component:IndexPeper
+                path:'IndexPaper',
+                component:IndexPaper
             },
             {
                 path:'IndexRecord',
@@ -39,5 +42,20 @@ export default [
             }
         ]
     },
+    {
+        path:'/doPaper',
+        name:'doPaper',
+        component:DoPaper
+    },
+    {
+        path:'/readPaper',
+        name:'readPaper',
+        component:ReadPaper
+    },
+    {
+        path:'/correctPaper',
+        name:'correctPaper',
+        component:CorrectPaper
+    }
 
 ]
