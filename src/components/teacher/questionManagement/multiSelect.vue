@@ -11,6 +11,7 @@
           <template v-for="(item, index) in showOptions">
             <el-form-item :label="item.options" :key="index" label-width="50px">
               <el-input
+                @click.native="optionsFn(index)"
                 v-model="item.value"
                 clearable
                 placeholder="请选择"
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import { Col, Radio,CheckboxGroup,Checkbox } from "element-ui";
+import { Col, Radio, CheckboxGroup, Checkbox } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
 export default {
@@ -66,8 +67,8 @@ export default {
     questionTop,
     [Col.name]: Col,
     [Radio.name]: Radio,
-    [CheckboxGroup.name]:CheckboxGroup,
-    [Checkbox.name]:Checkbox
+    [CheckboxGroup.name]: CheckboxGroup,
+    [Checkbox.name]: Checkbox,
   },
   data() {
     return {
@@ -148,6 +149,13 @@ export default {
     },
     clearAllFn() {
       this.$bus.$emit("clearAll");
+    },
+    optionsFn(index) {
+      this.$myRichText({ oriHtml: this.showOptions[index].value })
+        .then((result) => {
+          this.showOptions[index].value = result;
+        })
+        .catch(() => {});
     },
     addOptionsFn() {
       // 添加选项
