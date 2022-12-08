@@ -4,19 +4,20 @@
     <el-select v-model="region" placeholder="请选择活动区域">
       <el-option  v-for="p of $store.state.admin.allgrade" :key="p.index" :label="p" :value="p"></el-option>
     </el-select>
-    <el-button @click="find">查询</el-button>
+    <el-button @click="find" type="primary" style="margin:0px 10px;">查询</el-button>
     <el-table
         :data="tableData"
         border
-        style="width: 100%">
+        style="width: 100%;margin:10px 0;">
         <el-table-column
         fixed
         prop="id"
         label="ID"
+        empty-text
        >    
         </el-table-column>
         <el-table-column
-        prop="subject"
+        prop="subjectName"
         label="学科"
         >
         </el-table-column>
@@ -58,12 +59,12 @@ export default {
     data() {
         const item = {
           id: '1',
-          subject: '语文',
+          subjectName: '语文',
           levelName: '年级',
         };
       return {
         currentPage: 1,
-        tableData:Array(5).fill(item),
+        tableData:Array(0).fill(item),
         region:"",
         pagesize:5,
         alltotal:100
@@ -75,22 +76,37 @@ export default {
       },
       handleSizeChange(val) {
         this.pagesize=val;
-        console.log(`每页 ${val} 条`);
+        this.chagepage()
       },
       handleCurrentChange(val) {
         this.currentPage=val;
-        console.log(`当前页: ${val}`);
+        this.chagepage()
       },
       find() {
         console.log(this.region);
       },
+      async chagepage() {
+        let data= await getAllSubject({beginIndex:this.currentPage,size:this.pagesize})
+        if(data.status==200){
+          this.alltotal=data.data.total;
+          this.tableData=data.data.records;
+        }
+      },
     },
     async mounted(){
-      console.log(await getAllSubject({beginIndex:this.currentPage,size:this.pagesize}));
+      this.chagepage()
     },
     computed:{
         // tableDatas() {
-        //   console.log(getAllSubject({beginIndex:this.currentPage,size:this.pagesize}));
+        //   let that=this;
+        //   let axios;
+        //   (async function(){
+        //     axios= await getAllSubject({beginIndex:that.currentPage,size:that.pagesize})
+        //     if (axios.status==200) {
+        //       return 111;
+        //     }
+        //   })()
+        //     console.log(axios);
         //   // await getAllSubject({beginIndex:this.currentPage,size:this.pagesize})
         //     // .then(data=>{
         //     //   console.log(data);
@@ -98,7 +114,7 @@ export default {
         //     // })
         //     // .catch(err=>{
         //     //   })
-        //     return this.tableData;
+        //     return axios;
         // },
   },
 }

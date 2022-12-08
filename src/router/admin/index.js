@@ -26,7 +26,7 @@ export default [
                 path:'index', 
                 component:AdminIndex,
                 meta:{
-                    title:"首页"
+                    title:"主页"
                 }
             },
         ]

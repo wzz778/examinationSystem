@@ -182,7 +182,7 @@ export default {
     },
     tabClick(tab) {
       let path = tab.name;
-      this.$store.commit("admin/setTabName", path);
+      this.$store.commit("teacher/setTabName", path);
       this.$router.push({ path: path });
     },
     removeTab(targetName) {
@@ -193,7 +193,7 @@ export default {
       let activeName = this.editableTabsValue;
       let tab1;
       tab1 = tabs.filter((tab) => tab.name !== targetName);
-      this.$store.commit("admin/addTab", tab1);
+      this.$store.commit("teacher/addTab", tab1);
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -203,7 +203,7 @@ export default {
             }
           }
         });
-        this.$store.commit("admin/setTabName", activeName);
+        this.$store.commit("teacher/setTabName", activeName);
         this.$router.push({ path: activeName });
       }
     },
@@ -234,7 +234,7 @@ export default {
         if (i.name === to.path) {
           flag = true;
           //设置当前tab为当前路由
-          this.$store.commit("admin/setTabName", to.path);
+          this.$store.commit("teacher/setTabName", to.path);
           break;
         }
       }
@@ -246,8 +246,8 @@ export default {
         tabs.push(data);
         route = to.path;
         //设置tab数组
-        this.$store.commit("admin/addTab", tabs);
-        this.$store.commit("admin/setTabName", route);
+        this.$store.commit("teacher/addTab", tabs);
+        this.$store.commit("teacher/setTabName", route);
       }
     },
   },
@@ -255,14 +255,14 @@ export default {
     // /存放所有tab的数组
     editableTabs() {
       let tabs;
-      let data = this.$store.state.admin.editableTabs;
+      let data = this.$store.state.teacher.editableTabs;
       tabs = typeof data === "string" ? JSON.parse(data) : data;
       return tabs;
     },
     //当前tab 初始默认为首页(/home)
     editableTabsValue: {
       get() {
-        return this.$store.state.admin.editableTabsValue;
+        return this.$store.state.teacher.editableTabsValue;
       },
       set() {},
     },
@@ -270,12 +270,34 @@ export default {
 };
 </script>
 <style  lang="less">
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 100vh;
-  position: fixed;
-  z-index: 10;
-}
+  #nav {
+    height: 100vh;
+    background-color: white;
+    color: #fff;
+    transition: all 0.3s;
+    position: fixed;
+    z-index: 101;
+    // overflow:scroll;
+    overflow: hidden;
+    .el-menu-vertical-demo{
+      max-height: 100vh;
+      overflow-y: scroll;
+      width: 200px;
+        &::-webkit-scrollbar {
+            width: 4px;    
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.01);
+        }
+        &::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            border-radius: 0;
+            background: rgba(0,0,0,0.01);
+        }
+    }
+  }
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -284,14 +306,6 @@ export default {
 
 .el-aside {
   color: #333;
-}
-#nav {
-  min-height: 100vh;
-  background-color: white;
-  color: #fff;
-  transition: all 0.3s;
-  position: fixed;
-  z-index: 3;
 }
 #head {
   height: 80px;
