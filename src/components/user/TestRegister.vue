@@ -97,32 +97,53 @@ export default {
         this.sendModel.countNum--;
       }, 1000);
     },
-    async sendCode() {
+    sendCode() {
       let data = {
         email: this.emil,
       };
       var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/; // eslint-disable-line no-unused-vars
       if (reg.test(this.emil)) {
-        alert("验证码发送成功");
-        this.countDown();
-        console.log(await UserSend(data));
+        UserSend(data).then((result) => {
+          console.log("验证码", result);
+          if (result.msg == "OK") {
+            this.$message({
+              message: "验证码发送成功",
+              type: "success",
+            });
+            this.countDown();
+          }else{
+          this.$message.error(result.msg);
+          }
+        });
       } else {
-        alert("邮箱格式错误");
+        this.$message.error("邮箱格式错误");
       }
     },
     //注册
-    async regist() {
+    regist() {
       if (this.emil && this.rcode && this.account && this.repass) {
-        alert("无空格");
         let rdata = {
           code: this.rcode,
           email: this.emil,
           password: this.repass,
           username: this.account,
         };
-        console.log(await Uregister(rdata));
+        Uregister(rdata).then((result) => {
+          console.log("注册", result);
+          if(result.msg=="OK"){
+          this.$message({
+              message: "注册成功",
+              type: "success",
+            });
+          }else{
+          this.$message.error(result.msg);
+          }
+        });
       } else {
-        alert("有空格");
+        this.$message({
+          message: "请将信息填写完整",
+          type: "warning",
+        });
       }
     },
   },
