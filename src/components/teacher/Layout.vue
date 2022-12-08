@@ -4,8 +4,6 @@
       <el-menu
         :default-active="$router.path"
         class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
         :collapse="isCollapse"
         router
       >
@@ -19,7 +17,7 @@
         </el-menu-item>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-custom"></i>
             <span slot="title">用户管理</span>
           </template>
           <el-menu-item index="/teacher/studentList">学生列表</el-menu-item>
@@ -31,7 +29,7 @@
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-grid"></i>
             <span slot="title">班级管理</span>
           </template>
           <el-menu-item index="/teacher/classList">班级列表</el-menu-item>
@@ -39,7 +37,7 @@
         </el-submenu>
         <el-submenu index="5">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-order"></i>
             <span slot="title">卷库管理</span>
           </template>
           <el-menu-item index="/teacher/examinationList">试卷列表</el-menu-item>
@@ -47,7 +45,7 @@
         </el-submenu>
         <el-submenu index="6">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-c-scale-to-original"></i>
             <span slot="title">题库管理</span>
           </template>
           <el-menu-item index="/teacher/questionList">题目列表</el-menu-item>
@@ -61,7 +59,7 @@
         </el-submenu>
         <el-submenu index="7">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-chat-line-square"></i>
             <span slot="title">答卷管理</span>
           </template>
           <el-menu-item index="/teacher/correctingList">批改列表</el-menu-item>
@@ -71,7 +69,7 @@
         </el-submenu>
         <el-submenu index="8">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-data"></i>
             <span slot="title">成绩分析</span>
           </template>
           <el-menu-item index="/teacher/analysisList">试卷列表</el-menu-item>
@@ -92,13 +90,12 @@
           :default-active="activeIndex"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
           router
         >
           <el-submenu index="1">
             <template slot="title">teacher</template>
             <el-menu-item index="2-1">个人信息</el-menu-item>
-            <el-menu-item index="2-2">主页</el-menu-item>
+            <el-menu-item index="/teacher/graphicPresentation">主页</el-menu-item>
             <el-menu-item index="2-3">退出</el-menu-item>
           </el-submenu>
         </el-menu>
@@ -155,15 +152,9 @@ export default {
     [TabPane.name]: TabPane,
   },
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄",
-    };
     return {
       isCollapse: false,
       activeIndex: "1",
-      tableData: Array(20).fill(item),
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
@@ -171,15 +162,6 @@ export default {
     };
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    },
     tabClick(tab) {
       let path = tab.name;
       this.$store.commit("admin/setTabName", path);

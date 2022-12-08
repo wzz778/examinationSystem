@@ -16,6 +16,7 @@
 
 <script>
 import { Col, Form, FormItem, Input } from "element-ui";
+import { addGrade } from "@/myAxios/teacher/index";
 export default {
   name: "classCreat",
   components: {
@@ -35,12 +36,17 @@ export default {
     },
     submitFn() {
       // 判断是否是空值
-      if (!this.value||this.value.replace(/(^\s*)|(\s*$)/g, "") == "") {
+      if (!this.value || this.value.replace(/(^\s*)|(\s*$)/g, "") == "") {
         this.$message.error("班级名称不能为空");
-        this.value=""
+        this.value = "";
         return;
       }
       //   忽略标签
+      addGrade({
+        grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+      }).then((result) => {
+        console.log("创建班级", result);
+      });
     },
   },
 };
