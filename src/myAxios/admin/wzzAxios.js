@@ -8,8 +8,8 @@ export const getAllSubject = async (data) =>requests({
     params:data,
 });
 //书写接口
-export const firstajaxs = async (data) =>requests({
-    url:'quesition/getAllQuestion',
+export const firstajax = async (data) =>requests({
+    url:'admin/getAllSubject',
     method:'get',
-    data:data
+    params:data
 });
