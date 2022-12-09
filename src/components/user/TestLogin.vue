@@ -30,7 +30,7 @@
           </div>
           <div class="shu">
             <el-input
-              placeholder="请输入邮箱"
+              placeholder="请输入账户"
               v-model="count"
               clearable
               style="width: 260px; margin: 30px 0px 18px 0px"
@@ -89,7 +89,7 @@ export default {
         console.log("解析", jwt_decode(data.data));
         let inf = jwt_decode(data.data);
         if (inf.power == 0) {
-          this.$router.push("/user/userCenter");
+          this.$router.push("user/IndexCenter");
         } else if(inf.power == 1) {
           this.$router.push("/teacher");
         }else{
