@@ -15,6 +15,7 @@
                 clearable
                 placeholder="请选择"
                 class="optionsSty"
+                @click.native="optionsFn(index)"
               ></el-input>
               <el-button
                 class="delSty"
@@ -49,15 +50,40 @@
           <el-button type="primary">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
           <el-button type="success" @click="addOptionsFn">添加选项</el-button>
-          <el-button type="success">预览</el-button>
+          <el-button type="success" @click="dialogVisible = true"
+            >预览</el-button
+          >
         </el-col>
       </el-form-item>
     </el-form>
+    <!-- 预览 -->
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="60%">
+      <el-form label-width="80px">
+        <el-form-item label="题干:">
+          <!-- 题目 -->
+          <div v-html="questionStem"></div>
+        </el-form-item>
+        <el-form-item label="选项:">
+          <!-- 选项 -->
+          <template v-for="(item, index) in showOptions">
+            <el-form-item :key="index" :label="item.options">
+              <div  v-html="item.value"></div>
+            </el-form-item>
+          </template>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { Col, Radio } from "element-ui";
+import { Col, Radio, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
 export default {
@@ -67,6 +93,7 @@ export default {
     questionTop,
     [Col.name]: Col,
     [Radio.name]: Radio,
+    [Dialog.name]: Dialog,
   },
   data() {
     return {
@@ -125,6 +152,7 @@ export default {
           value: "",
         },
       ],
+      dialogVisible: false,
     };
   },
   methods: {
@@ -174,6 +202,13 @@ export default {
     delFn() {
       this.showOptions.pop();
     },
+    optionsFn(index){
+      this.$myRichText({ oriHtml: this.showOptions[index].value })
+        .then((result) => {
+          this.showOptions[index].value = result;
+        })
+        .catch(() => {});
+    }
   },
 };
 </script>

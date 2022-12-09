@@ -51,6 +51,7 @@ export default {
       this.$myRichText({ oriHtml: this.value2 })
         .then((result) => {
           this.value2 = result;
+          this.questionStemChangeFn(result)
         })
         .catch(() => {});
     },
