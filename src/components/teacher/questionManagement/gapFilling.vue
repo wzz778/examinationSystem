@@ -21,12 +21,15 @@
         :difficultyChangeFn="difficultyChangeFn"
         :knowledgeChangeFn="knowledgeChangeFn"
         :knowledge="knowledge"
+        :parsingChangeFn="parsingChangeFn"
       ></questionBottom>
       <el-form-item>
         <el-col>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submitFn">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
-          <el-button type="success" @click="dialogVisible=true">预览</el-button>
+          <el-button type="success" @click="dialogVisible = true"
+            >预览</el-button
+          >
         </el-col>
       </el-form-item>
     </el-form>
@@ -38,9 +41,9 @@
         </el-form-item>
         <el-form-item label="答案:">
           <!-- 选项 -->
-            <el-form-item>
-              <div v-html="trueOptions"></div>
-            </el-form-item>
+          <el-form-item>
+            <div v-html="trueOptions"></div>
+          </el-form-item>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -57,6 +60,7 @@
 import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
+import { addQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -76,7 +80,8 @@ export default {
       discipline: "",
       questionStem: "",
       trueOptions: "",
-      dialogVisible:false
+      parsing: "",
+      dialogVisible: false,
     };
   },
   methods: {
@@ -92,6 +97,10 @@ export default {
     // 学科
     disciplineChangeFn(val) {
       this.discipline = val;
+    },
+    // 解析改变
+    parsingChangeFn(val) {
+      this.parsing = val;
     },
     standardFn() {
       this.$myRichText({ oriHtml: this.trueOptions })
@@ -109,13 +118,34 @@ export default {
       this.trueOptions = "";
       this.$bus.$emit("clearAll");
     },
-    addOptionsFn() {
-      // 添加选项
-      this.showOptions.push(this.allOptions[this.showOptions.length]);
-    },
-    // 删除选项
-    delFn() {
-      this.showOptions.pop();
+    submitFn() {
+      // 判断是否是空值
+      let obj = {
+        SId: this.discipline,
+        questionContent: JSON.stringify({
+          type: 4,
+          topicInfo: this.questionStem,
+        }),
+        answer: this.trueOptions,
+        correct: this.parsing,
+        score: this.score,
+        difficult: this.difficulty,
+        type: 4,
+      };
+      console.log(obj);
+      addQuestion(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "上传成功!",
+            });
+            this.clearAllFn();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

@@ -44,10 +44,11 @@
         :difficultyChangeFn="difficultyChangeFn"
         :knowledgeChangeFn="knowledgeChangeFn"
         :knowledge="knowledge"
+        :parsingChangeFn="parsingChangeFn"
       ></questionBottom>
       <el-form-item>
         <el-col>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submitFn">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
           <el-button type="success" @click="addOptionsFn">添加选项</el-button>
           <el-button type="success" @click="dialogVisible = true"
@@ -67,7 +68,7 @@
           <!-- 选项 -->
           <template v-for="(item, index) in showOptions">
             <el-form-item :key="index" :label="item.options">
-              <div  v-html="item.value"></div>
+              <div v-html="item.value"></div>
             </el-form-item>
           </template>
         </el-form-item>
@@ -86,6 +87,7 @@
 import { Col, Radio, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
+import { addQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -103,6 +105,7 @@ export default {
       discipline: "",
       questionStem: "",
       trueOptions: "",
+      parsing: "",
       //   选项
       allOptions: [
         {
@@ -202,13 +205,52 @@ export default {
     delFn() {
       this.showOptions.pop();
     },
-    optionsFn(index){
+    // 选项内容
+    optionsFn(index) {
       this.$myRichText({ oriHtml: this.showOptions[index].value })
         .then((result) => {
           this.showOptions[index].value = result;
         })
         .catch(() => {});
-    }
+    },
+    // 解析改变
+    parsingChangeFn(val) {
+      this.parsing = val;
+    },
+    // 提交
+    submitFn() {
+      // 问题格式
+      // 判断是否空值
+      let obj = {
+        sId: this.discipline,
+        questionContent: JSON.stringify({
+          type: 1,
+          topicInfo: this.questionStem,
+          optionsInfo: {
+            ...this.showOptions,
+          },
+        }),
+        answer: this.trueOptions,
+        correct: this.parsing,
+        score: this.score,
+        difficult: this.difficulty,
+        type: 1,
+      };
+      console.log(obj);
+      addQuestion(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "上传成功!",
+            });
+            this.clearAllFn();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

@@ -43,10 +43,11 @@
         :difficultyChangeFn="difficultyChangeFn"
         :knowledgeChangeFn="knowledgeChangeFn"
         :knowledge="knowledge"
+        :parsingChangeFn="parsingChangeFn"
       ></questionBottom>
       <el-form-item>
         <el-col>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submitFn">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
           <el-button type="success" @click="addOptionsFn">添加选项</el-button>
           <el-button type="success" @click="dialogVisible = true"
@@ -84,6 +85,7 @@
 import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
+import { addQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -102,6 +104,7 @@ export default {
       knowledge: "",
       discipline: "",
       questionStem: "",
+      parsing: "",
       trueOptions: [],
       //   选项
       allOptions: [
@@ -173,6 +176,10 @@ export default {
     questionStemChangeFn(val) {
       this.questionStem = val;
     },
+    // 解析改变
+    parsingChangeFn(val) {
+      this.parsing = val;
+    },
     clearAllFn() {
       (this.showOptions = [
         {
@@ -208,6 +215,36 @@ export default {
     // 删除选项
     delFn() {
       this.showOptions.pop();
+    },
+    submitFn() {
+      let obj = {
+        SId: this.discipline,
+        questionContent: JSON.stringify({
+          type: 2,
+          topicInfo: this.questionStem,
+          optionsInfo: {
+            ...this.showOptions,
+          },
+        }),
+        answer: this.trueOptions.toString(),
+        correct: this.parsing,
+        score: this.score,
+        difficult: this.difficulty,
+        type: 2,
+      };
+      addQuestion(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "上传成功!",
+            });
+            this.clearAllFn();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

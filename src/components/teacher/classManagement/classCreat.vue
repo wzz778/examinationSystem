@@ -43,6 +43,13 @@ export default {
         grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
       }).then((result) => {
         console.log("创建班级", result);
+        if (result.data.data == "ok") {
+          this.$message({
+            message: "添加成功",
+            type: "success",
+          });
+          this.value = "";
+        }
       });
     },
   },

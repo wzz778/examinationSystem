@@ -21,10 +21,11 @@
         :difficultyChangeFn="difficultyChangeFn"
         :knowledgeChangeFn="knowledgeChangeFn"
         :knowledge="knowledge"
+        :parsingChangeFn="parsingChangeFn"
       ></questionBottom>
       <el-form-item>
         <el-col>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submitFn">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
           <el-button type="success" @click="dialogVisible = true"
             >预览</el-button
@@ -59,6 +60,7 @@
 import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
+import { addQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -80,6 +82,7 @@ export default {
       trueOptions: "",
       showOptions: "",
       dialogVisible: false,
+      parsing: "",
     };
   },
   methods: {
@@ -100,17 +103,13 @@ export default {
     questionStemChangeFn(val) {
       this.questionStem = val;
     },
+    // 解析改变
+    parsingChangeFn(val) {
+      this.parsing = val;
+    },
     clearAllFn() {
       this.trueOptions = "";
       this.$bus.$emit("clearAll");
-    },
-    addOptionsFn() {
-      // 添加选项
-      this.showOptions.push(this.allOptions[this.showOptions.length]);
-    },
-    // 删除选项
-    delFn() {
-      this.showOptions.pop();
     },
     // 标准答案
     answerFn() {
@@ -119,6 +118,33 @@ export default {
           this.trueOptions = result;
         })
         .catch(() => {});
+    },
+    submitFn() {
+      let obj = {
+        SId: this.discipline,
+        questionContent: JSON.stringify({
+          type: 5,
+          topicInfo: this.questionStem,
+        }),
+        answer: this.trueOptions,
+        correct: this.parsing,
+        score: this.score,
+        difficult: this.difficulty,
+        type: 5,
+      };
+      addQuestion(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "上传成功!",
+            });
+            this.clearAllFn();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
