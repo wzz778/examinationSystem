@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="text">测试</button>
     <el-form label-width="80px">
       <el-form-item label="年级">
         <el-select v-model="value1" placeholder="请选择">
@@ -42,7 +43,7 @@
             placeholder="请输入"
             v-model="item.value"
           ></el-input>
-          <el-button type="text" class="topicBtn" @click="dialogVisible = true"
+          <el-button type="text" class="topicBtn" @click="addPoticsmall(index)"
             >添加题目</el-button
           >
           <el-button type="text" class="topicBtn" @click="delTopic(index)"
@@ -119,9 +120,7 @@
       ></myPaging>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="sureFn">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -213,6 +212,7 @@ export default {
           label: "任务试卷试卷",
         },
       ],
+      // 题目列表
       topicsList: [
         {
           value: "",
@@ -303,6 +303,7 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      addTopicFor: -1,
     };
   },
   methods: {
@@ -316,7 +317,7 @@ export default {
       this.topicsList.splice(index, 1);
     },
     addTopic() {
-      this.topicsList.push({ value: "", name: "标题" });
+      this.topicsList.push({ value: "", name: "标题", smallQuestion: [] });
     },
     pageChangeFn(val) {
       this.nowPage = val;
@@ -334,6 +335,18 @@ export default {
     },
     searchFn(obj) {
       console.log("查询", obj);
+    },
+    addPoticsmall(index) {
+      this.dialogVisible = true;
+      this.addTopicFor = index;
+    },
+    // 弹窗确定
+    sureFn() {
+      this.dialogVisible = false;
+      this.$bus.$emit("choiceTopic", this.addTopicFor);
+    },
+    text() {
+      console.log("vuex的数据", this.$store.state.teacher.choiceTopic);
     },
   },
 };

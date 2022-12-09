@@ -1,5 +1,10 @@
 <template>
-  <el-table :data="tableData" border style="width: 100%">
+  <el-table
+    :data="tableData"
+    @selection-change="selectionChange"
+    border
+    style="width: 100%"
+  >
     <template v-if="hasSelection">
       <el-table-column type="selection"></el-table-column>
     </template>
@@ -45,6 +50,34 @@ export default {
   },
   // 接收数据，数据类型,函数对象
   props: ["tableData", "allType", "objFn", "hasSelection", "statueObj"],
+  data() {
+    return {
+      selectData: null,
+    };
+  },
+  methods: {
+    selectionChange(val) {
+      this.selectData = val;
+    },
+    topicSubmitFn(index) {
+      // 将数据提交到vuex里边
+      this.$store.commit("teacher/CHOICETOPICFN", {
+        index: index,
+        info: this.selectData,
+      });
+    },
+  },
+  mounted() {
+    if (this.hasSelection) {
+      // 挂载事件
+      this.$bus.$on("choiceTopic", this.topicSubmitFn);
+    }
+  },
+  beforeDestroy() {
+    if (this.hasSelection) {
+      this.$bus.$off("choiceTopic");
+    }
+  },
 };
 </script>
 
