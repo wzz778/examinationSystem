@@ -1,12 +1,13 @@
 <template>
   <div id="adminindex">
     年级：
-    <el-select v-model="region" placeholder="请选择活动区域">
+    <el-select v-model="level" placeholder="请选择活动区域">
       <el-option  v-for="p of $store.state.admin.allgrade" :key="p.index" :label="p" :value="p"></el-option>
     </el-select>
     <el-button @click="find" type="primary" style="margin:0px 10px;">查询</el-button>
     <el-table
         :data="tableData"
+        :v-loading="true"
         border
         style="width: 100%;margin:10px 0;">
         <el-table-column
@@ -30,8 +31,8 @@
         label="操作"
         >
         <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="primary" size="small">查看</el-button>
-            <el-button type="danger" size="small">删除</el-button>
+            <el-button @click="editClick(scope.row)" type="primary" size="small">修改</el-button>
+            <el-button @click="deleteClick(scope.row)" type="danger" size="small">删除</el-button>
         </template>
         </el-table-column>
     </el-table>
@@ -49,9 +50,9 @@
 </template>
 <script>
 import { Select, Option } from "element-ui";
-import {getAllSubject} from '@/myAxios/admin/wzzAxios'
+import {getAllSubject,searchSubject,deleteSubject} from '@/myAxios/admin/wzzAxios'
 export default {
-    name:'SubjectList',
+  name:'SubjectList',
   components: {
     [Select.name]: Select,
     [Option.name]: Option,
@@ -65,14 +66,48 @@ export default {
       return {
         currentPage: 1,
         tableData:Array(0).fill(item),
-        region:"",
+        level:"",
         pagesize:5,
         alltotal:100
       }
     },
     methods:{
-      handleClick(row) {
+      editClick(row) {
         console.log(row);
+        sessionStorage.setItem("formmessage",JSON.stringify(row))
+        this.$router.replace({
+            path:"edit",
+                query:{
+                    id:row.id,
+                }
+        })
+      },
+      deleteClick(row) {
+         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          return deleteSubject({ids:row.id});
+        })
+        .then((response) => {
+          console.log(response);
+          if(response.status==200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          }else{
+            this.$message.error('删除失败');
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       handleSizeChange(val) {
         this.pagesize=val;
@@ -83,13 +118,27 @@ export default {
         this.chagepage()
       },
       find() {
-        console.log(this.region);
+        this.currentPage=1;
+        this.chagepage()
       },
       async chagepage() {
-        let data= await getAllSubject({beginIndex:this.currentPage,size:this.pagesize})
-        if(data.status==200){
-          this.alltotal=data.data.total;
-          this.tableData=data.data.records;
+        if(this.level==""){
+          let data= await getAllSubject({beginIndex:this.currentPage,size:this.pagesize})
+          if(data.status==200){
+            this.alltotal=data.data.total;
+            this.tableData=data.data.records;
+          }else{
+            this.$message.error('获取失败');
+          }
+        }else{
+          let data= await searchSubject({beginIndex:this.currentPage,size:this.pagesize,level:this.level})
+          console.log(data);
+          if(data.status==200){
+            this.alltotal=data.data.total;
+            this.tableData=data.data.records;
+          }else{
+            this.$message.error('获取失败');
+          }
         }
       },
     },
@@ -117,6 +166,12 @@ export default {
         //     return axios;
         // },
   },
+  // watch:{
+  //   level(newvalue){
+  //     this.chagepage()
+  //     console.log(newvalue);
+  //   }
+  // }
 }
 </script>
 <style lang="less" scoped>
