@@ -106,50 +106,8 @@ export default {
       value1: "",
       value2: "",
       value3: "",
-      options1: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      options2: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      options1: [],
+      options2: [],
       topicArr: [
         {
           value: "选项1",
@@ -191,9 +149,9 @@ export default {
       this.searchFn(tempObj);
     },
     getClass() {
-      console.log("class");
       getAllGrade().then((result) => {
         console.log("获取所有班级", result);
+        
       });
     },
     getTopic() {

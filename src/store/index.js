@@ -24,7 +24,7 @@ const mutations = {
 }
 // 准备state(存放数据)
 const state = {
-    token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzA1MDE0MzAsInVzZXJuYW1lIjoiMjI5NTkwODI1MSIsInBvd2VyIjoiMCIsImlkIjo0fQ.5v2MW1iHMoMtA05FW1VQQ4IY3otd3O2MW-JmXkg3c7M',
+    token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzA1NzQwNjUsInVzZXJuYW1lIjoiMTIzNDU2Nzg5IiwicG93ZXIiOiIwIiwiaWQiOjN9.4V4roV3kq0Uj4yoFR0vfZeJWA9tfYOMrERVdO_bLCJM',
     power: "",
     userInfo:""
 }

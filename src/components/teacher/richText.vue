@@ -95,7 +95,7 @@ export default {
         },
       };
       this.editor.create();
-      this.editor.cmd.do("insertHTML", this.orlHtml);
+      this.editor.cmd.do("insertHTML", this.oriHtml);
     },
     // 初始化
     init() {

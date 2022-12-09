@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="test">测试</button>
     <!-- 顶部 -->
     <el-row>
       <el-col :span="5">

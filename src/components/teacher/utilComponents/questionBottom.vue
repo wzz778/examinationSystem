@@ -1,19 +1,23 @@
 <template>
   <div>
     <el-form-item label="解析">
-      <el-input placeholder="请输入内容" v-model="value1" @click.native="parsingFn"></el-input>
+      <el-input
+        placeholder="请输入内容"
+        v-model="value1"
+        @click.native="parsingFn"
+      ></el-input>
     </el-form-item>
     <el-form-item label="分数">
       <el-input-number
         v-model="num"
-        @change="handleChange"
+        @change="scoreChangeFn(num)"
         :min="0"
         :max="100"
         label="描述文字"
       ></el-input-number>
     </el-form-item>
     <el-form-item label="难度">
-      <el-rate v-model="value2"></el-rate>
+      <el-rate v-model="value2" @change="difficultyChangeFn(value2)"></el-rate>
     </el-form-item>
     <el-form-item label="知识点">
       <el-select
@@ -45,6 +49,7 @@ export default {
     "difficultyChangeFn",
     "knowledgeChangeFn",
     "knowledge",
+    "parsingChangeFn",
   ],
   components: {
     [Rate.name]: Rate,
@@ -87,18 +92,25 @@ export default {
       console.log(value);
     },
     clearAll() {
-      console.log("底部组件的变化");
+      this.value1 = "";
+      this.value2 = 0;
+      this.value3 = [];
+      this.num = 1;
     },
     parsingFn() {
       this.$myRichText({ oriHtml: this.value1 })
         .then((result) => {
           this.value1 = result;
+          this.parsingChangeFn(result);
         })
         .catch(() => {});
     },
   },
   mounted() {
     this.$bus.$on("clearAll", this.clearAll);
+  },
+  beforeDestroy() {
+    this.$bus.$off("clearAll");
   },
 };
 </script>

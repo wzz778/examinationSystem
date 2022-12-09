@@ -8,9 +8,9 @@
       >
         <el-option
           v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.id"
+          :label="item.subjectName"
+          :value="item.id"
         >
         </el-option>
       </el-select>
@@ -27,6 +27,7 @@
 
 <script>
 import { Col } from "element-ui";
+import { getAllSubject } from "@/myAxios/teacher/index";
 export default {
   name: "questionTop",
   props: ["disciplineChangeFn", "questionStemChangeFn"],
@@ -43,17 +44,31 @@ export default {
   methods: {
     clearAll() {
       console.log("顶部组件");
+      this.value1 = "";
+      this.value2 = "";
+      this.options = [];
     },
     topicFn() {
       this.$myRichText({ oriHtml: this.value2 })
         .then((result) => {
           this.value2 = result;
+          this.questionStemChangeFn(result);
         })
         .catch(() => {});
+    },
+    getSubjectFn() {
+      getAllSubject({ beginIndex: 1, size: 10 }).then((result) => {
+        console.log("所有学科", result.data);
+        this.options = result.data.data.records;
+      });
     },
   },
   mounted() {
     this.$bus.$on("clearAll", this.clearAll);
+    this.getSubjectFn();
+  },
+  beforeDestroy() {
+    this.$bus.$off("clearAll");
   },
 };
 </script>

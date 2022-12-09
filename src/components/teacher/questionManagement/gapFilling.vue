@@ -21,22 +21,46 @@
         :difficultyChangeFn="difficultyChangeFn"
         :knowledgeChangeFn="knowledgeChangeFn"
         :knowledge="knowledge"
+        :parsingChangeFn="parsingChangeFn"
       ></questionBottom>
       <el-form-item>
         <el-col>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="submitFn">提交</el-button>
           <el-button @click="clearAllFn">重置</el-button>
-          <el-button type="success">预览</el-button>
+          <el-button type="success" @click="dialogVisible = true"
+            >预览</el-button
+          >
         </el-col>
       </el-form-item>
     </el-form>
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="60%">
+      <el-form label-width="80px">
+        <el-form-item label="题干:">
+          <!-- 题目 -->
+          <div v-html="questionStem"></div>
+        </el-form-item>
+        <el-form-item label="答案:">
+          <!-- 选项 -->
+          <el-form-item>
+            <div v-html="trueOptions"></div>
+          </el-form-item>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { Col, Radio, CheckboxGroup, Checkbox } from "element-ui";
+import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
+import { addQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -46,6 +70,7 @@ export default {
     [Radio.name]: Radio,
     [CheckboxGroup.name]: CheckboxGroup,
     [Checkbox.name]: Checkbox,
+    [Dialog.name]: Dialog,
   },
   data() {
     return {
@@ -55,7 +80,8 @@ export default {
       discipline: "",
       questionStem: "",
       trueOptions: "",
-      showOptions: "",
+      parsing: "",
+      dialogVisible: false,
     };
   },
   methods: {
@@ -72,6 +98,10 @@ export default {
     disciplineChangeFn(val) {
       this.discipline = val;
     },
+    // 解析改变
+    parsingChangeFn(val) {
+      this.parsing = val;
+    },
     standardFn() {
       this.$myRichText({ oriHtml: this.trueOptions })
         .then((result) => {
@@ -85,15 +115,37 @@ export default {
       this.questionStem = val;
     },
     clearAllFn() {
+      this.trueOptions = "";
       this.$bus.$emit("clearAll");
     },
-    addOptionsFn() {
-      // 添加选项
-      this.showOptions.push(this.allOptions[this.showOptions.length]);
-    },
-    // 删除选项
-    delFn() {
-      this.showOptions.pop();
+    submitFn() {
+      // 判断是否是空值
+      let obj = {
+        SId: this.discipline,
+        questionContent: JSON.stringify({
+          type: 4,
+          topicInfo: this.questionStem,
+        }),
+        answer: this.trueOptions,
+        correct: this.parsing,
+        score: this.score,
+        difficult: this.difficulty,
+        type: 4,
+      };
+      console.log(obj);
+      addQuestion(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "上传成功!",
+            });
+            this.clearAllFn();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
