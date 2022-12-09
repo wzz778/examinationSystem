@@ -16,15 +16,3 @@ export const deleteSubject = async (params) =>requests({url:'/admin/deleteSubjec
 
 //编辑学科
 export const updateSubject = async (params) =>requests({url:'admin/updateSubject',method:'put',params});
-
-
-
-
-
-
-//书写接口
-export const firstajax = async (data) =>requests({
-    url:'admin/getAllSubject',
-    method:'get',
-    params:data
-});

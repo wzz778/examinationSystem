@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import {firstajax} from '@/myAxios/admin/wzzAxios'
+import {getAllSubject} from '@/myAxios/admin/wzzAxios'
 // firstajax()
 export default {
     name:'AdminIndex',
@@ -15,7 +15,7 @@ export default {
           beginIndex:1,
           size:10
         }
-        console.log(await firstajax(data));
+        console.log(await getAllSubject(data));
         // await firstajax()
       }
     }
