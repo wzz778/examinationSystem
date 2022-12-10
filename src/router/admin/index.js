@@ -42,6 +42,7 @@ export default [
             {
                 path:'list', 
                 component:SubjectList,
+                name:"SubjectList",
                 meta:{
                     title:"学科列表"
                 }
@@ -49,6 +50,7 @@ export default [
             {
                 path:'edit', 
                 component:SubjectEdit,
+                name:"SubjectEdit",
                 meta:{
                     title:"学科创建",
                 }
