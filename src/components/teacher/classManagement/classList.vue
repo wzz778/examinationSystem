@@ -58,7 +58,7 @@ export default {
             showName: "班级名称",
           },
           {
-            dateType: "name",
+            dateType: "code",
             showName: "班级口令",
           },
           {
@@ -90,16 +90,19 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 0,
+      searchObj: null,
     };
   },
   methods: {
     pageChangeFn(val) {
       this.nowPage = val;
       console.log("组件里边的页数", val);
+      this.getAllGradeFn();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
       console.log("组件里边的条数", val);
+      this.getAllGradeFn();
     },
     deleteFn(obj) {
       console.log(obj);
@@ -110,7 +113,7 @@ export default {
       })
         .then(() => {
           deleteGrade({ ids: obj.id }).then((result) => {
-            console.log('删除',result);
+            console.log("删除", result);
           });
         })
         .catch(() => {
@@ -124,16 +127,17 @@ export default {
       console.log(id);
     },
     searchFn(obj) {
-      console.log("查询", obj);
+      console.log(obj);
+      this.searchObj = obj;
     },
     getAllGradeFn() {
-      getAllGradeHas({ nodePage: this.nowPage, pageSize: this.pageSize }).then(
-        (result) => {
-          console.log("获取所有班级", result);
-          this.myListConfiguration.tableData = result.data.data.records;
-          this.allNums = result.data.data.total;
-        }
-      );
+      // 搜索
+      let obj = { nodePage: this.nowPage, pageSize: this.pageSize };
+      getAllGradeHas(obj).then((result) => {
+        console.log("获取所有班级", result);
+        this.myListConfiguration.tableData = result.data.data.records;
+        this.allNums = result.data.data.total;
+      });
     },
   },
   mounted() {

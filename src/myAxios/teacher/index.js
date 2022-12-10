@@ -45,3 +45,15 @@ export const getAllSubject = async (data) => instance({
     method: "GET",
     params: data
 })
+// 搜寻问题
+export const getOfClassQuestion = async (data) => instance({
+    url: "/quesition/getOfClassQuestion",
+    method: "GET",
+    params: data
+})
+
+export const getSubmitPaper = async (data) => instance({
+    url: "/exam/getSubmitPaper",
+    method: "GET",
+    params: data
+})

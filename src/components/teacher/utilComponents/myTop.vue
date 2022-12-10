@@ -136,13 +136,13 @@ export default {
     sureSerach() {
       let tempObj = {};
       //   判断是否有值
-      if (this.inputInfoObj) {
+      if (this.inputInfoObj && this.value1) {
         tempObj[this.inputInfoObj.transferName] = this.value1;
       }
-      if (this.seletcInfoObjOne) {
+      if (this.seletcInfoObjOne && this.value2) {
         tempObj[this.seletcInfoObjOne.transferName] = this.value2;
       }
-      if (this.seletcInfoObjTwo) {
+      if (this.seletcInfoObjTwo && this.value3) {
         tempObj[this.seletcInfoObjTwo.transferName] = this.value3;
       }
       // 调用传递的函数
@@ -151,7 +151,6 @@ export default {
     getClass() {
       getAllGrade().then((result) => {
         console.log("获取所有班级", result);
-        
       });
     },
     getTopic() {

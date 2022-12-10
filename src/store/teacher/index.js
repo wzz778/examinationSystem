@@ -10,12 +10,17 @@ const mutations = {
     setTabName(state,data){
         state.editableTabsValue = data;
         Storage.setEditableTabsValue(data);
+    },
+    CHOICETOPICFN(state,data){
+        // index表示第几题，info表示该题的数据
+        state.choiceTopic[data.index]=data.info
     }
 }
 // 准备state(存放数据)
 const state = {
     editableTabs:Storage.getEditableTabs()|| [{title:'首页',name:'teacher/graphicPresentation'}],
     editableTabsValue:Storage.getEditableTabsValue() || 'teacher/graphicPresentation',
+    choiceTopic:[]
 }
 // 准备getters
 const getters = {}
