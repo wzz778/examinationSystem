@@ -26,6 +26,7 @@
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
+import { getSubmitPaper } from "@/myAxios/teacher/index";
 export default {
   name: "questionList",
   components: {
@@ -120,21 +121,26 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      searchObj: null,
     };
   },
   methods: {
     searchFn(obj) {
       console.log(obj);
+      this.searchObj = obj;
+      this.getInfo();
     },
     seeFn(obj) {
       console.log("查看", obj);
     },
     pageChangeFn(val) {
       this.nowPage = val;
+      this.getInfo();
       console.log("组件里边的页数", val);
     },
     sizeChangeFn(val) {
       this.pageSize = val;
+      this.getInfo();
       console.log("组件里边的条数", val);
     },
     deleteFn(id) {
@@ -143,6 +149,20 @@ export default {
     editorFn(id) {
       console.log(id);
     },
+    getInfo() {
+      let obj = {
+        beginIndex: this.nowPage,
+        size: this.pageSize,
+        type: 1,
+      };
+      Object.assign(obj, this.searchObj);
+      getSubmitPaper(obj).then((result) => {
+        console.log("获取试卷", result);
+      });
+    },
+  },
+  mounted() {
+    this.getInfo();
   },
 };
 </script>
