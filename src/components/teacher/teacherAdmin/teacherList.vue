@@ -30,6 +30,7 @@
 import myPaging from "../utilComponents/myPaging.vue";
 import myList from "../utilComponents/myList.vue";
 import myTop from "../utilComponents/myTop.vue";
+import { getAllUser } from "@/myAxios/teacher/index";
 export default {
   name: "classList",
   components: {
@@ -42,22 +43,22 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "用户名:",
-          transferName: "userName",
+          transferName: "name",
         },
-        buttonInfo:{
-          type:"primary"
-        }
+        buttonInfo: {
+          type: "primary",
+        },
       },
       myListConfiguration: {
         allType: [
           {
             // dateType表示的是数据
-            dateType: "date",
+            dateType: "id",
             // 数据显示的名字
             showName: "Id",
           },
           {
-            dateType: "name",
+            dateType: "userName",
             showName: "用户名",
           },
           {
@@ -65,15 +66,15 @@ export default {
             showName: "真实姓名",
           },
           {
-            dateType: "name",
+            dateType: "sex",
             showName: "性别",
           },
           {
-            dateType: "name",
+            dateType: "phone",
             showName: "手机号",
           },
           {
-            dateType: "date",
+            dateType: "createTime",
             showName: "创建时间",
           },
         ],
@@ -96,30 +97,7 @@ export default {
           },
         ],
         // 数据
-        tableData: [
-          {
-            id: "1",
-            date: "2022-12-06 15:19:34",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            id: "2",
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-          },
-        ],
+        tableData: [],
         statueObj: {
           type: "success",
           showName: "启用",
@@ -129,16 +107,17 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      searchObj: null,
     };
   },
   methods: {
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
+      this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
+      this.getInfo();
     },
     deleteFn(id) {
       console.log(id);
@@ -148,7 +127,25 @@ export default {
     },
     searchFn(obj) {
       console.log("查询", obj);
+      this.searchObj = obj;
+      this.getInfo();
     },
+    getInfo() {
+      let obj = {
+        nodePage: this.nowPage,
+        pageSize: this.pageSize,
+        power: 1,
+      };
+      Object.assign(obj, this.searchObj);
+      getAllUser(obj).then((result) => {
+        console.log("获取用户", result);
+        this.myListConfiguration.tableData = result.data.data.records;
+        this.allNums = result.data.data.total;
+      });
+    },
+  },
+  mounted() {
+    this.getInfo();
   },
 };
 </script>

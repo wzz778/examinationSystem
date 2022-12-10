@@ -110,23 +110,23 @@ export default {
       options2: [],
       topicArr: [
         {
-          value: "选项1",
+          value: "1",
           label: "单选题",
         },
         {
-          value: "选项2",
+          value: "2",
           label: "多选题",
         },
         {
-          value: "选项3",
+          value: "3",
           label: "判断题",
         },
         {
-          value: "选项4",
+          value: "4",
           label: "填空题",
         },
         {
-          value: "选项5",
+          value: "5",
           label: "简答题",
         },
       ],

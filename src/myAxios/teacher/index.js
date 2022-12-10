@@ -51,9 +51,27 @@ export const getOfClassQuestion = async (data) => instance({
     method: "GET",
     params: data
 })
-
+// 获取提交试卷
 export const getSubmitPaper = async (data) => instance({
     url: "/exam/getSubmitPaper",
     method: "GET",
+    params: data
+})
+// 创建试卷
+export const publishPaper = async (data) => instance({
+    url: "/exam/publishPaper",
+    method: "POST",
+    params: data
+})
+// 获取所有用户信息
+export const getAllUser = async (data) => instance({
+    url: "/admin/getAllUser",
+    method: "GET",
+    params: data
+})
+
+export const deleteStudent = async (data) => instance({
+    url: "/teacher/deleteStudent",
+    method: "DELETE",
     params: data
 })
