@@ -39,6 +39,12 @@ export const addQuestion = async (data) => instance({
     method: "POST",
     params: data,
 })
+// 修改题目
+export const updateQuestion = async (data) => instance({
+    url: "/quesition/updateQuestion",
+    method: "PUT",
+    params: data
+})
 // 获取学科
 export const getAllSubject = async (data) => instance({
     url: "/admin/getAllSubject",

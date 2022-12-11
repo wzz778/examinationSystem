@@ -37,7 +37,7 @@
 
 <script>
 import { Col } from "element-ui";
-import { getAllSubject } from "@/myAxios/teacher/index";
+import { getAllSubject, getOfClassQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionTop",
   props: ["disciplineChangeFn", "questionStemChangeFn"],
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     clearAll() {
-      console.log("顶部组件");
+      this.value = "";
       this.value1 = "";
       this.value2 = "";
       this.options = [];
@@ -96,10 +96,27 @@ export default {
         this.options = result.data.data;
       });
     },
+    getInfo() {
+      getOfClassQuestion({
+        size: 1,
+        beginIndex: 1,
+        id: this.$route.query.id,
+      }).then((result) => {
+        let tempObj = result.data.data.list[0];
+        this.value2 = JSON.parse(tempObj.questionContent).topicInfo;
+        this.questionStemChangeFn(this.value2);
+        this.value = tempObj.myAnswer.levelName;
+        this.value1 = tempObj.myAnswer.id;
+      });
+    },
   },
   mounted() {
     this.$bus.$on("clearAll", this.clearAll);
     this.getSubjectFn();
+    if (this.$route.query.id) {
+      // 获取数据
+      this.getInfo();
+    }
   },
   beforeDestroy() {
     this.$bus.$off("clearAll");

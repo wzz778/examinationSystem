@@ -41,6 +41,7 @@
 
 <script>
 import { Col, Rate, InputNumber } from "element-ui";
+import { getOfClassQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionBottom",
   //  解析先不搞,分数改变的函数，难度改变的函数，知识点改变的函数
@@ -105,9 +106,29 @@ export default {
         })
         .catch(() => {});
     },
+    getInfo() {
+      getOfClassQuestion({
+        size: 1,
+        beginIndex: 1,
+        id: this.$route.query.id,
+      }).then((result) => {
+        console.log(result.data.data.list[0]);
+        let tempObj = result.data.data.list[0];
+        this.value1=tempObj.correct
+        this.parsingChangeFn(this.value1)
+        this.num=tempObj.score
+        this.scoreChangeFn(this.num)
+        this.value2=tempObj.difficult
+        this.difficultyChangeFn(this.value2)
+      });
+    },
   },
   mounted() {
     this.$bus.$on("clearAll", this.clearAll);
+    if (this.$route.query.id) {
+      // 获取数据
+      this.getInfo();
+    }
   },
   beforeDestroy() {
     this.$bus.$off("clearAll");

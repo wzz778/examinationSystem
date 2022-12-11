@@ -78,7 +78,11 @@
 import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
-import { addQuestion } from "@/myAxios/teacher/index";
+import {
+  addQuestion,
+  updateQuestion,
+  getOfClassQuestion,
+} from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -152,6 +156,7 @@ export default {
           value: "错",
         },
       ];
+      this.trueOptions = "";
       this.$bus.$emit("clearAll");
     },
     addOptionsFn() {
@@ -178,6 +183,19 @@ export default {
         difficult: this.difficulty,
         type: 3,
       };
+      if (this.$route.query.id) {
+        obj.id = this.$route.query.id;
+        updateQuestion(obj).then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "修改成功!",
+            });
+          }
+          this.clearAllFn();
+        });
+        return;
+      }
       addQuestion(obj)
         .then((result) => {
           if (result.data.msg == "OK") {
@@ -192,6 +210,29 @@ export default {
           console.log(err);
         });
     },
+    getInfo() {
+      getOfClassQuestion({
+        size: 1,
+        beginIndex: 1,
+        id: this.$route.query.id,
+      }).then((result) => {
+        let tempObj = JSON.parse(
+          result.data.data.list[0].questionContent
+        ).optionsInfo;
+        let tempArr = [];
+        for (let i in tempObj) {
+          tempArr.push(tempObj[i]);
+        }
+        this.showOptions = tempArr;
+        this.trueOptions = result.data.data.list[0].answer;
+      });
+    },
+  },
+  mounted() {
+    if (this.$route.query.id) {
+      // 获取数据
+      this.getInfo();
+    }
   },
 };
 </script>

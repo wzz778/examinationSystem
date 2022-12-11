@@ -42,13 +42,6 @@ export default {
           showName: "题目ID:",
           transferName: "id",
         },
-        seletcInfoObjOne: {
-          showName: "学科",
-          // 请求的接口类型
-          fnType: "getClass",
-          // 后端对应的变量名
-          transferName: "sId",
-        },
         seletcInfoObjTwo: {
           showName: "题型",
           // 请求的接口类型
@@ -115,7 +108,6 @@ export default {
   },
   methods: {
     searchFn(obj) {
-      console.log(obj);
       this.searchObj = obj;
       this.getInfo();
     },
@@ -124,19 +116,36 @@ export default {
     },
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
       this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
       this.getInfo();
     },
     deleteFn(id) {
       console.log(id);
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      console.log(obj);
+      let pathUrl="singleChoice"
+      if(obj.type=='填空题'){
+        pathUrl="gapFilling"
+      }
+      if(obj.type=="多选题"){
+        pathUrl="multiSelect"
+      }
+      if(obj.type=="判断题"){
+        pathUrl="judgmentQuestion"
+      }
+      if(obj.type=="简答题"){
+        pathUrl="shortAnswer"
+      }
+      this.$router.push({
+        path:`/teacher/${pathUrl}`,
+        query:{
+          id:obj.id
+        }
+      })
     },
     // 题型
     getTopicType(typeNum) {
@@ -160,7 +169,6 @@ export default {
       };
       Object.assign(obj, this.searchObj);
       getOfClassQuestion(obj).then((result) => {
-        console.log("搜寻问题", result);
         for (let i = 0; i < result.data.data.list.length; i++) {
           // 题型
           result.data.data.list[i].type = this.getTopicType(

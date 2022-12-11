@@ -436,7 +436,7 @@ export default {
           ...this.topicsList,
         }),
       };
-      if (this.$route.query) {
+      if (this.$route.query.id) {
         obj.id = this.$route.query.id;
         updatePaper(obj).then((result) => {
           if (result.data.msg == "OK") {
@@ -446,7 +446,10 @@ export default {
             });
             this.clearAll();
           }
-        });
+        })
+        .catch(err=>{
+          console.log(err);
+        })
         return;
       }
       publishPaper(obj)
@@ -541,9 +544,11 @@ export default {
   mounted() {
     this.getInfo();
     this.getSubjectFn();
-    if (this.$route.query) {
+    if (this.$route.query.id) {
       this.getSpecifyInfo();
+      return
     }
+    this.getInfo()
   },
   beforeDestroy() {
     this.clearAll();
