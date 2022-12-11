@@ -33,6 +33,12 @@ export const deleteGrade = async (data) => instance({
     method: "DELETE",
     params: data
 })
+// 修改班级
+export const updateGrade = async (data) => instance({
+    url: "/grade/updateGrade",
+    method: "PUT",
+    params: data
+})
 // 添加题目
 export const addQuestion = async (data) => instance({
     url: "/quesition/addQuestion",
@@ -58,10 +64,10 @@ export const getOfClassQuestion = async (data) => instance({
     params: data
 })
 // 删除问题
-export const deleteQuestion=async (data)=>instance({
-    url:"/quesition/deleteQuestion",
-    method:"DELETE",
-    params:data
+export const deleteQuestion = async (data) => instance({
+    url: "/quesition/deleteQuestion",
+    method: "DELETE",
+    params: data
 })
 // 获取提交试卷
 export const getSubmitPaper = async (data) => instance({

@@ -96,12 +96,10 @@ export default {
   methods: {
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
       this.getAllGradeFn();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
       this.getAllGradeFn();
     },
     deleteFn(obj) {
@@ -123,18 +121,23 @@ export default {
           });
         });
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      console.log(obj);
+      this.$router.push({
+        path: "/teacher/classCreat",
+        query: {
+          className: obj.grade,
+          id: obj.id,
+        },
+      });
     },
     searchFn(obj) {
-      console.log(obj);
       this.searchObj = obj;
     },
     getAllGradeFn() {
       // 搜索
       let obj = { nodePage: this.nowPage, pageSize: this.pageSize };
       getAllGradeHas(obj).then((result) => {
-        console.log("获取所有班级", result);
         this.myListConfiguration.tableData = result.data.data.records;
         this.allNums = result.data.data.total;
       });
