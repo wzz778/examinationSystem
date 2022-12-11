@@ -122,7 +122,6 @@ export default {
         });
     },
     editorFn(obj) {
-      console.log(obj);
       this.$router.push({
         path: "/teacher/classCreat",
         query: {
