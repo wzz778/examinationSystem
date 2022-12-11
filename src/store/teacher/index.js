@@ -43,6 +43,10 @@ const mutations = {
     CLEARALL(state) {
         state.choiceTopic = []
         state.choiceIds = []
+    },
+    CHANGETOPIC(state,data){
+        state.choiceTopic=data.choiceTopic
+        state.choiceIds=data.choiceIds
     }
 }
 // 准备state(存放数据)
@@ -50,7 +54,7 @@ const state = {
     editableTabs: Storage.getEditableTabs() || [{ title: '首页', name: 'teacher/graphicPresentation' }],
     editableTabsValue: Storage.getEditableTabsValue() || 'teacher/graphicPresentation',
     choiceTopic: [],
-    choiceIds: []
+    choiceIds: [],
 }
 // 准备getters
 const getters = {}

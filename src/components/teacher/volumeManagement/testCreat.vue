@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="text">测试</button>
     <el-form label-width="80px">
       <el-form-item label="年级">
         <el-select v-model="value1" placeholder="请选择">
@@ -115,7 +114,7 @@
       <el-form-item>
         <el-col>
           <el-button type="primary" @click="submitFn">提交</el-button>
-          <el-button @click="clearAllFn">重置</el-button>
+          <el-button @click="clearAll">重置</el-button>
           <el-button type="success" @click="addTopic">添加标题</el-button>
         </el-col>
       </el-form-item>
@@ -163,6 +162,8 @@ import {
   getOfClassQuestion,
   getAllSubject,
   publishPaper,
+  getPaper,
+  updatePaper,
 } from "@/myAxios/teacher/index";
 export default {
   name: "testCreat",
@@ -263,7 +264,6 @@ export default {
     };
   },
   methods: {
-    clearAllFn() {},
     handleClose(done) {
       done();
     },
@@ -301,12 +301,6 @@ export default {
       this.getInfo();
     },
     addPoticsmall(index) {
-      // let choiceIds = this.$store.state.teacher.choiceIds;
-      // // 去除相同值
-      // this.myListConfiguration.tableData =
-      //   this.myListConfiguration.tableData.filter(
-      //     (e) => !choiceIds.some((e2) => e2 === e.id)
-      //   );
       this.getInfo();
       this.dialogVisible = true;
       this.addTopicFor = index;
@@ -315,13 +309,6 @@ export default {
     sureFn() {
       this.dialogVisible = false;
       this.$bus.$emit("choiceTopic", this.addTopicFor);
-    },
-    text() {
-      console.log(
-        "vuex的数据",
-        this.$store.state.teacher.choiceTopic,
-        this.$store.state.teacher.choiceIds
-      );
     },
     getTopicType(typeNum) {
       switch (typeNum) {
@@ -365,7 +352,7 @@ export default {
         // 去除相同值
         let choiceIds = this.$store.state.teacher.choiceIds;
         this.myListConfiguration.tableData = result.data.data.list.filter(
-          (e) => !choiceIds.some((e2) => e2 === e.id)
+          (e) => !choiceIds.some((e2) => e2 == e.id)
         );
         // 修改页数
         this.allNums = result.data.data.allCount - choiceIds.length;
@@ -449,6 +436,19 @@ export default {
           ...this.topicsList,
         }),
       };
+      if (this.$route.query) {
+        obj.id = this.$route.query.id;
+        updatePaper(obj).then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              message: "上传成功",
+              type: "success",
+            });
+            this.clearAll();
+          }
+        });
+        return;
+      }
       publishPaper(obj)
         .then((result) => {
           if (result.data.msg == "OK") {
@@ -482,6 +482,46 @@ export default {
       this.nowPage = 1;
       this.$store.commit("teacher/CLEARALL");
     },
+    getSpecifyInfo() {
+      getPaper({
+        id: this.$route.query.id,
+        beginIndex: 1,
+        size: 1,
+      }).then((result) => {
+        let obj = result.data.data.records[0];
+        this.testName = obj.examName;
+        // ids
+        let ids = obj.paperContentId.split(",").filter((item) => {
+          return item != "";
+        });
+        // 题目框架
+        let topicsList = JSON.parse(obj.paperFrame);
+        let topicsListResult = [];
+        let question = obj.ob.questions;
+        let arr = [];
+        for (let i in topicsList) {
+          topicsListResult.push(topicsList[i]);
+          arr.push(
+            question.slice(
+              topicsList[i].beginIndex,
+              topicsList[i].length + topicsList[i].beginIndex
+            )
+          );
+        }
+        this.num = obj.suggestTime;
+        this.topicsList = topicsListResult;
+        this.value3 = obj.paperType.toString();
+        this.$store.commit("teacher/CHANGETOPIC", {
+          choiceTopic: arr,
+          choiceIds: ids,
+        });
+        let tempArr = this.subjectOptions.filter((item) => {
+          return item.id == obj.sid;
+        });
+        this.value1 = tempArr[0].levelName;
+        this.value2 = obj.sid;
+      });
+    },
   },
   computed: {
     getSmallQuestion() {
@@ -501,6 +541,12 @@ export default {
   mounted() {
     this.getInfo();
     this.getSubjectFn();
+    if (this.$route.query) {
+      this.getSpecifyInfo();
+    }
+  },
+  beforeDestroy() {
+    this.clearAll();
   },
 };
 </script>

@@ -63,6 +63,18 @@ export const publishPaper = async (data) => instance({
     method: "POST",
     params: data
 })
+// 修改试卷
+export const updatePaper = async (data) => instance({
+    url: "/exam/updatePaper",
+    method: "PUT",
+    params: data
+})
+// 删除试卷
+export const deletePaper = async (data) => instance({
+    url: "/exam/deletePaper",
+    method: "DELETE",
+    params: data
+})
 // 获取所有用户信息
 export const getAllUser = async (data) => instance({
     url: "/admin/getAllUser",
