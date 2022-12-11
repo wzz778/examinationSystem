@@ -64,6 +64,11 @@
 import { Menu, MenuItem, Row, Col, Dropdown, DropdownItem,DropdownMenu } from "element-ui";
 export default {
   name: "UserTop",
+  data() {
+    return {
+       activeIndex: '1',
+    }
+  },
   components: {
     [Menu.name]: Menu,
     [MenuItem.name]: MenuItem,

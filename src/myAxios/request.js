@@ -20,7 +20,7 @@ requests.interceptors.request.use((config) => {
   //需要携带token带给服务器
   console.log(store.state.token);
   if(store.state.token){
-    config.headers.token = store.state.token;
+    config.headers.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzA3MzUxMTUsInVzZXJuYW1lIjoiMzE5MDQ5MzE2MyIsInBvd2VyIjoiMCIsImlkIjoxMH0.YsE3PVZ9nNGl2tVYZNK7qfMhdCRaNF42amUcS2ObfUg";
   }
   nprogress.start() 
   return config;
