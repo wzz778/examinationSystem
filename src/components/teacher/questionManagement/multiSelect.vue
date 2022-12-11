@@ -222,8 +222,46 @@ export default {
       this.showOptions.pop();
     },
     submitFn() {
+      // 判断是否空值
+      if (this.discipline.toString().replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "选择学科",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.questionStem.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入题干",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.trueOptions.length == 0) {
+        this.$message({
+          message: "请输入正确答案",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.parsing.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入解析",
+          type: "warning",
+        });
+        return;
+      }
+      for (let i = 0; i < this.showOptions.length; i++) {
+        if (this.showOptions[i].value.replace(/(^\s*)|(\s*$)/g, "") == "") {
+          this.$message({
+            message: `请输入第${i + 1}选项的值`,
+            type: "warning",
+          });
+          return;
+        }
+      }
       let obj = {
-        SId: this.discipline,
+        sId: this.discipline,
         questionContent: JSON.stringify({
           type: 2,
           topicInfo: this.questionStem,
@@ -258,6 +296,7 @@ export default {
               message: "上传成功!",
             });
             this.clearAllFn();
+            this.$router.push({ path: "/teacher/multiSelect" });
           }
         })
         .catch((err) => {

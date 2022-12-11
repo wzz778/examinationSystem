@@ -57,6 +57,12 @@ export const getOfClassQuestion = async (data) => instance({
     method: "GET",
     params: data
 })
+// 删除问题
+export const deleteQuestion=async (data)=>instance({
+    url:"/quesition/deleteQuestion",
+    method:"DELETE",
+    params:data
+})
 // 获取提交试卷
 export const getSubmitPaper = async (data) => instance({
     url: "/exam/getSubmitPaper",

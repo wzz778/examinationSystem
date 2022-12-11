@@ -112,7 +112,6 @@ export default {
         beginIndex: 1,
         id: this.$route.query.id,
       }).then((result) => {
-        console.log(result.data.data.list[0]);
         let tempObj = result.data.data.list[0];
         this.value1=tempObj.correct
         this.parsingChangeFn(this.value1)

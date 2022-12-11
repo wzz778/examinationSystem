@@ -225,6 +225,43 @@ export default {
     submitFn() {
       // 问题格式
       // 判断是否空值
+      if (this.discipline.toString().replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "选择学科",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.questionStem.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入题干",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.trueOptions.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入正确答案",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.parsing.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入解析",
+          type: "warning",
+        });
+        return;
+      }
+      for (let i = 0; i < this.showOptions.length; i++) {
+        if (this.showOptions[i].value.replace(/(^\s*)|(\s*$)/g, "") == "") {
+          this.$message({
+            message: `请输入第${i + 1}选项的值`,
+            type: "warning",
+          });
+          return;
+        }
+      }
       let obj = {
         sId: this.discipline,
         questionContent: JSON.stringify({
@@ -240,7 +277,6 @@ export default {
         difficult: this.difficulty,
         type: 1,
       };
-      console.log(obj);
       if (this.$route.query.id) {
         obj.id = this.$route.query.id;
         updateQuestion(obj).then((result) => {
@@ -251,6 +287,7 @@ export default {
             });
           }
           this.clearAllFn();
+          this.$router.push({ path: "/teacher/singleChoice" });
         });
         return;
       }

@@ -14,7 +14,7 @@
       <el-select
         v-model="value1"
         @change="disciplineChangeFn(value1)"
-        placeholder="请选择"
+        placeholder="请先选择年级"
       >
         <el-option
           v-for="item in getOptions"

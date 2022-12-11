@@ -26,7 +26,7 @@
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
-import { getOfClassQuestion } from "@/myAxios/teacher/index";
+import { getOfClassQuestion, deleteQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionList",
   components: {
@@ -62,7 +62,7 @@ export default {
             showName: "Id",
           },
           {
-            dateType: "name",
+            dateType: "myAnswer.subjectName",
             showName: "学科",
           },
           {
@@ -122,30 +122,50 @@ export default {
       this.pageSize = val;
       this.getInfo();
     },
-    deleteFn(id) {
-      console.log(id);
+    deleteFn(obj) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteQuestion({ ids: obj.id }).then((result) => {
+            if (result.data.msg == "OK") {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getInfo();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     editorFn(obj) {
-      console.log(obj);
-      let pathUrl="singleChoice"
-      if(obj.type=='填空题'){
-        pathUrl="gapFilling"
+      let pathUrl = "singleChoice";
+      if (obj.type == "填空题") {
+        pathUrl = "gapFilling";
       }
-      if(obj.type=="多选题"){
-        pathUrl="multiSelect"
+      if (obj.type == "多选题") {
+        pathUrl = "multiSelect";
       }
-      if(obj.type=="判断题"){
-        pathUrl="judgmentQuestion"
+      if (obj.type == "判断题") {
+        pathUrl = "judgmentQuestion";
       }
-      if(obj.type=="简答题"){
-        pathUrl="shortAnswer"
+      if (obj.type == "简答题") {
+        pathUrl = "shortAnswer";
       }
       this.$router.push({
-        path:`/teacher/${pathUrl}`,
-        query:{
-          id:obj.id
-        }
-      })
+        path: `/teacher/${pathUrl}`,
+        query: {
+          id: obj.id,
+        },
+      });
     },
     // 题型
     getTopicType(typeNum) {
@@ -174,8 +194,6 @@ export default {
           result.data.data.list[i].type = this.getTopicType(
             result.data.data.list[i].type
           );
-          //
-
           result.data.data.list[i].questionContent = JSON.parse(
             result.data.data.list[i].questionContent
           )
