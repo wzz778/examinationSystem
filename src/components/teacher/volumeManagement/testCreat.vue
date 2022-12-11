@@ -6,9 +6,9 @@
         <el-select v-model="value1" placeholder="请选择">
           <el-option
             v-for="item in classOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -16,10 +16,10 @@
       <el-form-item label="学科">
         <el-select v-model="value2" placeholder="请选择">
           <el-option
-            v-for="item in subjectOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in getOptions"
+            :key="item.id"
+            :label="item.subjectName"
+            :value="item.id"
           >
           </el-option>
         </el-select>
@@ -159,7 +159,11 @@ import { InputNumber, Col, Dialog, Row } from "element-ui";
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
-import { getOfClassQuestion } from "@/myAxios/teacher/index";
+import {
+  getOfClassQuestion,
+  getAllSubject,
+  publishPaper,
+} from "@/myAxios/teacher/index";
 export default {
   name: "testCreat",
   components: {
@@ -180,65 +184,32 @@ export default {
       num: 0,
       dialogVisible: false,
       classOptions: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        "一年级",
+        "二年级",
+        "三年级",
+        "四年级",
+        "五年级",
+        "六年级",
+        "初一",
+        "初二",
+        "初三",
+        "高一",
+        "高二",
+        "高三",
       ],
-      subjectOptions: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      subjectOptions: [],
       testType: [
         {
-          value: "选项1",
-          label: "视频试卷",
-        },
-        {
-          value: "选项2",
+          value: "1",
           label: "固定试卷",
         },
         {
-          value: "选项3",
+          value: "4",
           label: "时段试卷",
         },
         {
-          value: "选项4",
-          label: "任务试卷试卷",
+          value: "6",
+          label: "任务试卷",
         },
       ],
       // 题目列表
@@ -297,7 +268,6 @@ export default {
       done();
     },
     delTopic(index) {
-      console.log(index);
       this.topicsList.splice(index, 1);
       // 删除大题
       this.$store.commit("teacher/DELTOPIC", {
@@ -331,12 +301,13 @@ export default {
       this.getInfo();
     },
     addPoticsmall(index) {
-      let choiceIds = this.$store.state.teacher.choiceIds;
-      // 去除相同值
-      this.myListConfiguration.tableData =
-        this.myListConfiguration.tableData.filter(
-          (e) => !choiceIds.some((e2) => e2 === e.id)
-        );
+      // let choiceIds = this.$store.state.teacher.choiceIds;
+      // // 去除相同值
+      // this.myListConfiguration.tableData =
+      //   this.myListConfiguration.tableData.filter(
+      //     (e) => !choiceIds.some((e2) => e2 === e.id)
+      //   );
+      this.getInfo();
       this.dialogVisible = true;
       this.addTopicFor = index;
     },
@@ -391,8 +362,18 @@ export default {
             .replace(/>/g, " ")
             .replace(/&nbsp;/g, "");
         }
-        this.myListConfiguration.tableData = result.data.data.list;
-        this.allNums = result.data.data.allCount;
+        // 去除相同值
+        let choiceIds = this.$store.state.teacher.choiceIds;
+        this.myListConfiguration.tableData = result.data.data.list.filter(
+          (e) => !choiceIds.some((e2) => e2 === e.id)
+        );
+        // 修改页数
+        this.allNums = result.data.data.allCount - choiceIds.length;
+      });
+    },
+    getSubjectFn() {
+      getAllSubject({}).then((result) => {
+        this.subjectOptions = result.data.data;
       });
     },
     // 删除单个小题(index表示第几大题，id表示小题id)
@@ -404,20 +385,102 @@ export default {
     },
     // 提交
     submitFn() {
+      if (this.value2 == "") {
+        this.$message({
+          type: "warning",
+          message: "请选择学科",
+        });
+        return;
+      }
+      if (this.value3 == "") {
+        this.$message({
+          type: "warning",
+          message: "请填写试卷类型",
+        });
+        return;
+      }
+      if (
+        this.testName == "" ||
+        this.value3.replace(/(^\s*)|(\s*$)/g, "") == ""
+      ) {
+        this.$message({
+          type: "warning",
+          message: "请填写试卷名称",
+        });
+        return;
+      }
+      if (this.num == "") {
+        this.$message({
+          type: "warning",
+          message: "请填写建议时长",
+        });
+        return;
+      }
       let topicObj = this.$store.state.teacher.choiceTopic;
       // 判断值是否为空
       for (let i = 0; i < this.topicsList.length; i++) {
         if (this.topicsList[i].value == "") {
           // 题目为空
+          this.$message({
+            type: "warning",
+            message: `请填写标题${i + 1}的题目名称`,
+          });
+          return;
         }
-        if (topicObj[i].length == 0) {
+        if (!topicObj[i]) {
           // 没有选择题目
+          this.$message({
+            type: "warning",
+            message: `请选择标题${i + 1}的题目`,
+          });
+          return;
         }
         // 添加题目
         this.topicsList[i].beginIndex = i == 0 ? 0 : topicObj[i - 1].length;
         this.topicsList[i].length = topicObj[i].length;
       }
-      console.log(this.topicsList);
+      let obj = {
+        sId: this.value2,
+        examName: this.testName.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+        paperType: this.value3,
+        suggestTime: this.num,
+        ids: this.$store.state.teacher.choiceIds.toString(),
+        paperFrame: JSON.stringify({
+          ...this.topicsList,
+        }),
+      };
+      publishPaper(obj)
+        .then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              message: "上传成功",
+              type: "success",
+            });
+            this.clearAll();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    clearAll() {
+      // 清空
+      this.value1 = "";
+      this.value2 = "";
+      this.value3 = "";
+      this.testName = "";
+      this.num = 0;
+      this.addTopicFor = -1;
+      this.topicsList = [
+        {
+          value: "",
+          name: "标题",
+          beginIndex: 0,
+          length: 0,
+        },
+      ];
+      this.nowPage = 1;
+      this.$store.commit("teacher/CLEARALL");
     },
   },
   computed: {
@@ -426,9 +489,18 @@ export default {
         return this.$store.state.teacher.choiceTopic[index];
       };
     },
+    getOptions() {
+      if (this.value1 == "") {
+        return [];
+      }
+      return this.subjectOptions.filter((item) => {
+        return item.levelName == this.value1;
+      });
+    },
   },
   mounted() {
     this.getInfo();
+    this.getSubjectFn();
   },
 };
 </script>

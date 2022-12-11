@@ -1,5 +1,15 @@
 <template>
   <div>
+    <el-form-item label="年级">
+      <el-select v-model="value">
+        <el-option
+          v-for="item in gradeArr"
+          :key="item"
+          :label="item"
+          :value="item"
+        ></el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="学科">
       <el-select
         v-model="value1"
@@ -7,7 +17,7 @@
         placeholder="请选择"
       >
         <el-option
-          v-for="item in options"
+          v-for="item in getOptions"
           :key="item.id"
           :label="item.subjectName"
           :value="item.id"
@@ -36,10 +46,35 @@ export default {
   },
   data() {
     return {
+      value: "",
       value1: "",
       value2: "",
       options: [],
+      gradeArr: [
+        "一年级",
+        "二年级",
+        "三年级",
+        "四年级",
+        "五年级",
+        "六年级",
+        "初一",
+        "初二",
+        "初三",
+        "高一",
+        "高二",
+        "高三",
+      ],
     };
+  },
+  computed: {
+    getOptions() {
+      if (this.value == "") {
+        return [];
+      }
+      return this.options.filter((item) => {
+        return item.levelName == this.value;
+      });
+    },
   },
   methods: {
     clearAll() {
@@ -57,9 +92,8 @@ export default {
         .catch(() => {});
     },
     getSubjectFn() {
-      getAllSubject({ beginIndex: 1, size: 10 }).then((result) => {
-        console.log("所有学科", result.data);
-        this.options = result.data.data.records;
+      getAllSubject({}).then((result) => {
+        this.options = result.data.data;
       });
     },
   },

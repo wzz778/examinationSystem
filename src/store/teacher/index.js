@@ -12,8 +12,12 @@ const mutations = {
         Storage.setEditableTabsValue(data);
     },
     CHOICETOPICFN(state, data) {
-        // index表示第几题，info表示该题的数据
-        state.choiceTopic[data.index] = data.info
+        // index表示第几题，info表示该题的数据(有数据就合并，没有就添加)
+        if (state.choiceTopic[data.index]) {
+            state.choiceTopic[data.index] = state.choiceTopic[data.index].concat(data.info)
+        } else {
+            state.choiceTopic[data.index] = data.info
+        }
         state.choiceIds = state.choiceIds.concat(data.choiceIds)
     },
     DELSMALLQUEST(state, data) {
@@ -28,11 +32,17 @@ const mutations = {
     },
     DELTOPIC(state, data) {
         // 将大题下的小题删除
-        let arr = state.choiceTopic[data.index].map(item => {
-            return item.id
-        })
-        state.choiceIds = state.choiceIds.filter((x) => !arr.some((item) => x === item));
+        if (state.choiceTopic[data.index]) {
+            let arr = state.choiceTopic[data.index].map(item => {
+                return item.id
+            })
+            state.choiceIds = state.choiceIds.filter((x) => !arr.some((item) => x === item));
+        }
         state.choiceTopic.splice(data.index, 1)
+    },
+    CLEARALL(state) {
+        state.choiceTopic = []
+        state.choiceIds = []
     }
 }
 // 准备state(存放数据)

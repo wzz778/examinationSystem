@@ -69,7 +69,7 @@ export const getAllUser = async (data) => instance({
     method: "GET",
     params: data
 })
-
+// 删除学生
 export const deleteStudent = async (data) => instance({
     url: "/teacher/deleteStudent",
     method: "DELETE",
