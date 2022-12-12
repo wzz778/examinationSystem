@@ -29,6 +29,7 @@
 import myPaging from "../utilComponents/myPaging.vue";
 import myList from "../utilComponents/myList.vue";
 import myTop from "../utilComponents/myTop.vue";
+import { getAllGradeHas, deleteGrade } from "@/myAxios/teacher/index";
 export default {
   name: "classList",
   components: {
@@ -40,31 +41,24 @@ export default {
     return {
       myTopConfiguration: {
         inputInfoObj: {
-          showName: "用户名:",
-          transferName: "userName",
-        },
-        seletcInfoObjOne: {
-          showName: "班级",
-          // 请求的接口类型
-          fnType: "getClass",
-          // 后端对应的变量名
-          transferName: "class",
+          showName: "班级名称:",
+          transferName: "name",
         },
       },
       myListConfiguration: {
         allType: [
           {
             // dateType表示的是数据
-            dateType: "date",
+            dateType: "id",
             // 数据显示的名字
             showName: "ID",
           },
           {
-            dateType: "name",
+            dateType: "grade",
             showName: "班级名称",
           },
           {
-            dateType: "name",
+            dateType: "code",
             showName: "班级口令",
           },
           {
@@ -72,7 +66,7 @@ export default {
             showName: "班级人数",
           },
           {
-            dateType: "name",
+            dateType: "createTime",
             showName: "创建时间",
           },
         ],
@@ -90,55 +84,66 @@ export default {
           },
         ],
         // 数据
-        tableData: [
-          {
-            id: "1",
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            id: "2",
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-          },
-        ],
+        tableData: [],
       },
       //   分页所需数据
       nowPage: 1,
       pageSize: 10,
-      allNums: 100,
+      allNums: 0,
+      searchObj: null,
     };
   },
   methods: {
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
+      this.getAllGradeFn();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
+      this.getAllGradeFn();
     },
-    deleteFn(id) {
-      console.log(id);
+    deleteFn(obj) {
+      console.log(obj);
+      this.$confirm("确定要删除班级吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteGrade({ ids: obj.id }).then((result) => {
+            console.log("删除", result);
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      this.$router.push({
+        path: "/teacher/classCreat",
+        query: {
+          className: obj.grade,
+          id: obj.id,
+        },
+      });
     },
     searchFn(obj) {
-      console.log("查询", obj);
+      this.searchObj = obj;
     },
+    getAllGradeFn() {
+      // 搜索
+      let obj = { nodePage: this.nowPage, pageSize: this.pageSize };
+      getAllGradeHas(obj).then((result) => {
+        this.myListConfiguration.tableData = result.data.data.records;
+        this.allNums = result.data.data.total;
+      });
+    },
+  },
+  mounted() {
+    this.getAllGradeFn();
   },
 };
 </script>

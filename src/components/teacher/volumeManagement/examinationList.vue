@@ -26,6 +26,7 @@
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
+import { getPaper, deletePaper } from "@/myAxios/teacher/index";
 export default {
   name: "examinationList",
   components: {
@@ -39,38 +40,34 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "试卷ID:",
-          transferName: "userName",
+          transferName: "id",
         },
         seletcInfoObjOne: {
           showName: "学科",
           // 请求的接口类型
-          fnType: "getClass",
+          fnType: "getSubjectFn",
           // 后端对应的变量名
-          transferName: "class",
+          transferName: "sId",
         },
       },
       myListConfiguration: {
         allType: [
           {
             // dateType表示的是数据
-            dateType: "date",
+            dateType: "id",
             // 数据显示的名字
-            showName: "id",
+            showName: "Id",
           },
           {
             dateType: "name",
             showName: "学科",
           },
           {
-            dateType: "name",
+            dateType: "examName",
             showName: "名称",
           },
           {
-            dateType: "name",
-            showName: "班级",
-          },
-          {
-            dateType: "name",
+            dateType: "createTime",
             showName: "创建时间",
           },
         ],
@@ -80,11 +77,6 @@ export default {
             type: "",
             callFn: this.editorFn,
             showInfo: "编辑",
-          },
-          {
-            type: "",
-            callFn: this.seeFn,
-            showInfo: "查看",
           },
           {
             type: "danger",
@@ -122,29 +114,68 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      searchObj: null,
     };
   },
   methods: {
     searchFn(obj) {
-      console.log(obj);
-    },
-    seeFn(obj) {
-      console.log("查看", obj);
+      this.searchObj = obj;
+      this.getInfo();
     },
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
+      this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
+      this.getInfo();
     },
-    deleteFn(id) {
-      console.log(id);
+    deleteFn(obj) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deletePaper({ id: obj.id }).then((result) => {
+            if (result.data.msg == "OK") {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getInfo();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      this.$router.push({
+        path: "/teacher/testCreat",
+        query: {
+          id: obj.id,
+        },
+      });
     },
+    getInfo() {
+      let obj = {
+        beginIndex: this.nowPage,
+        size: this.pageSize,
+      };
+      Object.assign(obj, this.searchObj);
+      getPaper(obj).then((result) => {
+        this.myListConfiguration.tableData = result.data.data.records;
+        this.allNums = result.data.data.total;
+      });
+    },
+  },
+  mounted() {
+    this.getInfo();
   },
 };
 </script>

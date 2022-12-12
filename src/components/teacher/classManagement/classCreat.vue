@@ -15,13 +15,11 @@
 </template>
 
 <script>
-import { Col, Form, FormItem, Input } from "element-ui";
+import { Col } from "element-ui";
+import { addGrade, updateGrade } from "@/myAxios/teacher/index";
 export default {
   name: "classCreat",
   components: {
-    [Input.name]: Input,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
   },
   data() {
@@ -35,13 +33,56 @@ export default {
     },
     submitFn() {
       // 判断是否是空值
-      if (!this.value||this.value.replace(/(^\s*)|(\s*$)/g, "") == "") {
+      if (!this.value || this.value.replace(/(^\s*)|(\s*$)/g, "") == "") {
         this.$message.error("班级名称不能为空");
-        this.value=""
+        this.value = "";
         return;
       }
       //   忽略标签
+      if (this.$route.query.id) {
+        // 修改
+        updateGrade({
+          grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+          id: this.$route.query.id,
+        }).then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.value = "";
+            this.$router.push({ path: "/teacher/classCreat" });
+            return;
+          }
+        });
+        return;
+      }
+      addGrade({
+        grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+      }).then((result) => {
+        console.log("创建班级", result);
+        if (result.data.msg == "OK") {
+          this.$message({
+            message: "添加成功",
+            type: "success",
+          });
+          this.value = "";
+        } else {
+          this.$message({
+            message: result.data.msg,
+            type: "warning",
+          });
+        }
+      });
     },
+    changeInit() {
+      this.value = this.$route.query.className;
+    },
+  },
+  mounted() {
+    if (this.$route.query.id) {
+      this.changeInit();
+    }
   },
 };
 </script>

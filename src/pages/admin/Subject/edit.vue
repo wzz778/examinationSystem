@@ -7,11 +7,11 @@
       :model="form"
       ref="form"
     >
-      <el-form-item label="学科名称" prop="name">
-        <el-input v-model="form.name"></el-input>
+      <el-form-item label="学科名称" prop="subjectName">
+        <el-input v-model="form.subjectName"></el-input>
       </el-form-item>
-      <el-form-item label="年级" prop="region">
-        <el-select v-model="form.region" placeholder="请选择你要添加学科的年级">
+      <el-form-item label="年级" prop="levelName">
+        <el-select v-model="form.levelName" placeholder="请选择你要添加学科的年级">
           <el-option  v-for="p of $store.state.admin.allgrade" :key="p.index" :label="p" :value="p"></el-option>
         </el-select>
       </el-form-item>
@@ -26,6 +26,7 @@
 </template>
 <script>
 import { Input, Select, Option } from "element-ui";
+import {addSubject,updateSubject} from '@/myAxios/admin/wzzAxios'
 export default {
   name: "SubjectEdit",
   components: {
@@ -37,15 +38,18 @@ export default {
     return {
       labelPosition: "right",
       form: {
-        name: "",
-        region: "",
+        id:'',
+        subjectName: '',
+        levelName: '',
+        level:1,
+        deleted: false
       },
       rules: {
-        name: [
+        subjectName: [
           { required: true, message: "请输入学科名称", trigger: "blur" },
           { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" },
         ],
-        region: [
+        levelName: [
           { required: true, message: "请选择学科区域", trigger: "change" },
         ],
       },
@@ -54,13 +58,39 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit!");
+
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
+      this.$refs[formName].validate( async (valid) => {
+        if (valid)  {
+              if(this.form.id){
+                let data= await updateSubject(this.form)
+                if(data.status==200){
+                  this.$message({
+                    message: '修改成功！',
+                    type: 'success'
+                  });
+                  this.$refs[formName].resetFields();
+                }else{
+                  this.$message.error('修改失败');
+                }
+              }else{
+                let data= await addSubject(this.form)
+                if(data.status==200){
+                  this.$message({
+                    message: '添加成功！',
+                    type: 'success'
+                  });
+                  this.$refs[formName].resetFields();
+                }else{
+                  this.$message.error('添加失败');
+                }
+              }
         } else {
-          console.log("error submit!!");
+          this.$message({
+            message: '请输入完整内容！',
+            type: 'warning'
+          });
           return false;
         }
       });
@@ -69,6 +99,13 @@ export default {
       this.$refs[formName].resetFields();
     },
   },
+  mounted(){
+    if(sessionStorage.getItem("formmessage")){
+      let formdata=JSON.parse(sessionStorage.getItem("formmessage"))
+      this.form=formdata;
+      sessionStorage.removeItem("formmessage")
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

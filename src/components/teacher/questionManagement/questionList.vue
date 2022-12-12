@@ -26,6 +26,7 @@
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
+import { getOfClassQuestion, deleteQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionList",
   components: {
@@ -39,21 +40,14 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "题目ID:",
-          transferName: "userName",
-        },
-        seletcInfoObjOne: {
-          showName: "学科",
-          // 请求的接口类型
-          fnType: "getClass",
-          // 后端对应的变量名
-          transferName: "class",
+          transferName: "id",
         },
         seletcInfoObjTwo: {
           showName: "题型",
           // 请求的接口类型
           fnType: "getTopic",
           // 后端对应的变量名
-          transferName: "class",
+          transferName: "type",
         },
         buttonInfo: {
           type: false,
@@ -63,24 +57,24 @@ export default {
         allType: [
           {
             // dateType表示的是数据
-            dateType: "date",
+            dateType: "id",
             // 数据显示的名字
-            showName: "id",
+            showName: "Id",
           },
           {
-            dateType: "name",
+            dateType: "myAnswer.subjectName",
             showName: "学科",
           },
           {
-            dateType: "name",
-            showName: "名称",
+            dateType: "type",
+            showName: "题型",
           },
           {
-            dateType: "name",
-            showName: "班级",
+            dateType: "questionContent",
+            showName: "题干",
           },
           {
-            dateType: "name",
+            dateType: "createTime",
             showName: "创建时间",
           },
         ],
@@ -103,58 +97,123 @@ export default {
           },
         ],
         // 数据
-        tableData: [
-          {
-            id: "1",
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            id: "2",
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-          },
-        ],
+        tableData: [],
       },
       //   分页所需数据
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      searchObj: null,
     };
   },
   methods: {
     searchFn(obj) {
-      console.log(obj);
+      this.searchObj = obj;
+      this.getInfo();
     },
     seeFn(obj) {
       console.log("查看", obj);
     },
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
+      this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
+      this.getInfo();
     },
-    deleteFn(id) {
-      console.log(id);
+    deleteFn(obj) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteQuestion({ ids: obj.id }).then((result) => {
+            if (result.data.msg == "OK") {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getInfo();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      let pathUrl = "singleChoice";
+      if (obj.type == "填空题") {
+        pathUrl = "gapFilling";
+      }
+      if (obj.type == "多选题") {
+        pathUrl = "multiSelect";
+      }
+      if (obj.type == "判断题") {
+        pathUrl = "judgmentQuestion";
+      }
+      if (obj.type == "简答题") {
+        pathUrl = "shortAnswer";
+      }
+      this.$router.push({
+        path: `/teacher/${pathUrl}`,
+        query: {
+          id: obj.id,
+        },
+      });
     },
+    // 题型
+    getTopicType(typeNum) {
+      switch (typeNum) {
+        case 1:
+          return "单选题";
+        case 2:
+          return "多选题";
+        case 3:
+          return "判断题";
+        case 4:
+          return "填空题";
+        case 5:
+          return "简答题";
+      }
+    },
+    getInfo() {
+      let obj = {
+        size: this.pageSize,
+        beginIndex: this.nowPage,
+      };
+      Object.assign(obj, this.searchObj);
+      getOfClassQuestion(obj).then((result) => {
+        for (let i = 0; i < result.data.data.list.length; i++) {
+          // 题型
+          result.data.data.list[i].type = this.getTopicType(
+            result.data.data.list[i].type
+          );
+          result.data.data.list[i].questionContent = JSON.parse(
+            result.data.data.list[i].questionContent
+          )
+            .topicInfo.replace(
+              /<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,
+              ""
+            )
+            .replace(/<[^>]+?>/g, "")
+            .replace(/\s+/g, " ")
+            .replace(/ /g, " ")
+            .replace(/>/g, " ")
+            .replace(/&nbsp;/g, "");
+        }
+        this.myListConfiguration.tableData = result.data.data.list;
+        this.allNums = result.data.data.allCount;
+      });
+    },
+  },
+  mounted() {
+    this.getInfo();
   },
 };
 </script>

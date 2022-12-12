@@ -1,19 +1,23 @@
 <template>
   <div>
     <el-form-item label="解析">
-      <el-input placeholder="请输入内容" v-model="value1"></el-input>
+      <el-input
+        placeholder="请输入内容"
+        v-model="value1"
+        @click.native="parsingFn"
+      ></el-input>
     </el-form-item>
     <el-form-item label="分数">
       <el-input-number
         v-model="num"
-        @change="handleChange"
+        @change="scoreChangeFn(num)"
         :min="0"
         :max="100"
         label="描述文字"
       ></el-input-number>
     </el-form-item>
     <el-form-item label="难度">
-      <el-rate v-model="value2"></el-rate>
+      <el-rate v-model="value2" @change="difficultyChangeFn(value2)"></el-rate>
     </el-form-item>
     <el-form-item label="知识点">
       <el-select
@@ -36,15 +40,8 @@
 </template>
 
 <script>
-import {
-  Col,
-  Form,
-  FormItem,
-  Rate,
-  Option,
-  InputNumber,
-  Select,
-} from "element-ui";
+import { Col, Rate, InputNumber } from "element-ui";
+import { getOfClassQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionBottom",
   //  解析先不搞,分数改变的函数，难度改变的函数，知识点改变的函数
@@ -53,15 +50,13 @@ export default {
     "difficultyChangeFn",
     "knowledgeChangeFn",
     "knowledge",
+    "parsingChangeFn",
   ],
   components: {
     [Rate.name]: Rate,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
     [Option.name]: Option,
     [InputNumber.name]: InputNumber,
-    [Select.name]: Select,
   },
   data() {
     return {
@@ -98,11 +93,44 @@ export default {
       console.log(value);
     },
     clearAll() {
-      console.log("底部组件的变化");
+      this.value1 = "";
+      this.value2 = 0;
+      this.value3 = [];
+      this.num = 1;
+    },
+    parsingFn() {
+      this.$myRichText({ oriHtml: this.value1 })
+        .then((result) => {
+          this.value1 = result;
+          this.parsingChangeFn(result);
+        })
+        .catch(() => {});
+    },
+    getInfo() {
+      getOfClassQuestion({
+        size: 1,
+        beginIndex: 1,
+        id: this.$route.query.id,
+      }).then((result) => {
+        let tempObj = result.data.data.list[0];
+        this.value1=tempObj.correct
+        this.parsingChangeFn(this.value1)
+        this.num=tempObj.score
+        this.scoreChangeFn(this.num)
+        this.value2=tempObj.difficult
+        this.difficultyChangeFn(this.value2)
+      });
     },
   },
   mounted() {
     this.$bus.$on("clearAll", this.clearAll);
+    if (this.$route.query.id) {
+      // 获取数据
+      this.getInfo();
+    }
+  },
+  beforeDestroy() {
+    this.$bus.$off("clearAll");
   },
 };
 </script>

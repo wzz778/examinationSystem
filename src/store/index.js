@@ -8,18 +8,28 @@ Vue.use(Vuex)
 import user from './user'
 import admin from './admin'
 // import message from './message'
+import teacher from './teacher'
 
 // 准备actions(操作数据之前的操作)
 const actions = {}
 // 准备mutations(操作数据,键值一般大写)
-const mutations = {}
+const mutations = {
+    LOGIN: function (state, value) {
+
+        console.log("mutations中的+被调用了", state, value);
+        state.token = value.token
+        state.power=value.pow.power
+        state.userInfo=value.pow
+    },
+}
 // 准备state(存放数据)
 const state = {
-    token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzAzNzc3NzUsInVzZXJuYW1lIjoiMjI5NTkwODI1MSIsInBvd2VyIjoiMCIsImlkIjo0fQ.HxA1GlFl3VGKBbNjnIvjRVre5DUsTgK8tQ57gUSG_YY',
-    power:""
+    token: '',
+    power: "",
+    userInfo:""
 }
 
-const getters={}
+const getters = {}
 
 // 导出
 export default new Vuex.Store({
@@ -30,6 +40,7 @@ export default new Vuex.Store({
     modules: {
         user,
         admin,
+        teacher
         // message
     }
 })  

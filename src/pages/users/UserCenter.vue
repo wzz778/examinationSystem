@@ -84,6 +84,7 @@ main {
       border-radius: 4px;
       border: 1px solid #ebeef5;
       width: 643px;
+      background-color: #ffffff;
     }
   }
 }

@@ -16,12 +16,7 @@ export default class AlertMenu extends BtnMenu {
     clickHandler() {
         // 做任何你想做的事情
         // 可参考【常用 API】文档，来操作编辑器
-        let selectionText = _this.selection.getSelectionText()
-        let SelectionContainerElem = _this.selection.getSelectionEndElem().elems[0]
-        console.log(_this.cmd);
-        console.log('元素', SelectionContainerElem)
-        console.log(selectionText);
-        _this.cmd.do("insertHTML", `<u style="pading:0px 10px;">    1   </u>`)
+        _this.cmd.do("insertHTML", `&nbsp;<u style="pading:0px 10px;">&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;`)
 
     }
     // 菜单是否被激活（如果不需要，这个函数可以空着）

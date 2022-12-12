@@ -12,18 +12,48 @@
           </el-form-item>
         </el-form>
       </el-col>
+      <el-col
+        :span="5"
+        v-if="seletcInfoObjOne && seletcInfoObjOne.showName == '学科'"
+      >
+        <el-form label-width="80px">
+          <el-form-item label="年级">
+            <el-select v-model="value" clearable placeholder="请选择">
+              <el-option
+                v-for="(item,index) in gradeArr"
+                :key="item"
+                :label="item"
+                :value="index+1"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </el-col>
       <el-col :span="5" v-if="seletcInfoObjOne">
         <el-form label-width="80px">
           <el-form-item :label="seletcInfoObjOne.showName">
-            <el-select v-model="value2" clearable placeholder="请选择">
-              <el-option
-                v-for="item in options1"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+            <template v-if="seletcInfoObjOne.showName == '学科'">
+              <el-select v-model="value2" clearable :placeholder="getPl">
+                <el-option
+                  v-for="item in getOptions"
+                  :key="item.id"
+                  :label="item.subjectName"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </template>
+            <template v-else>
+              <el-select v-model="value2" clearable placeholder="请选择">
+                <el-option
+                  v-for="item in options1"
+                  :key="item.id"
+                  :label="item.grade"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </template>
           </el-form-item>
         </el-form>
       </el-col>
@@ -74,18 +104,9 @@
 </template>
 
 <script>
-import {
-  Input,
-  FormItem,
-  Form,
-  Col,
-  Row,
-  Select,
-  Option,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-} from "element-ui";
+import { Col, Row, Dropdown, DropdownMenu, DropdownItem } from "element-ui";
+// 引入访问的接口
+import { getAllGrade, getAllSubject } from "@/myAxios/teacher/index";
 export default {
   name: "myTop",
   /* 
@@ -103,12 +124,8 @@ export default {
     "buttonInfo",
   ],
   components: {
-    [Input.name]: Input,
-    [FormItem.name]: FormItem,
-    [Form.name]: Form,
     [Col.name]: Col,
     [Row.name]: Row,
-    [Select.name]: Select,
     [Option.name]: Option,
     [Dropdown.name]: Dropdown,
     [DropdownMenu.name]: DropdownMenu,
@@ -116,95 +133,96 @@ export default {
   },
   data() {
     return {
+      value: "",
       value1: "",
       value2: "",
       value3: "",
-      options1: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      options2: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      options1: [],
+      options2: [],
       topicArr: [
         {
-          value: "选项1",
+          value: "1",
           label: "单选题",
         },
         {
-          value: "选项2",
+          value: "2",
           label: "多选题",
         },
         {
-          value: "选项3",
+          value: "3",
           label: "判断题",
         },
         {
-          value: "选项4",
+          value: "4",
           label: "填空题",
         },
         {
-          value: "选项5",
+          value: "5",
           label: "简答题",
         },
       ],
+      gradeArr: [
+        "一年级",
+        "二年级",
+        "三年级",
+        "四年级",
+        "五年级",
+        "六年级",
+        "初一",
+        "初二",
+        "初三",
+        "高一",
+        "高二",
+        "高三",
+      ],
     };
+  },
+  computed: {
+    getPl() {
+      return this.seletcInfoObjOne.showName == "学科"
+        ? "请先选择年级"
+        : "请选择";
+    },
+    getOptions() {
+      if (this.value == "") {
+        return [];
+      }
+      return this.options1.filter((item) => {
+        return item.levelName == this.value;
+      });
+    },
   },
   methods: {
     sureSerach() {
       let tempObj = {};
       //   判断是否有值
-      if (this.inputInfoObj) {
+      if (this.inputInfoObj && this.value1 != "") {
         tempObj[this.inputInfoObj.transferName] = this.value1;
       }
       if (this.seletcInfoObjOne) {
-        tempObj[this.seletcInfoObjOne.transferName] = this.value2;
+        if (this.value2 != "") {
+          tempObj[this.seletcInfoObjOne.transferName] = this.value2;
+        }
+        if (this.seletcInfoObjOne.showName == "学科" && this.value != "") {
+          tempObj["gradeClass"] = this.value;
+        }
       }
-      if (this.seletcInfoObjTwo) {
+      if (this.seletcInfoObjTwo && this.value3 != "") {
         tempObj[this.seletcInfoObjTwo.transferName] = this.value3;
       }
       // 调用传递的函数
       this.searchFn(tempObj);
     },
     getClass() {
-      console.log("class");
+      getAllGrade().then((result) => {
+        console.log("获取所有班级", result);
+        this.options1 = result.data.data.records;
+      });
+    },
+    getSubjectFn() {
+      getAllSubject({}).then((result) => {
+        this.options1 = result.data.data;
+      });
     },
     getTopic() {
       this.options2 = this.topicArr;
