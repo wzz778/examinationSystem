@@ -65,7 +65,7 @@
 import jwt_decode from "jwt-decode";
 import Register from "@/components/user/TestRegister";
 import Reset from "@/components/user/TestReset";
-import { Ulogin } from "@/myAxios/user/zffAxios";
+import { Ulogin ,ZaddUserLog} from "@/myAxios/user/zffAxios";
 export default {
   name: "TestLogin",
   components: { Register, Reset },
@@ -95,6 +95,13 @@ export default {
         }else{
         this.$router.push("/admin");
         }
+        let ldata={
+        log:this.count+'用户登录了学考网系统',
+        userId:inf.id
+        }
+        ZaddUserLog(ldata).then((response)=>{
+        console.log("添加日志",response);
+        })
         let res = {
           token: data.data,
           pow: jwt_decode(data.data),
