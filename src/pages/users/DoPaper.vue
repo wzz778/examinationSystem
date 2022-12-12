@@ -6,13 +6,9 @@
         <span class="countDownTime">23分10秒</span>
       </div>
       <div class="topicTab">
-        <el-tag
-          type="info"
-          class="tagItem"
-          v-for="(tag, index) in 30"
-          :key="index"
-          >{{ index + 1 }}</el-tag
-        >
+        <a v-for="(tag, index) in 30" :key="index" @click="toTopic('#t'+index)">
+          <el-tag type="info" class="tagItem">{{ index + 1 }}</el-tag>
+        </a>
       </div>
       <div class="btn">
         <el-button type="primary">提交试卷</el-button>
@@ -33,7 +29,7 @@
         <!-- 单选 -->
         <div class="topicPart">
           <h3 class="topicPartName">第一部分</h3>
-          <div class="topicItem">
+          <div class="topicItem" id="t0">
             <p>1.中华四大名著都有哪些，下列正确的是：</p>
             <div class="choiceItem">
               <el-radio-group v-model="radio">
@@ -45,7 +41,7 @@
             </div>
           </div>
           <!-- 填空 -->
-          <div class="topicItem">
+          <div class="topicItem"  id="t1">
             <p>2.中华四大名著都有_、_、_、_哪些</p>
             <div class="blankItem">
               <div class="inputBlank">
@@ -67,7 +63,7 @@
             </div>
           </div>
           <!-- 多选 -->
-          <div class="topicItem">
+          <div class="topicItem"  id="t2">
             <p>3.中华四大名著都有哪些，下列正确的是：</p>
             <div class="choiceMoreItem">
               <el-checkbox-group v-model="checkList" @change="checkMore">
@@ -81,8 +77,8 @@
             </div>
           </div>
           <!-- 简答 -->
-          <div class="topicItem">
-            <p>4.中华四大名著都有哪些，下列正确的是：</p>
+          <div class="topicItem"  id="t3">
+            <p id="i">4.中华四大名著都有哪些，下列正确的是：</p>
             <div class="shortAnswerItem">
               <el-input
                 type="textarea"
@@ -94,7 +90,7 @@
             </div>
           </div>
           <!-- 判断 -->
-          <div class="topicItem">
+          <div class="topicItem"  id="t4">
             <p>5.中华四大名著有西游记吗：</p>
             <div class="shortAnswerItem">
               <el-radio-group v-model="judge" @change="judgeFun">
@@ -152,6 +148,9 @@ export default {
     judgeFun(val) {
       console.log(val);
     },
+    toTopic(idName){
+        document.querySelector(idName).scrollIntoView(true);
+    }
   },
   components: {
     [Container.name]: Container,
@@ -205,32 +204,33 @@ html {
   display: flex;
   height: 99vh;
   flex-direction: column;
-  overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 /* 整个滚动条 */
 .content ::-webkit-scrollbar {
-    /* 对应纵向滚动条的宽度 */
-    width: 10px;
-    /* 对应横向滚动条的宽度 */
-    height: 10px;
+  /* 对应纵向滚动条的宽度 */
+  width: 10px;
+  /* 对应横向滚动条的宽度 */
+  height: 10px;
 }
 
 /* 滚动条上的滚动滑块 */
 .content ::-webkit-scrollbar-thumb {
-    background-color: #49b1f5;
-    border-radius: 32px;
+  background-color: #49b1f5;
+  border-radius: 32px;
 }
 
 /* 滚动条轨道 */
 .content ::-webkit-scrollbar-track {
-    background-color: #dbeffd;
-    border-radius: 32px;
+  background-color: #dbeffd;
+  border-radius: 32px;
 }
 
 .el-main {
   overflow-y: auto;
   flex: 1;
+  scroll-behavior: smooth;
 }
 
 .paperTitle {
@@ -286,15 +286,15 @@ html {
 }
 
 //题目
-.topicPartName{
-    display: inline-block;
-    width: auto;
-    height: 50px;
-    line-height: 50px;
-    padding:0 15px;
-    background-color: cornflowerblue;
-    border-radius: 5px;
-    color: aliceblue;
+.topicPartName {
+  display: inline-block;
+  width: auto;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 15px;
+  background-color: cornflowerblue;
+  border-radius: 5px;
+  color: aliceblue;
 }
 .topicItem {
   padding: 35px 0;

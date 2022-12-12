@@ -7,13 +7,14 @@
 </template>
 
 <script>
+
 import { Carousel,CarouselItem } from "element-ui";
 export default {
     name:"IndexCarousel",
     components:{
         [Carousel.name]:Carousel,
         [CarouselItem.name]:CarouselItem
-    }
+    },
 
 }
 </script>

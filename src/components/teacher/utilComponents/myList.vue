@@ -16,8 +16,12 @@
       >
       </el-table-column>
     </template>
-    <el-table-column v-if="statueObj" label="状态" width="100px">
-      <el-tag :type="statueObj.type">{{ statueObj.showName }}</el-tag>
+    <el-table-column v-if="statueObj" label="状态" width="100px" prop="status">
+      <template v-slot="scope">
+        <el-tag :type="getStatus(scope.row.status)">{{
+          getType(scope.row.status)
+        }}</el-tag>
+      </template>
     </el-table-column>
     <el-table-column
       prop="date"
@@ -53,18 +57,35 @@ export default {
   data() {
     return {
       selectData: null,
+      choiceIds: [],
     };
   },
   methods: {
     selectionChange(val) {
       this.selectData = val;
+      this.choiceIds = val.map((item) => {
+        return item.id;
+      });
     },
     topicSubmitFn(index) {
       // 将数据提交到vuex里边
       this.$store.commit("teacher/CHOICETOPICFN", {
         index: index,
         info: this.selectData,
+        choiceIds: this.choiceIds,
       });
+    },
+  },
+  computed: {
+    getStatus() {
+      return function (status) {
+        return status == 0 ? "success" : "warning";
+      };
+    },
+    getType() {
+      return function (status) {
+        return status == 0 ? "启用" : "禁用";
+      };
     },
   },
   mounted() {

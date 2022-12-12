@@ -32,3 +32,14 @@ export const ZupdatePassword= async (data) =>requests({
     method:'put',
     params:data,
 });
+//添加日志（增加用户的登录动态）
+export const ZaddUserLog= async (data) =>requests({
+    url:'user/addUserLog',
+    method:'post',
+    params:data,
+});
+//取出日志（取出用户的登录动态）
+export const ZgetLogs= async () =>requests({
+    url:'user/getLogs',
+    method:'get',
+});

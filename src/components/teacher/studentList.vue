@@ -28,6 +28,8 @@
 import myPaging from "./utilComponents/myPaging.vue";
 import myList from "./utilComponents/myList.vue";
 import myTop from "./utilComponents/myTop.vue";
+import { getAllUser, deleteStudent } from "@/myAxios/teacher/index";
+
 export default {
   name: "studentList",
   components: {
@@ -40,7 +42,7 @@ export default {
       myTopConfiguration: {
         inputInfoObj: {
           showName: "用户名:",
-          transferName: "userName",
+          transferName: "name",
         },
         seletcInfoObjOne: {
           showName: "班级",
@@ -54,39 +56,16 @@ export default {
         },
       },
       myListConfiguration: {
-        tableData: [
-          {
-            id: "1",
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            id: "2",
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-          },
-        ],
+        tableData: [],
         allType: [
           {
             // dateType表示的是数据
-            dateType: "date",
+            dateType: "id",
             // 数据显示的名字
             showName: "ID",
           },
           {
-            dateType: "name",
+            dateType: "userName",
             showName: "用户名",
           },
           {
@@ -98,15 +77,15 @@ export default {
             showName: "学级",
           },
           {
-            dateType: "name",
+            dateType: "sex",
             showName: "性别",
           },
           {
-            dateType: "name",
+            dateType: "phone",
             showName: "手机号",
           },
           {
-            dateType: "name",
+            dateType: "createTime",
             showName: "加入时间",
           },
           {
@@ -125,22 +104,27 @@ export default {
       nowPage: 1,
       pageSize: 10,
       allNums: 100,
+      searchObj: null,
     };
   },
   methods: {
     pageChangeFn(val) {
       this.nowPage = val;
       console.log("组件里边的页数", val);
+      this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
       console.log("组件里边的条数", val);
+      this.getInfo();
     },
-    deleteFn(a) {
-      console.log("aaaaaaaaaa", a);
+    deleteFn(obj) {
       this.$confirm("确定要删除吗?")
         .then(() => {
           console.log("确定");
+          deleteStudent({ isd: obj.id }).then((result) => {
+            console.log("删除接口", result);
+          });
         })
         .catch(() => {
           this.$message("已取消");
@@ -148,7 +132,25 @@ export default {
     },
     searchFn(obj) {
       console.log("查询", obj);
+      this.searchObj = obj;
+      this.getInfo();
     },
+    getInfo() {
+      let obj = {
+        nodePage: this.nowPage,
+        pageSize: this.pageSize,
+        power: 0,
+      };
+      Object.assign(obj, this.searchObj);
+      getAllUser(obj).then((result) => {
+        console.log("获取用户", result);
+        this.myListConfiguration.tableData = result.data.data.records;
+        this.allNums = result.data.data.total;
+      });
+    },
+  },
+  mounted() {
+    this.getInfo();
   },
 };
 </script>

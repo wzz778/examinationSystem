@@ -40,8 +40,8 @@
               <span id="userHead"></span>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item class="el-dropdown-item">个人中心</el-dropdown-item>
-              <el-dropdown-item class="el-dropdown-item">消息中心</el-dropdown-item>
+              <el-dropdown-item class="el-dropdown-item"><router-link  to="/user/userCenter">个人中心</router-link></el-dropdown-item>
+              <el-dropdown-item class="el-dropdown-item"><router-link  to="/user/newsCenter">消息中心</router-link></el-dropdown-item>
               <el-dropdown-item class="el-dropdown-item logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -64,6 +64,11 @@
 import { Menu, MenuItem, Row, Col, Dropdown, DropdownItem,DropdownMenu } from "element-ui";
 export default {
   name: "UserTop",
+  data() {
+    return {
+       activeIndex: '1',
+    }
+  },
   components: {
     [Menu.name]: Menu,
     [MenuItem.name]: MenuItem,
