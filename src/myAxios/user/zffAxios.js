@@ -43,3 +43,15 @@ export const ZgetLogs= async () =>requests({
     url:'user/getLogs',
     method:'get',
 });
+//加入班级（班级口令）
+export const ZaddGrade= async (data) =>requests({
+    url:'user/addGrade',
+    method:'put',
+    params:data,
+});
+//更新用户头像
+export const ZupdatePhoto= async (data) =>requests({
+    url:'user/updatePhoto',
+    method:'put',
+    params:data,
+});
