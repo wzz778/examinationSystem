@@ -30,7 +30,6 @@
                 <span>总分：100</span>
             </div>
             <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
               <router-link to="/doPaper"><el-button type="text" class="button">去答题</el-button></router-link>
             </div>
           </div>
@@ -45,7 +44,7 @@
 <script>
 import { Card, Collapse, CollapseItem, Row, Col, Button } from "element-ui";
 export default {
-  name: " VideoClassBox",
+  name: "VideoClass",
   components: {
     [Collapse.name]: Collapse,
     [CollapseItem.name]: CollapseItem,

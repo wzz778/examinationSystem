@@ -25,8 +25,8 @@
               :key="index"
               :label="index"
               border
-              :value="courseType"
-              >{{ courseType }}</el-radio
+              :value="courseType.subjectName"
+              >{{ courseType.subjectName }}</el-radio
             >
           </el-radio-group>
         </div>
@@ -37,21 +37,25 @@
         :body-style="{ padding: '0px' }"
         shadow="hover"
         class="paperBox"
-        v-for="(arr, index) in 5"
+        v-for="(p, index) in paperList"
         :key="index"
       >
         <div style="padding: 14px">
           <div class="paperInfo">
-            <span class="paperTitle">试卷一</span>
+            <span class="paperTitle">{{ p.examName }}</span>
             <span>学科：语文</span>
-            <span>题数：3</span>
-            <span>总分：100</span>
-            <span>时长：120分钟</span>
-            <span>开始时间：2022-12-5 00:00:00</span>
-            <span>截止时间：2022-12-6 00:00:00</span>
+            <span>题数：{{ p.paperContentId.length }}</span>
+            <span>总分：{{ p.paperScore }}</span>
+            <span>时长：{{ p.suggestTime }}</span>
+            <span>开始时间：{{ p.limitStartTime }}</span>
+            <span>截止时间：{{ p.limitEndTime }}</span>
           </div>
           <div class="bottom clearfix">
-            <el-button type="text" class="button">去答题</el-button>
+            <router-link :to="{ path: '/doPaper', query: { pid: p.id } }"
+              ><el-button type="text" class="button"
+                >去答题</el-button
+              ></router-link
+            >
           </div>
         </div>
       </el-card>
@@ -60,11 +64,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
+        :current-page="currentPage"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="pageInfo.total"
       >
       </el-pagination>
     </div>
@@ -72,7 +76,8 @@
 </template>
 
 <script>
-import { RadioGroup, Radio, Card, Button,Pagination } from "element-ui";
+import { getMyCourse, getPapers } from "@/myAxios/user/yxyAxios";
+import { RadioGroup, Radio, Card, Button, Pagination } from "element-ui";
 export default {
   name: "IndexPaper",
   data() {
@@ -80,8 +85,12 @@ export default {
       radio1: 0,
       radio2: "",
       paperTypes: ["固定试卷", "时段试卷", "班级试卷"],
-      courseTypes: ["语文", "数学", "英语"],
-      
+      courseTypes: [],
+      pagerType: "",
+      courseType: "",
+      currentPage: 1,
+      paperList: [],
+      pageInfo:{}
     };
   },
   components: {
@@ -89,16 +98,39 @@ export default {
     [Radio.name]: Radio,
     [Card.name]: Card,
     [Button.name]: Button,
-    [Pagination.name]:Pagination
+    [Pagination.name]: Pagination,
   },
-  methods:{
+  methods: {
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
-  }
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+  },
+  mounted() {
+    let data = {
+      beginIndex: 1,
+      level: "一年级",
+      size: 10,
+    };
+    getMyCourse(data).then((res) => {
+      console.log(res);
+      this.courseTypes = res.data.records;
+    });
+    let pagerData = {
+      beginIndex: 1,
+      gradeClass: 1,
+      size: 8,
+    };
+    getPapers(pagerData).then((res) => {
+      this.paperList = res.data.records;
+      this.pageInfo.pages=res.data.pages;
+      this.pageInfo.current=res.data.current;
+      this.pageInfo.total=res.data.total
+      console.log(res.data)
+    });
+  },
 };
 </script>
 
@@ -181,10 +213,10 @@ export default {
 }
 
 //分页
-.pagesBox{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
+.pagesBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
 }
 </style>

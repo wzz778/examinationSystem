@@ -10,21 +10,24 @@
           :body-style="{ padding: '0px' }"
           shadow="hover"
           class="paperBox"
-          v-for="(arr, index) in 5"
+          v-for="(p, index) in paperList"
           :key="index"
         >
           <div style="padding: 14px">
             <div class="paperInfo">
-              <span class="paperTitle">试卷一</span>
+              <span class="paperTitle">{{ p.examName }}</span>
               <span>学科：语文</span>
-              <span>题数：3</span>
-              <span>总分：100</span>
-              <span>时长：120分钟</span>
-              <span>开始时间：2022-12-5 00:00:00</span>
-              <span>截止时间：2022-12-6 00:00:00</span>
+              <span>题数：{{p.paperContentId.length}}</span>
+              <span>总分：{{ p.paperScore }}</span>
+              <span>时长：{{ p.suggestTime }}</span>
+              <span>开始时间：{{ p.limitStartTime }}</span>
+              <span>截止时间：{{ p.limitEndTime }}</span>
             </div>
             <div class="bottom clearfix">
-              <router-link to="/doPaper"><el-button type="text" class="button">去答题</el-button></router-link>
+              <router-link :to="{path:'/doPaper',query:{pid:p.id}}"><el-button type="text" class="button"
+                  >去答题</el-button
+                ></router-link
+              >
             </div>
           </div>
         </el-card>
@@ -35,6 +38,7 @@
 
 <script>
 import { Card, Collapse, CollapseItem, Row, Col, Button } from "element-ui";
+import { getPapers } from "@/myAxios/user/yxyAxios";
 export default {
   name: "PaperBox",
   components: {
@@ -47,13 +51,29 @@ export default {
   },
   data() {
     return {
-      arr: [1, 2, 3, 4, 5],
+      paperList: [],
     };
   },
   methods: {
     handleChange(val) {
       console.log(val);
     },
+    toDoPaper(paperInfo){
+        console.log(paperInfo);
+        // this.$bus.$emit('paperInfo',this.paperList)
+    }
+  },
+  mounted() {
+    let data = {
+      beginIndex: 1,
+      gradeClass: 1,
+      size: 8,
+    };
+    getPapers(data).then((res) => {
+      console.log(res.data);
+      this.paperList = res.data.records;
+      console.log(this.paperList);
+    });
   },
 };
 </script>
@@ -117,7 +137,7 @@ export default {
 }
 .item {
   display: grid;
-  grid-template-columns: repeat(auto-fill,320px);
+  grid-template-columns: repeat(auto-fill, 320px);
   gap: 15px;
 }
 .paperBox {
