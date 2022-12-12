@@ -8,6 +8,7 @@
         @close="handleClose"
         :collapse="isCollapse"
         :router="true"
+        :style="cstyle"
       >
         <el-menu-item index="/admin/index">
           <i class="el-icon-menu"></i>
@@ -19,7 +20,7 @@
         </el-menu-item>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-custom"></i>
             <span slot="title">用户管理</span>
           </template>
           <el-menu-item index="3-1">学生列表</el-menu-item>
@@ -28,7 +29,7 @@
         </el-submenu>
         <el-submenu index="/admin/subject">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-star-off"></i>
             <span slot="title">学科管理</span>
           </template>
           <el-menu-item index="/admin/subject/list">学科列表</el-menu-item>
@@ -36,7 +37,7 @@
         </el-submenu>
         <el-submenu index="/admin/knowledge">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-star-on"></i>
             <span slot="title">知识点管理</span>
           </template>
           <el-menu-item index="/admin/knowledge/list">知识点列表</el-menu-item>
@@ -44,7 +45,7 @@
         </el-submenu>
         <el-submenu index="6">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-order"></i>
             <span slot="title">卷库管理</span>
           </template>
           <el-menu-item index="/admin/">卷库列表</el-menu-item>
@@ -52,7 +53,7 @@
         </el-submenu>
         <el-submenu index="7">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-c-scale-to-original"></i>
             <span slot="title">题库管理</span>
           </template>
           <el-menu-item index="/admin/">题库列表</el-menu-item>
@@ -60,7 +61,7 @@
         </el-submenu>
         <el-submenu index="/admin/task">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-tickets"></i>
             <span slot="title">任务管理</span>
           </template>
           <el-menu-item index="/admin/task/list">任务列表</el-menu-item>
@@ -68,7 +69,7 @@
         </el-submenu>
         <el-submenu index="/admin/video">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-film"></i>
             <span slot="title">视频管理</span>
           </template>
           <el-menu-item index="/admin/video/list">视频列表</el-menu-item>
@@ -76,7 +77,7 @@
         </el-submenu>
         <el-submenu index="10">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-document"></i>
             <span slot="title">答卷管理</span>
           </template>
           <el-menu-item index="/admin/">批改列表</el-menu-item>
@@ -84,14 +85,14 @@
         </el-submenu>
         <el-submenu index="/admin/message">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-chat-line-square"></i>
             <span slot="title">消息中心</span>
           </template>
           <el-menu-item index="/admin/message/list">消息列表</el-menu-item>
           <el-menu-item index="/admin/message/edit">消息发送</el-menu-item>
         </el-submenu>
         <el-menu-item index="/admin/journal/list">
-          <i class="el-icon-document"></i>
+          <i class="el-icon-date"></i>
           <span slot="title">日志中心</span>
         </el-menu-item>
       </el-menu>
@@ -191,6 +192,9 @@ export default {
       refold: "el-icon-s-fold",
       alltitle: ["首页"],
       tabIndex: 2,
+      cstyle:{
+        width:"200px"
+      }
     };
   },
   methods: {
@@ -237,10 +241,12 @@ export default {
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
+        this.cstyle.width="70px"
       } else {
         this.rebody = "body1";
         this.rehead = "head1";
         this.refold = "el-icon-s-fold";
+        this.cstyle.width="200px"
       }
     },
     $route(to) {
@@ -308,9 +314,11 @@ export default {
     // overflow:scroll;
     overflow: hidden;
     .el-menu-vertical-demo{
-      max-height: 100vh;
-      overflow-y: scroll;
-      width: 200px;
+      height: 100vh;
+      overflow-y: scroll; 
+      overflow-x: none;
+      // width: 200px;
+      transform: all .3s;
         &::-webkit-scrollbar {
             width: 4px;    
         }
@@ -336,7 +344,7 @@ export default {
   color: #333;
 }
 #head {
-  height: 80px;
+  height: 88px;
   background-color: white;
     // border-bottom: solid 1px #e6e6e6;
   position: fixed;
@@ -350,6 +358,7 @@ export default {
     height: 45px;
     border-bottom: solid 1px #e6e6e6;
     z-index: 2;
+    overflow: hidden;
     .el-menu-demo {
       position: absolute;
       right: 0;
@@ -381,8 +390,12 @@ export default {
     width: 100%;
     height: 60px;
     overflow: hidden;
-    .el-tabs__nav {
+    
+    .el-tabs__nav{
       float: left;
+      .el-tabs__item{
+        height: 30px;
+      }
     }
     .el-button {
       float: left;
@@ -403,6 +416,7 @@ export default {
   transition: all 0.3s;
   position: relative;
   z-index: 1;
+  background-color: #f8f8f8;
   #begin-main {
     width: 100%;
     height: 600px;
@@ -410,9 +424,9 @@ export default {
   }
 }
 .body1 {
-  padding: 90px 10px 10px 210px;
+  padding: 100px 10px 10px 210px;
 }
 .body2 {
-  padding: 90px 10px 10px 70px;
+  padding: 100px 10px 10px 70px;
 }
 </style>

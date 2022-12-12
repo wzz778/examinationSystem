@@ -2,10 +2,13 @@
   <div id="layout">
     <div id="nav" class="nav1">
       <el-menu
-        :default-active="$router.path"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
         :collapse="isCollapse"
-        router
+        :router="true"
+         :style="cstyle"
       >
         <el-menu-item index="/teacher/graphicPresentation">
           <i class="el-icon-menu"></i>
@@ -158,7 +161,11 @@ export default {
       rebody: "body1",
       rehead: "head1",
       refold: "el-icon-s-fold",
+      alltitle: ["首页"],
       tabIndex: 2,
+      cstyle:{
+        width:"200px"
+      }
     };
   },
   methods: {
@@ -195,10 +202,12 @@ export default {
       if (newValue) {
         this.rebody = "body2";
         (this.rehead = "head2"), (this.refold = "el-icon-s-unfold");
+       this.cstyle.width="70px"
       } else {
         this.rebody = "body1";
         this.rehead = "head1";
         this.refold = "el-icon-s-fold";
+        this.cstyle.width="200px"
       }
     },
     $route(to) {
@@ -251,7 +260,7 @@ export default {
   },
 };
 </script>
-<style  lang="less">
+<style  lang="less" scoped>
   #nav {
     height: 100vh;
     background-color: white;
@@ -259,12 +268,11 @@ export default {
     transition: all 0.3s;
     position: fixed;
     z-index: 101;
-    // overflow:scroll;
     overflow: hidden;
     .el-menu-vertical-demo{
-      max-height: 100vh;
+      height: 100vh;
       overflow-y: scroll;
-      width: 200px;
+      overflow-x: none;
         &::-webkit-scrollbar {
             width: 4px;    
         }
@@ -290,19 +298,21 @@ export default {
   color: #333;
 }
 #head {
-  height: 80px;
-  z-index: 1;
+  height: 100px;
   background-color: white;
-  border-bottom: solid 1px #e6e6e6;
+    // border-bottom: solid 1px #e6e6e6;
   position: fixed;
   top: 0;
   width: 100%;
   color: white;
+  z-index: 100;
   transition: all 0.3s;
   .headtop {
     width: 100%;
     height: 45px;
     border-bottom: solid 1px #e6e6e6;
+    z-index: 2;
+     overflow: hidden;
     .el-menu-demo {
       position: absolute;
       right: 0;
@@ -323,10 +333,23 @@ export default {
       float: left;
       color: white;
     }
+    .el-breadcrumb {
+      float: left;
+      margin: 15px 0 0 20px;
+      font-size: 16px;
+      width: 300px;
+    }
   }
   .headbottom {
     width: 100%;
-    height: 33px;
+    height: 60px;
+    overflow: hidden;
+    .el-tabs__nav {
+      float: left;
+    }
+    .el-button {
+      float: left;
+    }
   }
 }
 .head1 {
@@ -340,8 +363,9 @@ export default {
 #body {
   width: 100%;
   min-height: 100vh;
-  background-color: #f8f8f8;
   transition: all 0.3s;
+  position: relative;
+  z-index: 1;
   #begin-main {
     width: 100%;
     height: 600px;
@@ -349,18 +373,9 @@ export default {
   }
 }
 .body1 {
-  padding: 90px 10px 10px 210px;
+  padding: 100px 10px 10px 210px;
 }
 .body2 {
-  padding: 90px 10px 10px 70px;
-}
-
-.el-tabs__item {
-  height: 34px;
-  line-height: 34px;
-}
-
-.el-tabs__new-tab {
-  display: none;
+  padding: 100px 10px 10px 70px;
 }
 </style>

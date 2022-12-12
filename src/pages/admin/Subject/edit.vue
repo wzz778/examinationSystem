@@ -17,8 +17,7 @@
       </el-form-item>
       <el-form-item>  
         <el-button type="primary" @click="submitForm('form')"
-          >立即创建</el-button
-        >
+          >立即创建</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -88,7 +87,7 @@ export default {
               }
         } else {
           this.$message({
-            message: '请输入完整内容！',
+            message: '您的填写有误！',
             type: 'warning'
           });
           return false;
@@ -105,6 +104,20 @@ export default {
       this.form=formdata;
       sessionStorage.removeItem("formmessage")
     }
+  },
+  watch:{
+    'form.levelName':{
+        deep:true,
+        handler(){
+          let allgrade=this.$store.state.admin.allgrade
+          for(let i in allgrade){
+            if(allgrade[i]==this.form.levelName){
+              this.form.level=parseInt(i)+1;
+            }
+          }
+          console.log(this.form.level);
+        }
+    }
   }
 };
 </script>
@@ -112,6 +125,7 @@ export default {
 #adminindex {
   width: 100%;
   min-height: 500px;
-  // background-color:#3BCA55;
+  padding:20px 10px;
+  background-color: #f8f8f8;
 }
 </style>

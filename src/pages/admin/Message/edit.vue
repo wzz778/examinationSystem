@@ -10,11 +10,8 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域" prop="region">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
+      <el-form-item label="活动区域" prop="content">
+        <el-input type="textarea" v-model="form.content"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')"
@@ -26,28 +23,27 @@
   </div>
 </template>
 <script>
-import { Input, Select, Option } from "element-ui";
+import { Input} from "element-ui";
 export default {
   name: "SubjectEdit",
   components: {
     [Input.name]: Input,
-    [Select.name]: Select,
-    [Option.name]: Option,
   },
   data() {
     return {
       labelPosition: "right",
       form: {
         name: "",
-        region: "",
+        content: "",
       },
       rules: {
         name: [
           { required: true, message: "请输入活动名称", trigger: "blur" },
           { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
+        content: [
+          { required: true, message: "请输入活动名称", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
         ],
       },
     };

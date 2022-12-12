@@ -20,12 +20,20 @@
         <el-table-column
         prop="subjectName"
         label="学科"
-        >
+        > 
         </el-table-column>
         <el-table-column
         prop="levelName"
         label="年级"
         >
+        </el-table-column>
+        <el-table-column
+          prop="deleted"
+          label="状态"
+        >
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.deleted? 'warning' : 'success'">{{scope.row.deleted|toch()}}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
         label="操作"
@@ -49,20 +57,22 @@
   </div>
 </template>
 <script>
-import { Select, Option } from "element-ui";
+import { Select, Option , Tag} from "element-ui";
 import {getAllSubject,searchSubject,deleteSubject} from '@/myAxios/admin/wzzAxios'
 export default {
   name:'SubjectList',
   components: {
     [Select.name]: Select,
     [Option.name]: Option,
+     [Tag.name]: Tag,
   },
     data() {
-        const item = {
-          id: '1',
-          subjectName: '语文',
-          levelName: '年级',
-        };
+      const item = {
+        id: '1',
+        subjectName: '语文',
+        levelName: '年级',
+        deleted:"34"
+      };
       return {
         currentPage: 1,
         tableData:Array(0).fill(item),
@@ -98,6 +108,7 @@ export default {
               type: 'success',
               message: '删除成功!'
             });
+            this.chagepage()
           }else{
             this.$message.error('删除失败');
           }
@@ -124,6 +135,7 @@ export default {
       async chagepage() {
         if(this.level==""){
           let data= await getAllSubject({beginIndex:this.currentPage,size:this.pagesize})
+          console.log(data);
           if(data.status==200){
             this.alltotal=data.data.total;
             this.tableData=data.data.records;
@@ -166,18 +178,22 @@ export default {
         //     return axios;
         // },
   },
-  // watch:{
-  //   level(newvalue){
-  //     this.chagepage()
-  //     console.log(newvalue);
-  //   }
-  // }
+   filters:{
+        toch(value){      
+            if(!value){
+              return "启用"
+            }else{
+              return "停用"
+            }
+        }//1368
+    }
 }
 </script>
 <style lang="less" scoped>
     #adminindex{
         width: 100%;
         min-height: 500px;
+        padding:20px 10px;
         background-color: #f8f8f8;
     }
 </style>
