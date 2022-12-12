@@ -35,7 +35,6 @@
             <span>总分：100</span>
           </div>
           <div class="bottom clearfix">
-            <time class="time">{{ currentDate }}</time>
             <el-button type="text" class="button">去答题</el-button>
           </div>
         </div>
@@ -45,7 +44,7 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
+        :current-page="currentPage"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
@@ -86,6 +85,7 @@ export default {
       arr: [1, 2, 3, 4, 5],
       radio: 0,
       courseTypes: ["语文", "数学", "英语"],
+      currentPage:1
     };
   },
   methods: {

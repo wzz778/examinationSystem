@@ -3,7 +3,7 @@
     <carousel />
     <taskbox />
     <paperbox />
-    <videoclassbox />
+    <videoclass />
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 import carousel from "../../components/user/Carousel.vue";
 import taskbox from "../../components/user/TaskBox.vue";
 import paperbox from "../../components/user/PaperBox.vue";
-import videoclassbox from "../../components/user/VideoClassBox"
+import videoclass from "../../components/user/VideoClass"
 export default {
   name: "IndexCenter",
   data() {
@@ -23,7 +23,7 @@ export default {
     carousel,
     taskbox,
     paperbox,
-    videoclassbox
+    videoclass
   },
 };
 </script>

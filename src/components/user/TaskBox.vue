@@ -6,10 +6,10 @@
       <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
     </div>
     <div class="text item">
-      <el-collapse v-model="activeNames" @change="handleChange">
+      <el-collapse  @change="handleChange">
         <el-collapse-item title="任务一" name="1">
           <div class="taskItem">
-            <span class="itemName">试卷一</span>
+            <span class="itemName" @click="logFun">试卷一</span>
             <div class="btns">
               <el-button type="text" style="color:rgb(103,194,58)">完成</el-button>
               <router-link to="/readPaper"><el-button type="text" style="margin-left:10px">查看试卷</el-button></router-link>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import {getAllSubject} from '../../myAxios/user/yxyAxios'
 import { Card, Collapse, CollapseItem,Button } from "element-ui";
 export default {
   name: "TaskBox",
@@ -80,7 +81,14 @@ export default {
     handleChange(val) {
       console.log(val);
     },
-  },
+    async logFun(){
+        let data={
+          beginIndex:1,
+          size:10
+        }
+        console.log(await getAllSubject(data))
+      }
+  }
 };
 </script>
 

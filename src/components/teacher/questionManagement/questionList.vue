@@ -26,7 +26,7 @@
 import myTop from "../utilComponents/myTop.vue";
 import myList from "../utilComponents/myList.vue";
 import myPaging from "../utilComponents/myPaging.vue";
-import { getOfClassQuestion } from "@/myAxios/teacher/index";
+import { getOfClassQuestion, deleteQuestion } from "@/myAxios/teacher/index";
 export default {
   name: "questionList",
   components: {
@@ -41,13 +41,6 @@ export default {
         inputInfoObj: {
           showName: "题目ID:",
           transferName: "id",
-        },
-        seletcInfoObjOne: {
-          showName: "学科",
-          // 请求的接口类型
-          fnType: "getClass",
-          // 后端对应的变量名
-          transferName: "sId",
         },
         seletcInfoObjTwo: {
           showName: "题型",
@@ -69,7 +62,7 @@ export default {
             showName: "Id",
           },
           {
-            dateType: "name",
+            dateType: "myAnswer.subjectName",
             showName: "学科",
           },
           {
@@ -115,7 +108,6 @@ export default {
   },
   methods: {
     searchFn(obj) {
-      console.log(obj);
       this.searchObj = obj;
       this.getInfo();
     },
@@ -124,19 +116,56 @@ export default {
     },
     pageChangeFn(val) {
       this.nowPage = val;
-      console.log("组件里边的页数", val);
       this.getInfo();
     },
     sizeChangeFn(val) {
       this.pageSize = val;
-      console.log("组件里边的条数", val);
       this.getInfo();
     },
-    deleteFn(id) {
-      console.log(id);
+    deleteFn(obj) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteQuestion({ ids: obj.id }).then((result) => {
+            if (result.data.msg == "OK") {
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+              this.getInfo();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
-    editorFn(id) {
-      console.log(id);
+    editorFn(obj) {
+      let pathUrl = "singleChoice";
+      if (obj.type == "填空题") {
+        pathUrl = "gapFilling";
+      }
+      if (obj.type == "多选题") {
+        pathUrl = "multiSelect";
+      }
+      if (obj.type == "判断题") {
+        pathUrl = "judgmentQuestion";
+      }
+      if (obj.type == "简答题") {
+        pathUrl = "shortAnswer";
+      }
+      this.$router.push({
+        path: `/teacher/${pathUrl}`,
+        query: {
+          id: obj.id,
+        },
+      });
     },
     // 题型
     getTopicType(typeNum) {
@@ -160,14 +189,11 @@ export default {
       };
       Object.assign(obj, this.searchObj);
       getOfClassQuestion(obj).then((result) => {
-        console.log("搜寻问题", result);
         for (let i = 0; i < result.data.data.list.length; i++) {
           // 题型
           result.data.data.list[i].type = this.getTopicType(
             result.data.data.list[i].type
           );
-          //
-
           result.data.data.list[i].questionContent = JSON.parse(
             result.data.data.list[i].questionContent
           )

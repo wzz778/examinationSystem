@@ -60,7 +60,11 @@
 import { Col, Radio, CheckboxGroup, Checkbox, Dialog } from "element-ui";
 import questionTop from "../utilComponents/questionTop.vue";
 import questionBottom from "../utilComponents/questionBottom.vue";
-import { addQuestion } from "@/myAxios/teacher/index";
+import {
+  addQuestion,
+  updateQuestion,
+  getOfClassQuestion,
+} from "@/myAxios/teacher/index";
 export default {
   name: "singleChoice",
   components: {
@@ -120,8 +124,44 @@ export default {
         .catch(() => {});
     },
     submitFn() {
+      // 判断是否空值
+      if (this.discipline.toString().replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "选择学科",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.questionStem.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入题干",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.trueOptions.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入正确答案",
+          type: "warning",
+        });
+        return;
+      }
+      if (this.parsing.replace(/(^\s*)|(\s*$)/g, "") == "") {
+        this.$message({
+          message: "请输入解析",
+          type: "warning",
+        });
+        return;
+      }
+      if(this.trueOptions.replace(/(^\s*)|(\s*$)/g, "") == ""){
+        this.$message({
+          message: `请输入选项的值的值`,
+          type: "warning",
+        });
+        return
+      }
       let obj = {
-        SId: this.discipline,
+        sId: this.discipline,
         questionContent: JSON.stringify({
           type: 5,
           topicInfo: this.questionStem,
@@ -132,6 +172,20 @@ export default {
         difficult: this.difficulty,
         type: 5,
       };
+      if (this.$route.query.id) {
+        obj.id = this.$route.query.id;
+        updateQuestion(obj).then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              type: "success",
+              message: "修改成功!",
+            });
+          }
+          this.clearAllFn();
+          this.$router.push({ path: "/teacher/shortAnswer" });
+        });
+        return;
+      }
       addQuestion(obj)
         .then((result) => {
           if (result.data.msg == "OK") {
@@ -146,6 +200,21 @@ export default {
           console.log(err);
         });
     },
+    getInfo() {
+      getOfClassQuestion({
+        size: 1,
+        beginIndex: 1,
+        id: this.$route.query.id,
+      }).then((result) => {
+        this.trueOptions = result.data.data.list[0].answer;
+      });
+    },
+  },
+  mounted() {
+    if (this.$route.query.id) {
+      // 获取数据
+      this.getInfo();
+    }
   },
 };
 </script>

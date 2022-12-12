@@ -14,6 +14,11 @@ import store from './store'
 // 引入全局自定义组件
 import myRichText from "./myRichText/index"
 
+//视频播放播放
+import VueDPlayer from 'vue-dplayer';
+import 'vue-dplayer/dist/vue-dplayer.css';
+
+
 // 配置less
 Vue.use(less)
 //配置路由
@@ -36,6 +41,7 @@ Vue.use(Dialog)
 Vue.use(Upload)
 // 配置
 Vue.use(myRichText)
+Vue.use(VueDPlayer);
 
 Vue.config.productionTip = false
 //配置(可全局通过this调用)

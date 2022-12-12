@@ -9,11 +9,10 @@ import IndexErrorBook from '@/pages/users/IndexErrorBook'
 import DoPaper from '@/pages/users/DoPaper'
 import ReadPaper from '@/pages/users/ReadPaper'
 import CorrectPaper from '@/pages/users/CorrectPaper'
-// 写路由
+import WatchVideo from '@/pages/users/WatchVideo'
 export default [
     {
         path:'/user',
-        name:'Top',
         component:Top,
         children:[
             {
@@ -44,18 +43,19 @@ export default [
     },
     {
         path:'/doPaper',
-        name:'doPaper',
         component:DoPaper
     },
     {
         path:'/readPaper',
-        name:'readPaper',
         component:ReadPaper
     },
     {
         path:'/correctPaper',
-        name:'correctPaper',
         component:CorrectPaper
+    },
+    {
+        path:'/watchVideo',
+        component:WatchVideo
     }
 
 ]

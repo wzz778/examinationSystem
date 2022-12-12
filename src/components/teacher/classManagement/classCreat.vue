@@ -16,7 +16,7 @@
 
 <script>
 import { Col } from "element-ui";
-import { addGrade } from "@/myAxios/teacher/index";
+import { addGrade, updateGrade } from "@/myAxios/teacher/index";
 export default {
   name: "classCreat",
   components: {
@@ -39,6 +39,24 @@ export default {
         return;
       }
       //   忽略标签
+      if (this.$route.query.id) {
+        // 修改
+        updateGrade({
+          grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+          id: this.$route.query.id,
+        }).then((result) => {
+          if (result.data.msg == "OK") {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.value = "";
+            this.$router.push({ path: "/teacher/classCreat" });
+            return;
+          }
+        });
+        return;
+      }
       addGrade({
         grade: this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
       }).then((result) => {
@@ -57,6 +75,14 @@ export default {
         }
       });
     },
+    changeInit() {
+      this.value = this.$route.query.className;
+    },
+  },
+  mounted() {
+    if (this.$route.query.id) {
+      this.changeInit();
+    }
   },
 };
 </script>

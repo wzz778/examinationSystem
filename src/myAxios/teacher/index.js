@@ -33,11 +33,23 @@ export const deleteGrade = async (data) => instance({
     method: "DELETE",
     params: data
 })
+// 修改班级
+export const updateGrade = async (data) => instance({
+    url: "/grade/updateGrade",
+    method: "PUT",
+    params: data
+})
 // 添加题目
 export const addQuestion = async (data) => instance({
     url: "/quesition/addQuestion",
     method: "POST",
     params: data,
+})
+// 修改题目
+export const updateQuestion = async (data) => instance({
+    url: "/quesition/updateQuestion",
+    method: "PUT",
+    params: data
 })
 // 获取学科
 export const getAllSubject = async (data) => instance({
@@ -51,9 +63,45 @@ export const getOfClassQuestion = async (data) => instance({
     method: "GET",
     params: data
 })
-
+// 删除问题
+export const deleteQuestion = async (data) => instance({
+    url: "/quesition/deleteQuestion",
+    method: "DELETE",
+    params: data
+})
+// 获取提交试卷
 export const getSubmitPaper = async (data) => instance({
     url: "/exam/getSubmitPaper",
     method: "GET",
+    params: data
+})
+// 创建试卷
+export const publishPaper = async (data) => instance({
+    url: "/exam/publishPaper",
+    method: "POST",
+    params: data
+})
+// 修改试卷
+export const updatePaper = async (data) => instance({
+    url: "/exam/updatePaper",
+    method: "PUT",
+    params: data
+})
+// 删除试卷
+export const deletePaper = async (data) => instance({
+    url: "/exam/deletePaper",
+    method: "DELETE",
+    params: data
+})
+// 获取所有用户信息
+export const getAllUser = async (data) => instance({
+    url: "/admin/getAllUser",
+    method: "GET",
+    params: data
+})
+// 删除学生
+export const deleteStudent = async (data) => instance({
+    url: "/teacher/deleteStudent",
+    method: "DELETE",
     params: data
 })
