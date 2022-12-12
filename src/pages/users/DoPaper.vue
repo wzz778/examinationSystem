@@ -6,7 +6,11 @@
         <span class="countDownTime">23分10秒</span>
       </div>
       <div class="topicTab">
-        <a v-for="(tag, index) in 30" :key="index" @click="toTopic('#t'+index)">
+        <a
+          v-for="(topic, index) in paperData"
+          :key="index"
+          @click="toTopic('#t' + index)"
+        >
           <el-tag type="info" class="tagItem">{{ index + 1 }}</el-tag>
         </a>
       </div>
@@ -17,86 +21,139 @@
 
     <el-container class="content">
       <el-header style="text-align: right; font-size: 12px" class="title">
-        <h3 class="paperName">20200912卷</h3>
+        <h3 class="paperName">{{ paperData.examName }}</h3>
         <div class="paperInfo">
           <span style="border-right: 1px solid rgb(202, 199, 199)"
-            >时长：120分钟</span
+            >时长：{{ paperData.suggestTime }}分钟</span
           >
-          <span>总分：100</span>
+          <span>总分：{{ paperData.paperScore }}</span>
         </div>
       </el-header>
       <el-main>
-        <!-- 单选 -->
-        <div class="topicPart">
-          <h3 class="topicPartName">第一部分</h3>
-          <div class="topicItem" id="t0">
-            <p>1.中华四大名著都有哪些，下列正确的是：</p>
-            <div class="choiceItem">
-              <el-radio-group v-model="radio">
-                <el-radio :label="1">红楼梦</el-radio>
-                <el-radio :label="2">白楼梦</el-radio>
-                <el-radio :label="3">青楼梦</el-radio>
-                <el-radio :label="4">绿楼梦</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-          <!-- 填空 -->
-          <div class="topicItem"  id="t1">
-            <p>2.中华四大名著都有_、_、_、_哪些</p>
-            <div class="blankItem">
-              <div class="inputBlank">
-                1、<el-input placeholder="请输入内容" v-model="input" clearable>
-                </el-input>
-              </div>
-              <div class="inputBlank">
-                2、<el-input placeholder="请输入内容" v-model="input" clearable>
-                </el-input>
-              </div>
-              <div class="inputBlank">
-                3、<el-input placeholder="请输入内容" v-model="input" clearable>
-                </el-input>
-              </div>
-              <div class="inputBlank">
-                4、<el-input placeholder="请输入内容" v-model="input" clearable>
-                </el-input>
+        <div class="topicPart" v-for="(part,index) in paperData" :key="index">
+          <h3 class="topicPartName" v-html="JSON.parse(part.paperFrame)"></h3>
+          <div v-for="(topic, index) in part.ob.questions" :key="index">
+            <!-- 单选 -->
+            <div
+              class="topicItem"
+              :id="'t' + index"
+              v-if="JSON.parse(topic.questionContent).type == 1"
+            >
+              <div
+                class="topicTitle"
+                v-html="index + 1 + '、' + JSON.parse(topic.questionContent).topicInfo"
+              ></div>
+              <div class="choiceItem">
+                <el-radio-group v-model="radio">
+                  <div
+                    v-for="(op, index) in JSON.parse(topic.questionContent).optionsInfo"
+                    :key="index"
+                    class="radioItem"
+                  >
+                    <el-radio :label="op.options"></el-radio>
+                    <span
+                      style="height: 30px; font-size: 15px"
+                      v-html="op.value"
+                    ></span>
+                  </div>
+                </el-radio-group>
               </div>
             </div>
-          </div>
-          <!-- 多选 -->
-          <div class="topicItem"  id="t2">
-            <p>3.中华四大名著都有哪些，下列正确的是：</p>
-            <div class="choiceMoreItem">
-              <el-checkbox-group v-model="checkList" @change="checkMore">
-                <el-checkbox
-                  v-for="(f, index) in four"
-                  :key="index"
-                  :label="f"
-                  >{{ f }}</el-checkbox
-                >
-              </el-checkbox-group>
+            <!-- 多选 -->
+            <div
+              class="topicItem"
+              :id="'t' + index"
+              v-if="JSON.parse(topic.questionContent).type == 2"
+            >
+              <div class="topicItem">
+                <div
+                  class="topicTitle"
+                  v-html="index + 1 + '、' + JSON.parse(topic.questionContent).topicInfo"
+                ></div>
+                <div class="choiceMoreItem">
+                  <el-checkbox-group v-model="checkList" @change="checkMore">
+                    <div
+                      v-for="(op, index) in JSON.parse(topic.questionContent).optionsInfo"
+                      :key="index"
+                      class="radioItem"
+                    >
+                      <el-checkbox
+                        :label="op.options"
+                      ></el-checkbox>
+                      <span
+                        style="height: 30px; font-size: 15px"
+                        v-html="op.value"
+                      ></span>
+                    </div>
+                  </el-checkbox-group>
+                </div>
+              </div>
             </div>
-          </div>
-          <!-- 简答 -->
-          <div class="topicItem"  id="t3">
-            <p id="i">4.中华四大名著都有哪些，下列正确的是：</p>
-            <div class="shortAnswerItem">
-              <el-input
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
-                v-model="textarea"
-              >
-              </el-input>
+            <!-- 判断 -->
+            <div
+              class="topicItem"
+              :id="'t' + index"
+              v-if="JSON.parse(topic.questionContent).type == 3"
+            >
+              <div class="topicItem">
+                 <div
+                class="topicTitle"
+                v-html="index + 1 + '、' + JSON.parse(topic.questionContent).topicInfo"
+              ></div>
+                <div class="shortAnswerItem">
+                  <el-radio-group v-model="judge" @change="judgeFun">
+                    <el-radio :label="false">错误</el-radio>
+                    <el-radio :label="true">正确</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
             </div>
-          </div>
-          <!-- 判断 -->
-          <div class="topicItem"  id="t4">
-            <p>5.中华四大名著有西游记吗：</p>
-            <div class="shortAnswerItem">
-              <el-radio-group v-model="judge" @change="judgeFun">
-                <el-radio :label="false">错误</el-radio>
-                <el-radio :label="true">正确</el-radio>
-              </el-radio-group>
+
+            <!-- 填空 -->
+            <div
+              class="topicItem"
+              :id="'t' + index"
+              v-if="JSON.parse(topic.questionContent).type == 4"
+            >
+              <div class="topicItem">
+                 <div
+                class="topicTitle"
+                v-html="index + 1 + '、' + JSON.parse(topic.questionContent).topicInfo"
+              ></div>
+                <div class="blankItem">
+                  <div class="inputBlank">
+                    <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="textarea"
+                  >
+                  </el-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- 简答 -->
+            <div
+              class="topicItem"
+              :id="'t' + index"
+              v-if="JSON.parse(topic.questionContent).type == 5"
+            >
+              <div class="topicItem">
+                 <div
+                class="topicTitle"
+                v-html="index + 1 + '、' + JSON.parse(topic.questionContent).topicInfo"
+              ></div>
+                <div class="shortAnswerItem">
+                  <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="textarea"
+                  >
+                  </el-input>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -129,6 +186,7 @@ import {
   CheckboxGroup,
   Backtop,
 } from "element-ui";
+import { getPapers } from "@/myAxios/user/yxyAxios";
 export default {
   name: "DoPaper",
   data() {
@@ -139,18 +197,9 @@ export default {
       four: ["红楼梦", "西游记", "水浒传", "三国演义"],
       textarea: "",
       judge: "",
+      paperData: "",
+      topics: "",
     };
-  },
-  methods: {
-    checkMore(val) {
-      console.log(val);
-    },
-    judgeFun(val) {
-      console.log(val);
-    },
-    toTopic(idName){
-        document.querySelector(idName).scrollIntoView(true);
-    }
   },
   components: {
     [Container.name]: Container,
@@ -174,6 +223,36 @@ export default {
     [CheckboxGroup.name]: CheckboxGroup,
     [Checkbox.name]: Checkbox,
     [Backtop.name]: Backtop,
+  },
+  methods: {
+    checkMore(val) {
+      console.log(val);
+    },
+    judgeFun(val) {
+      console.log(val);
+    },
+    toTopic(idName) {
+      document.querySelector(idName).scrollIntoView(true);
+    },
+  },
+  mounted() {
+    let getPaperInfo = {
+      beginIndex: 1,
+      size: 1,
+      id: this.$route.query.pid,
+    };
+    getPapers(getPaperInfo).then((res) => {
+      console.log(res.data);
+      this.paperData = res.data.records;
+      console.log(JSON.parse(res.data.records[0].paperFrame))
+    //   this.topics = this.paperData.ob;
+    //   for (let i = 0; i < this.topics.questions.length; i++) {
+    //     this.topics.questions[i].questionContent = JSON.parse(
+    //       this.topics.questions[i].questionContent
+    //     );
+    //   }
+    //   console.log("题", this.topics);
+    });
   },
 };
 </script>
@@ -298,6 +377,19 @@ html {
 }
 .topicItem {
   padding: 35px 0;
+}
+.topicTitle {
+  display: flex;
+  span {
+    line-height: 30px;
+  }
+}
+.radioItem {
+  display: flex;
+  align-items: center;
+  span {
+    line-height: 30px;
+  }
 }
 .choiceItem,
 .choiceMoreItem,
