@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { ZaddGrade,ZupdatePhoto } from "@/myAxios/user/zffAxios";
+import { ZaddGrade, ZupdatePhoto } from "@/myAxios/user/zffAxios";
 export default {
   naem: "NewsInfor",
   data() {
@@ -45,7 +45,6 @@ export default {
         .then(({ value }) => {
           let data = {
             code: value,
-            id: "1821",
           };
           ZaddGrade(data).then((result) => {
             console.log("加入班级", result);
@@ -69,7 +68,21 @@ export default {
     //头像选择
     fileChange(e) {
       var that = this;
-      var file = e.target.files[0];
+      let file = e.target.files[0];
+      let param = new FormData();
+      param.append("photo", file);
+      console.log("文件", param.get("photo"));
+      ZupdatePhoto(param).then((result) => {
+        console.log("更新用户头像", result);
+        if (result.data == "已更新") {
+          this.$message({
+            type: "success",
+            message: "头像更新成功",
+          });
+        }else{
+        this.$message.error("头像更新失败");
+        }
+      });
       var reader = new FileReader();
       reader.onload = function (e) {
         console.log(e);
@@ -79,12 +92,6 @@ export default {
       // this.ISshow:true
       // }, 4000);
       reader.readAsDataURL(file);
-        var formData = new FormData()
-        formData.append("photo",file);
-      console.log("文件",file.name);
-      ZupdatePhoto(formData).then((result)=>{
-      console.log("更新用户头像",result);
-      })
     },
   },
 };

@@ -28,7 +28,7 @@ export const ZupdateUserInfo = async (data) =>requests({
 });
 //更新密码
 export const ZupdatePassword= async (data) =>requests({
-    url:'user/updatePassword',
+    url:'user/logged/updatePassword',
     method:'put',
     params:data,
 });
@@ -51,7 +51,8 @@ export const ZaddGrade= async (data) =>requests({
 });
 //更新用户头像
 export const ZupdatePhoto= async (data) =>requests({
-    url:'user/updatePhoto',
+    url:'/user/updatePhoto',
     method:'put',
-    params:data,
+    headers:{'Content-Type':'multipart/form-data'},
+    data:data,
 });
