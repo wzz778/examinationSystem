@@ -220,6 +220,7 @@ export default {
         score: this.score,
         difficult: this.difficulty,
         type: 3,
+        ids: this.knowledge.toString(),
       };
       if (this.$route.query.id) {
         obj.id = this.$route.query.id;
