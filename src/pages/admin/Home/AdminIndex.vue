@@ -36,6 +36,11 @@ export default {
         width: 100%;
         min-height: 500px;
         background-color: #f8f8f8;
-        
+        .panelbox{
+          width: 100%;
+          display: flex;
+          justify-content:space-around;
+          flex-wrap: wrap;
+        }
     }
 </style>

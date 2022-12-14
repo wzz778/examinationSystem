@@ -17,7 +17,7 @@ let requests = axios.create({
 
 //请求拦截器----在项目中发请求（请求没有发出去）可以做一些事情
 requests.interceptors.request.use((config) => {
-  console.log(config);
+  // console.log(config);
   //需要携带token带给服务器
   if(store.state.token){
     config.headers.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzA3MzUxMTUsInVzZXJuYW1lIjoiMzE5MDQ5MzE2MyIsInBvd2VyIjoiMCIsImlkIjoxMH0.YsE3PVZ9nNGl2tVYZNK7qfMhdCRaNF42amUcS2ObfUg";

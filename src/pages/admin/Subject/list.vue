@@ -102,7 +102,6 @@ export default {
           return deleteSubject({ids:row.id});
         })
         .then((response) => {
-          console.log(response);
           if(response.status==200){
             this.$message({
               type: 'success',
