@@ -95,6 +95,10 @@
           <i class="el-icon-date"></i>
           <span slot="title">日志中心</span>
         </el-menu-item>
+        <el-menu-item index="/admin/slide/list">
+          <i class="el-icon-picture"></i>
+          <span slot="title">轮播图中心</span>
+        </el-menu-item>
       </el-menu>
     </div>
     <div id="head" :class="rehead">

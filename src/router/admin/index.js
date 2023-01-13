@@ -175,4 +175,21 @@ export default [
             },
         ]
     },
+    {
+        path:'/admin/slide',
+        name:'Layout',
+        component: Layout,
+        meta:{
+            title:"轮播图管理"
+        },
+        children:[ //通过children配置子级路由
+            {
+                path:'list', 
+                component: () => import('@/pages/admin/Slide/list.vue'),
+                meta:{
+                    title:"轮播图列表"
+                }
+            },
+        ]
+    },
 ]

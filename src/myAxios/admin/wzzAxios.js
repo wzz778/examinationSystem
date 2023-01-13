@@ -25,3 +25,9 @@ export const addKnowledgePoint = async (params) =>requests({url:'admin/addKnowle
 
 //删除知识点
 export const deleteKnowledgePoint = async (params) =>requests({url:'admin/deleteKnowledgePoint',method:'delete',params});
+
+//获取日志
+export const getLogs = async (params) =>requests({url:'admin/getLogs',method:'get',params});
+
+//获取日志
+export const addSlideshow = async (data) =>requests({url:'admin/addSlideshow',method:'post',data:{slideshows:data}});

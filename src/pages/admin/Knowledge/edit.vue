@@ -191,6 +191,7 @@ export default {
       async KnowledgeTree(){
           this.data=[]
           let data= await knowledgePointTree({subjectId:this.form.subjectName,grade:this.form.levelName})
+          console.log(data);
           if(data.status==200){ 
             this.data=data.data;
           }else if(data.msg=="无数据"){
