@@ -105,7 +105,7 @@ export default {
     return {
       score: 0,
       difficulty: 0,
-      knowledge: "",
+      knowledge: [],
       discipline: "",
       questionStem: "",
       trueOptions: "",
@@ -276,6 +276,7 @@ export default {
         score: this.score,
         difficult: this.difficulty,
         type: 1,
+        ids: this.knowledge.toString(),
       };
       if (this.$route.query.id) {
         obj.id = this.$route.query.id;

@@ -22,17 +22,22 @@
     <el-form-item label="知识点">
       <el-select
         v-model="value3"
-        multiple
-        filterable
-        clearable
+        @change="selectChange"
         placeholder="请选择"
+        multiple
       >
-        <el-option
-          v-for="item in knowledgeArr"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+        <el-option :value="resultArr" style="height: auto">
+          <el-tree
+            :data="data"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            highlight-current
+            :props="defaultProps"
+            @check-change="handleCheckChange"
+            :default-checked-keys="defaultArr"
+          >
+          </el-tree>
         </el-option>
       </el-select>
     </el-form-item>
@@ -40,8 +45,11 @@
 </template>
 
 <script>
-import { Col, Rate, InputNumber } from "element-ui";
-import { getOfClassQuestion } from "@/myAxios/teacher/index";
+import { Col, Rate, InputNumber, Tree } from "element-ui";
+import {
+  getOfClassQuestion,
+  knowledgePointTree,
+} from "@/myAxios/teacher/index";
 export default {
   name: "questionBottom",
   //  解析先不搞,分数改变的函数，难度改变的函数，知识点改变的函数
@@ -57,6 +65,7 @@ export default {
     [Col.name]: Col,
     [Option.name]: Option,
     [InputNumber.name]: InputNumber,
+    [Tree.name]: Tree,
   },
   data() {
     return {
@@ -86,6 +95,13 @@ export default {
           label: "北京烤鸭",
         },
       ],
+      defaultProps: {
+        children: "children",
+        label: "point",
+      },
+      data: null,
+      resultArr: [],
+      defaultArr: [],
     };
   },
   methods: {
@@ -112,14 +128,60 @@ export default {
         beginIndex: 1,
         id: this.$route.query.id,
       }).then((result) => {
+        console.log("数据", result.data.data.list[0]);
         let tempObj = result.data.data.list[0];
-        this.value1=tempObj.correct
-        this.parsingChangeFn(this.value1)
-        this.num=tempObj.score
-        this.scoreChangeFn(this.num)
-        this.value2=tempObj.difficult
-        this.difficultyChangeFn(this.value2)
+        this.value1 = tempObj.correct;
+        this.parsingChangeFn(this.value1);
+        this.num = tempObj.score;
+        this.scoreChangeFn(this.num);
+        this.value2 = tempObj.difficult;
+        this.difficultyChangeFn(this.value2);
+        this.getKnowledgeInfo({
+          grade: result.data.data.list[0].myAnswer.levelName,
+          subjectId: result.data.data.list[0].myAnswer.id,
+        });
+        this.defaultArr = result.data.data.list[0].ids
+          ? result.data.data.list[0].ids.splice(",")
+          : [];
       });
+    },
+    getKnowledgeInfo(obj) {
+      knowledgePointTree(obj).then((result) => {
+        this.data = result.data.data;
+        this.$nextTick(() => {
+          this.handleCheckChange();
+        });
+      });
+    },
+    handleCheckChange() {
+      let res = this.$refs.tree.getCheckedNodes(true, true); //这里两个true，1. 是否只是叶子节点 2. 是否包含半选节点（就是使得选择的时候不包含父节点）
+      let arrLabel = [];
+      let arr = [];
+      res.forEach((item) => {
+        arrLabel.push(item.point);
+        arr.push(item);
+      });
+      this.resultArr = arr;
+      this.value3 = arrLabel;
+      let tempArr = this.resultArr.map((item) => {
+        return item.id;
+      });
+      this.knowledgeChangeFn(tempArr);
+    },
+    selectChange(e) {
+      var arrNew = [];
+      var dataLength = this.resultArr.length;
+      var eleng = e.length;
+      console.log(this.resultArr);
+      for (let i = 0; i < dataLength; i++) {
+        for (let j = 0; j < eleng; j++) {
+          if (e[j] === this.resultArr[i].point) {
+            arrNew.push(this.resultArr[i]);
+          }
+        }
+      }
+      console.log("arrNew", arrNew);
+      this.$refs.tree.setCheckedNodes(arrNew); //设置勾选的值
     },
   },
   mounted() {
@@ -128,9 +190,11 @@ export default {
       // 获取数据
       this.getInfo();
     }
+    this.$bus.$on("getKnowledgeInfo", this.getKnowledgeInfo);
   },
   beforeDestroy() {
     this.$bus.$off("clearAll");
+    this.$bus.$off("getKnowledgeInfo");
   },
 };
 </script>

@@ -153,12 +153,12 @@ export default {
         });
         return;
       }
-      if(this.trueOptions.replace(/(^\s*)|(\s*$)/g, "") == ""){
+      if (this.trueOptions.replace(/(^\s*)|(\s*$)/g, "") == "") {
         this.$message({
           message: `请输入选项的值的值`,
           type: "warning",
         });
-        return
+        return;
       }
       let obj = {
         sId: this.discipline,
@@ -171,6 +171,7 @@ export default {
         score: this.score,
         difficult: this.difficulty,
         type: 5,
+        ids: this.knowledge.toString(),
       };
       if (this.$route.query.id) {
         obj.id = this.$route.query.id;

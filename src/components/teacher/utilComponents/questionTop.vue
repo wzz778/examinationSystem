@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form-item label="年级">
-      <el-select v-model="value">
+      <el-select v-model="value" @change="value1 = ''">
         <el-option
           v-for="item in gradeArr"
           :key="item"
@@ -13,7 +13,7 @@
     <el-form-item label="学科">
       <el-select
         v-model="value1"
-        @change="disciplineChangeFn(value1)"
+        @change="disciplineChange"
         placeholder="请先选择年级"
       >
         <el-option
@@ -107,6 +107,14 @@ export default {
         this.questionStemChangeFn(this.value2);
         this.value = tempObj.myAnswer.levelName;
         this.value1 = tempObj.myAnswer.id;
+        this.disciplineChangeFn(this.value1);
+      });
+    },
+    disciplineChange() {
+      this.disciplineChangeFn(this.value1);
+      this.$bus.$emit("getKnowledgeInfo", {
+        grade: this.value,
+        subjectId: this.value1,
       });
     },
   },

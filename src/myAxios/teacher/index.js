@@ -105,3 +105,9 @@ export const deleteStudent = async (data) => instance({
     method: "DELETE",
     params: data
 })
+// 获取知识点树
+export const knowledgePointTree = async (data) => instance({
+    url: "/admin/knowledgePointTree",
+    method: "GET",
+    params: data
+})

@@ -91,7 +91,7 @@ import {
   getOfClassQuestion,
 } from "@/myAxios/teacher/index";
 export default {
-  name: "singleChoice",
+  name: "multiSelect",
   components: {
     questionBottom,
     questionTop,
@@ -274,6 +274,7 @@ export default {
         score: this.score,
         difficult: this.difficulty,
         type: 2,
+        ids: this.knowledge.toString(),
       };
       if (this.$route.query.id) {
         obj.id = this.$route.query.id;

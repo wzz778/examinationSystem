@@ -162,6 +162,7 @@ export default {
         score: this.score,
         difficult: this.difficulty,
         type: 4,
+        ids: this.knowledge.toString(),
       };
       console.log(obj);
       if (this.$route.query.id) {
