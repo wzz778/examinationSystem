@@ -5,6 +5,7 @@
       <el-option  v-for="p of $store.state.admin.allgrade" :key="p.index" :label="p" :value="p"></el-option>
     </el-select>
     <el-button @click="find" type="primary" style="margin:0px 10px;">查询</el-button>
+    
     <el-table
         :data="tableData"
         :v-loading="true"
@@ -191,6 +192,7 @@ export default {
 <style lang="less" scoped>
     #adminindex{
         width: 100%;
+        min-width: 500px;
         min-height: 500px;
         padding:20px 10px;
         background-color: #f8f8f8;
